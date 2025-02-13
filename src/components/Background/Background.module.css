@@ -1,0 +1,39 @@
+
+.background {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); 
+  }
+  
+
+  .content {
+    position: absolute;
+    top: 20%; 
+    right: 5%; 
+    text-align: right; 
+    color: white;
+  }
+  
+  
+  .slogan {
+    font-size: 3rem; 
+    font-weight: 900; 
+    line-height: 1.8;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    font-family:"tahoma";
+  }
+  
+  
