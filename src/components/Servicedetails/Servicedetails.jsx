@@ -226,10 +226,7 @@ export default function Servicedetails() {
         </AnimatePresence>
       </div>   
     </div>
- <h2>gggg</h2>
-<h3>hhhh</h3>
-
- <h3>hhkkkk</h3>
+ 
          
         </motion.div>
       </div>
