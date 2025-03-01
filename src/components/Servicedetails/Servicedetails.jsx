@@ -227,6 +227,7 @@ export default function Servicedetails() {
       </div>   
     </div>
  <h2>hi</h2>
+ <h3>hello</h3>
          
         </motion.div>
       </div>
