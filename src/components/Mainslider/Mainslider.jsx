@@ -22,20 +22,18 @@ export default function Mainslider() {
   return (
     <>
     <div className='container mx-auto my-10'>
-    <div className='flex'> 
-    <div className='w-1/4'>
-    <img src={slider7}  className='h-[275px]'alt="slider" />
-      <img src={slider8} className='h-[275px]' alt="slider" />
-    </div>
-    <div className='w-3/4 '>
+    
+    
+    <div className='w-full object-fill'>
     <Slider {...settings}>
-      <img src={slider1} className='h-[550px]' alt="slider1" />
-      <img src={slider2} className='h-[550px]' alt="slider2" />
-      <img src={slider3} className='h-[550px]'alt="slider3" />
-      <img src={slider4} className=" h-[550px]" alt="slide4" />
-      <img src={slider5} className='h-[550px]' alt="slider5" />
-      <img src={slider6} className='h-[550px]' alt="slider6" />
-      
+      <img src={slider1} className='h-40 sm:h-60 md:h-80 lg:h-96 xl:h-[450px] w-full object-cover rounded-lg ' alt="slider1" />
+      <img src={slider2} className='h-40 sm:h-60 md:h-80 lg:h-96 xl:h-[450px] w-full object-cover rounded-lg' alt="slider2" />
+      <img src={slider3} className='h-40 sm:h-60 md:h-80 lg:h-96 xl:h-[450px] w-full object-cover rounded-lg'alt="slider3" />
+      <img src={slider4} className=" h-40 sm:h-60 md:h-80 lg:h-96 xl:h-[450px] w-full object-cover rounded-lg" alt="slide4" />
+      <img src={slider5} className='h-40 sm:h-60 md:h-80 lg:h-96 xl:h-[450px] w-full object-cover rounded-lg' alt="slider5" />
+      <img src={slider6} className='h-40 sm:h-60 md:h-80 lg:h-96 xl:h-[450px] w-full object-cover rounded-lg' alt="slider6" />
+      <img src={slider7}  className='h-40 sm:h-60 md:h-80 lg:h-96 xl:h-[450px] w-full object-cover rounded-lg'alt="slider7" />
+      <img src={slider8} className='h-40 sm:h-60 md:h-80 lg:h-96 xl:h-[450px] w-full object-cover rounded-lg' alt="slider" />
    
     
      </Slider>
@@ -43,7 +41,7 @@ export default function Mainslider() {
    
     </div>
     
-    </div>
+   
      
     
     </>

@@ -1,4 +1,3 @@
-
 import React from "react";
 import style from './Aboutus.module.css'
  import photo1 from './../../assets/photo1.png'
@@ -7,15 +6,15 @@ import style from './Aboutus.module.css'
 export default function About() {
   return (
   <>
-  <section className="py-16 ">
+<section className="py-16">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold mb-12 text-center font-changa">
           نبذة عنا
         </h2>
 
-        {/* شبكة تحتوي على 3 بطاقات */}
+        
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {/* البطاقة الأولى */}
+          
           <div className="flex flex-col items-center">
             <div className="w-72 h-72">
               <img
@@ -32,7 +31,7 @@ export default function About() {
             </p>
           </div>
 
-          {/* البطاقة الثانية */}
+          
           <div className="flex flex-col items-center">
             <div className="w-72 h-72">
               <img
@@ -49,7 +48,7 @@ export default function About() {
             </p>
           </div>
 
-          {/* البطاقة الثالثة */}
+          
           <div className="flex flex-col items-center">
             <div className="w-72 mt-11">
               <img
