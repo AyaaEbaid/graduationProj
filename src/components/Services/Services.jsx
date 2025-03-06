@@ -39,6 +39,7 @@ export default function Services() {
       </div>
 
      
+     <p>hhhhh</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10 justify-center">
         {services.slice(3).map((service) => (
           <div
