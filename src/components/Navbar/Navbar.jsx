@@ -27,7 +27,7 @@ export default function Navbar() {
           </li>
           <li>
             <NavLink to="register" className="block btn transition-colors duration-300 text-white hover:text-gray-800 dark:text-white dark:hover:text-gray-300 bg-transparent px-3 py-0.5 rounded-3xl shadow-lg ring ring-white">
-              Sign Up
+              Sign up
             </NavLink>
           </li>
         </ul>
@@ -55,7 +55,7 @@ export default function Navbar() {
         </li>
         <li>
           <NavLink to="#" className="relative group btn block py-2 px-3 text-white hover:text-gray-800 rounded-sm md:p-0">
-            About Us
+            About us
           </NavLink>
         </li>
         <li>
@@ -70,7 +70,7 @@ export default function Navbar() {
         </li>
         <li>
           <NavLink to="#" className="relative group btn block py-2 px-3 text-white hover:text-gray-800 rounded-sm md:p-0">
-            Contact Us
+            Contact us
           </NavLink>
         </li>
       </ul>
