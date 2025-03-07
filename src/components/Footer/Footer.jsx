@@ -18,7 +18,7 @@ export default function Footer() {
         </NavLink>
       </div>
       <div className="grid grid-cols-2 gap-14 sm:gap-6 sm:grid-cols-3">
-        <div className="lg:pl-24">
+        <div >
           <h2 className="mb-6 font-semibold text-gray-900 uppercase text-xl dark:text-white">
             Contact Us
           </h2>
