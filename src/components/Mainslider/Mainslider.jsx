@@ -41,7 +41,8 @@ export default function Mainslider() {
    
     </div>
     
-   <h2>hhhhh</h2>
+   
+   
      
     
     </>
