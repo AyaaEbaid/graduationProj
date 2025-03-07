@@ -19,9 +19,9 @@ export default function Navbar() {
     </div>
     <div className="flex rel text-xl items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
       <div className="items-center pr-3 justify-between hidden w-full md:flex md:w-auto md:order-1">
-        <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 text-white md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:dark:bg-gray-900 dark:border-gray-700">
+        <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 ml-3 text-white md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:dark:bg-gray-900 dark:border-gray-700">
           <li>
-            <NavLink to="login" className="block btn transition-colors duration-300 text-white hover:text-gray-800 dark:text-white dark:hover:text-gray-300 bg-transparent px-3 py-0.5 rounded-3xl shadow-lg ring ring-white">
+            <NavLink to="login" className="block btn transition-colors duration-300 text-white hover:text-gray-800 dark:text-white dark:hover:text-gray-300 bg-transparent  px-3 py-0.5 rounded-3xl shadow-lg ring ring-white">
               Login
             </NavLink>
           </li>
@@ -35,9 +35,9 @@ export default function Navbar() {
 
       {/* User Icon */}
       <div className="relative z-10" onMouseEnter={() => setIsOpen(true)} onMouseLeave={() => setIsOpen(false)}>
-        <button type="button" className="flex w-8 h-8 items-center justify-center rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded={isOpen} data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom" onClick={() => setIsOpen(false)}>
+        <button type="button" className="flex w-8 h-8  items-center justify-center rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded={isOpen} data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom" onClick={() => setIsOpen(false)}>
           <span className="sr-only">Open user menu</span>
-          <FaUserCircle className="text-gray-100 text-3xl" />
+          <FaUserCircle className="text-gray-100  text-3xl" />
         </button>
         {isOpen && (
           <div className="absolute left-1/2 top-12 -translate-x-1/2 w-40 bg-white shadow-lg rounded-lg transition-all duration-300 z-[-10]">
