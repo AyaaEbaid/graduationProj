@@ -9,7 +9,8 @@ export default function Background() {
       <div className={style.background} style={{backgroundImage:`url(${b})`}}>
       <div className={style.overlay}></div>
       <div className={style.content}>
-      <h1 className={style.slogan}>هنشطبها لك<br /> سهلها عليك...</h1>
+      <h1 className={style.slogan}>We’ll finish it for you<br /> Making it easier for you...</h1>
+
      
       </div>
     </div>
