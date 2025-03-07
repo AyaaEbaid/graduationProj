@@ -41,7 +41,7 @@ export default function Navbar() {
         </button>
         {isOpen && (
           <div className="absolute left-1/2 top-12 -translate-x-1/2 w-40 bg-white shadow-lg rounded-lg transition-all duration-300 z-[-10]">
-            <h2 className="px-4 py-2 cursor-pointer">Profile</h2>
+            <h2 className="px-4 py-2 text-center cursor-pointer">Profile</h2>
           </div>
         )}
       </div>
