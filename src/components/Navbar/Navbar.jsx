@@ -65,7 +65,7 @@ export default function Navbar() {
         </li>
         <li>
           <NavLink to="rate" className="relative group btn block py-2 px-3 text-white hover:text-gray-800 rounded-sm md:p-0">
-            Our Values
+            Rate us
           </NavLink>
         </li>
         <li>
