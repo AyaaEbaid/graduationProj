@@ -116,7 +116,7 @@ export default function ServiceDetails() {
                     animate="visible"
                     exit="hidden"
                     variants={dropdownVariants}
-                    className="absolute mt-2 w-full bg-white rounded shadow-lg overflow-hidden z-10"
+                    className="absolute start-5 w-60 mt-2  bg-white rounded shadow-lg overflow-hidden z-10"
                   >
                     {services.map((service, index) => (
                       <li
@@ -130,7 +130,56 @@ export default function ServiceDetails() {
                 )}
               </AnimatePresence>
             </div>
+ {/* Choose Governorate Button */}
+ <div className="relative">
+              <motion.button
+                variants={buttonVariants}
+                initial="hidden"
+                animate="visible"
+                custom={.7}
+                onClick={() => toggleDropdown("governorate")}
+                className="w-full bg-teal-500 text-white py-2 px-4 rounded flex justify-between items-center focus:outline-none"
+              >
+                Choose Governorate
+                <svg
+                  className={`w-5 h-5 transform transition-transform duration-300 ${
+                    openDropdown === "governorate" ? "rotate-180" : "rotate-0"
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </motion.button>
 
+              <AnimatePresence>
+                {openDropdown === "governorate" && (
+                  <motion.ul
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    variants={dropdownVariants}
+                    className="absolute start-4 mt-2 w-60 bg-white rounded shadow-lg overflow-hidden z-10"
+                  >
+                    {governorates.map((gov, index) => (
+                      <li
+                        key={index}
+                        className="px-4 py-2  hover:bg-teal-100 cursor-pointer"
+                      >
+                        {gov}
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+              
+            </div>
             {/* Choose Center Button */}
             <div className="relative">
               <motion.button
@@ -166,7 +215,7 @@ export default function ServiceDetails() {
                     animate="visible"
                     exit="hidden"
                     variants={dropdownVariants}
-                    className="absolute mt-2 w-full bg-white rounded shadow-lg overflow-hidden z-10"
+                    className="absolute start-5 mt-2 w-60 mx-auto bg-white rounded shadow-lg overflow-hidden z-10"
                   >
                     {centers.map((center, index) => (
                       <li
@@ -179,60 +228,26 @@ export default function ServiceDetails() {
                   </motion.ul>
                 )}
               </AnimatePresence>
-            </div>
-
-            {/* Choose Governorate Button */}
-            <div className="relative">
               <motion.button
-                variants={buttonVariants}
-                initial="hidden"
-                animate="visible"
-                custom={1.5}
-                onClick={() => toggleDropdown("governorate")}
-                className="w-full bg-teal-500 text-white py-2 px-4 rounded flex justify-between items-center focus:outline-none"
-              >
-                Choose Governorate
-                <svg
-                  className={`w-5 h-5 transform transition-transform duration-300 ${
-                    openDropdown === "governorate" ? "rotate-180" : "rotate-0"
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </motion.button>
-
-              <AnimatePresence>
-                {openDropdown === "governorate" && (
-                  <motion.ul
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    variants={dropdownVariants}
-                    className="absolute mt-2 w-full bg-white rounded shadow-lg overflow-hidden z-10"
-                  >
-                    {governorates.map((gov, index) => (
-                      <li
-                        key={index}
-                        className="px-4 py-2 hover:bg-teal-100 cursor-pointer"
-                      >
-                        {gov}
-                      </li>
-                    ))}
-                  </motion.ul>
-                )}
-              </AnimatePresence>
+                      variants={buttonVariants}
+                      initial="hidden"
+                      animate="visible"
+                      custom={1.7}
+                        className="w-full mt-8 text-center   mx-auto bg-transparent  py-2 px-4 rounded flex justify-center items-center focus:outline-none text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4  focus:ring-teal-300 dark:focus:ring-teal-800 shadow-lg shadow-teal-500/50 dark:shadow-lg dark:shadow-teal-800/80 font-medium    me-2 mb-2"
+                    >
+                     Submit
+                    </motion.button>
             </div>
+
+           
+
           </div>
+
+          
         </motion.div>
       </div>
+      
     </div>
+    
   );
 }

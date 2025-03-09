@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaFacebookF, FaGoogle } from "react-icons/fa";
 import style from './Register.module.css'
 import ooo2 from "./../../assets/ooo  2.png";
@@ -9,9 +9,17 @@ import bg from './../../assets/bg1.jpg'
 import bg2 from './../../assets/bg2.jpg'
 import bg3 from './../../assets/bg3.jpg'
 import bg4 from './../../assets/bg4.jpg'
-import {motion} from 'framer-motion'
+import {motion,AnimatePresence} from 'framer-motion'
 import { Link } from "react-router-dom";
 export default function Register() {
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const governorates = ["القاهرة", "الإسكندرية", "الجيزة"];
+  const centers = ["المعادي", "مدينة نصر", "الزمالك"];
+
+
+
+
+
       useEffect(() => {
              
               document.body.style.overflow = "hidden";
@@ -127,37 +135,82 @@ export default function Register() {
     >
       <h2 className="text-2xl font-bold text-teal-600 text-center">Create an Account</h2>
 
-      <form className="mt-2">
+      <form className="mt-3">
         <input
           type="text"
           placeholder="Full Name"
-          className="w-full p-2 mb-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
+          className="w-full p-1 mb-2 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
         />
         <input
           type="email"
           placeholder="Email Address"
-          className="w-full p-2 mb-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
+          className="w-full p-1 mb-2 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
         />
         <input
           type="password"
           placeholder="Password"
-          className="w-full p-2 mb-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
+          className="w-full p-1 mb-2 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
+        />
+         <input
+          type="password"
+          placeholder="Confirm Password"
+          className="w-full p-1 mb-2 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
         />
         <input
           type="text"
           placeholder="Phone Number"
-          className="w-full p-2 mb-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
+          className="w-full p-1 mb-2 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
         />
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          className="w-full p-2 mb-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
-        />
-        <input
-          type="text"
-          placeholder="Address"
-          className="w-full p-2 mb-3 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
-        />
+     
+
+      
+<button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"  className="w-full flex justify-between items-center p-1 mb-2 border border-gray-500 text-gray-600 rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600" type="button">Select Government <svg className="w-2.5 h-2.5 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+<path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
+</svg>
+</button>
+
+
+
+<div id="dropdown" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
+    <ul className="py-2  text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+    <li>
+        <Link to="" className="block px-4 py-2 hover:bg-teal-600 dark:hover:bg-gray-600 dark:hover:text-white">Select Government1</Link>
+      </li>
+      <li>
+        <Link to="" className="block px-4 py-2 hover:bg-teal-600 dark:hover:bg-gray-600 dark:hover:text-white">Select Government2</Link>
+      </li>
+      <li>
+        <Link to="" className="block px-4 py-2 hover:bg-teal-600 dark:hover:bg-gray-600 dark:hover:text-white">Select Government3</Link>
+      </li>
+     
+    </ul>
+</div>
+{/* center */}
+
+<button id="dropdownCenterButton" data-dropdown-toggle="dropdownCenterMenu" className="w-full mb-5 flex justify-between items-center p-1  border border-gray-500 text-gray-600 rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600" type="button">
+  Select Center
+  <svg className="w-2.5 h-2.5 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
+  </svg>
+</button>
+
+<div id="dropdownCenterMenu" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
+  <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownCenterButton">
+    <li>
+      <Link to="" className="block px-4 py-2 hover:bg-teal-600 dark:hover:bg-gray-600 dark:hover:text-white">Select Center1</Link>
+    </li>
+    <li>
+      <Link to="" className="block px-4 py-2 hover:bg-teal-600 dark:hover:bg-gray-600 dark:hover:text-white">Select Center2</Link>
+    </li>
+    <li>
+      <Link to="" className="block px-4 py-2 hover:bg-teal-600 dark:hover:bg-gray-600 dark:hover:text-white">Select Center3</Link>
+    </li>
+  </ul>
+</div>
+
+   
+
+
 
         <button className="w-full bg-teal-600 text-white p-2 rounded hover:bg-teal-700">
           Sign Up
