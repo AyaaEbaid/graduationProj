@@ -85,7 +85,7 @@ export default function Navbar() {
         <NavLink to="services" className="block py-2 px-3 text-white rounded-sm hover:bg-gray-100 md:hover:bg-white md:hover:rounded-lg  md:hover:text-teal-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Services </NavLink>
       </li>
       <li>
-        <NavLink to="" className="block py-2 px-3 text-white rounded-sm hover:bg-gray-100 md:hover:bg-white md:hover:rounded-lg  md:hover:text-teal-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Rate us </NavLink>
+        <NavLink to="rate" className="block py-2 px-3 text-white rounded-sm hover:bg-gray-100 md:hover:bg-white md:hover:rounded-lg  md:hover:text-teal-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Rate us </NavLink>
       </li>
       <li>
         <NavLink to="" className="block py-2 px-3 text-white rounded-sm hover:bg-gray-100 md:hover:bg-white md:hover:rounded-lg  md:hover:text-teal-600 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact us </NavLink>
