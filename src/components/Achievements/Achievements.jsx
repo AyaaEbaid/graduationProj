@@ -11,7 +11,7 @@ const achievements = [
 export default function Achievements() {
   return (
     <section 
-      className="relative bg-cover bg-center py-16 px-4 text-center" 
+      className="relative bg-cover mt-10 bg-center py-16 px-4 text-center" 
       style={{ backgroundImage: "url(./../src/assets/6.jpg)" }} 
     >
       {/* Transparent Layer */}
