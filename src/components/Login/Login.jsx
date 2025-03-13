@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import * as Yup from "yup";
-import { FaFacebookF, FaGoogle } from "react-icons/fa";
+import { FaFacebookF, FaGoogle , FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { motion } from "framer-motion";
@@ -13,7 +13,9 @@ import p2 from "./../../assets/p2.png";
 import Navbar from "../Navbar/Navbar";
 
 export default function Login() {
-  const navigate=useNavigate();
+    const [showPassword, setShowPassword] = useState(false);
+    const togglePasswordVisibility = () => setShowPassword(!showPassword);
+    const navigate=useNavigate();
   // Validation Schema باستخدام Yup
   let loginSchema = Yup.object({
     email: Yup.string().required("Email is required").email("Not a valid email"),
@@ -112,21 +114,29 @@ export default function Login() {
                 ) : null}
               </div>
 
-              <div>
-                <input
-                  type="password"
-                  name="password"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.password}
-                  placeholder="Password"
-                  className="w-full p-2 mb-2 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
-                />
-                {formik.touched.password && formik.errors.password ? (
-                  <div className="text-red-600 text-sm mb-2">
-                    {formik.errors.password}
-                  </div>
-                ) : null}
+            
+                       <div className="mb-1.5 ">
+                <div className="relative"> {/* حاوية ثابتة الارتفاع */}
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.password}
+                    placeholder="Password"
+                    autoComplete="new-password"
+                    className="w-full p-2 mb-2 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600 pr-10"
+                  />
+                 <div> <span
+                    onClick={togglePasswordVisibility}
+                    className="absolute right-3 pb-2 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-teal-600 z-10"
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </span></div>
+                </div>
+                {formik.errors.password && (
+                  <div className="text-red-600 text-sm">{formik.errors.password}</div>
+                )}
               </div>
 
               {/* Forgot Password Link */}

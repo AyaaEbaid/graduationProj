@@ -46,7 +46,7 @@ export default function Services() {
             initial={{ opacity: 0, x: index % 2 === 0 ? -100 : 100 }}
             animate={controls}
             transition={{ duration: 1, delay: index * 0.6 }}
-            whileHover={{ scale: 1.1, rotate: 2 }}
+            whileHover={{ scale: 1.1,  }}
             className="bg-white border-2 text-center mx-auto h-48 border-[#018A80] p-4 rounded-lg shadow-lg flex flex-col items-center"
           >
             <img src={service.img} alt={service.name} className="w-28 h-28 object-cover rounded-full mb-4" />
@@ -61,10 +61,10 @@ export default function Services() {
             key={service.id}
             initial={{ opacity: 0, x: index % 2 === 0 ? -100 : 100 }}
             animate={controls}
-            transition={{ duration: 1, delay: (index + 3) * 0.2 }}
-            whileHover={{ scale: 1.1, rotate: -2 }}
-            className="bg-white mx-auto border-2 border-[#018A80] p-4 rounded-lg shadow-lg flex flex-col items-center"
-          >
+            transition={{ duration: .9, delay: (index + 3) * 0.2 }}
+            whileHover={{ scale: 1.1}}
+            className="bg-white mx-auto  border-2 border-[#018A80] p-4 rounded-lg shadow-lg flex flex-col items-center"
+          > 
             <img src={service.img} alt={service.name} className="w-28 h-28 object-cover rounded-full mb-4" />
             <h3 className="text-lg font-semibold">{service.name}</h3>
           </motion.div>

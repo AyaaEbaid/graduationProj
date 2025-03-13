@@ -1,12 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
-import { FaFacebookF, FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaFacebookF, FaGoogle , FaEye, FaEyeSlash } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { motion } from "framer-motion";
 import bg2 from "./../../assets/bg2.jpg"; // استيراد الصورة
 
 export default function Register() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showRePassword, setShowRePassword] = useState(false);
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const toggleRePasswordVisibility = () => setShowRePassword(!showRePassword);
+   const navigate=useNavigate();
   let mySchema = Yup.object({
     name: Yup.string()
       .required("Name is Required")
@@ -16,18 +21,18 @@ export default function Register() {
     password: Yup.string()
       .required("password is required")
       .matches(
-        /^(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/,
+       /^[A-Z][a-z0-9]{3,8}$/,
         "password must contain at least 8 characters, one uppercase, one lowercase, one number, and one special character"
       ),
     repassword: Yup.string()
       .required("confirm password is required")
       .oneOf([Yup.ref("password")], "كلمات المرور غير متطابقة"),
     phone: Yup.string()
-      .required("رقم الهاتف مطلوب")
+      .required("phone is required")
       .matches(/^(?:\+20|0)1[0125]\d{8}$/, "رقم الهاتف غير صحيح"),
-    government: Yup.string().required("اختر حكومة"),
-    center: Yup.string().required("اختر مركزًا"),
-    admin: Yup.string().required("اختر نوع الحساب"),
+    government: Yup.string().required("choose a government"),
+    district: Yup.string().required("choose a district"),
+    admin: Yup.string().required("  choose a type of account"),
   });
 
   let formik = useFormik({
@@ -38,13 +43,15 @@ export default function Register() {
       repassword: "",
       phone: "",
       government: "",
-      center: "",
+      district: "",
       admin: "",
     },
     validationSchema: mySchema,
     onSubmit: (values) => {
       console.log("Form submitted:", values);
+      navigate("/")
     },
+
   });
 
   // useEffect(() => {
@@ -56,13 +63,8 @@ export default function Register() {
 
   return (
     <div
-      className="flex h-screen  items-center justify-center"
-      style={{
-        backgroundImage:` url(${bg2})`, // استخدام المتغير المستورد مباشرة
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
+      className="flex   items-center justify-center"
+      
     >
       <motion.div
         initial={{ opacity: 0, x: 50 }}
@@ -112,37 +114,56 @@ export default function Register() {
               ) : null}
             </div>
 
-            <div className="mb-1.5">
-              <input
-                type="password"
-                name="password"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-                placeholder="Password"
-                autoComplete="new-password"
-                className="w-full p-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
-              />
-              {formik.touched.password && formik.errors.password ? (
-                <div className="text-red-600 text-sm">{formik.errors.password}</div>
-              ) : null}
-            </div>
+            <div className="mb-1.5 ">
+  <div className="relative"> {/* حاوية ثابتة الارتفاع */}
+    <input
+      type={showPassword ? "text" : "password"}
+      name="password"
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      value={formik.values.password}
+      placeholder="Password"
+      autoComplete="new-password"
+      className="w-full p-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600 pr-10"
+    />
+   <div> <span
+      onClick={togglePasswordVisibility}
+      className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-teal-600 z-10"
+    >
+      {showPassword ? <FaEyeSlash /> : <FaEye />}
+    </span></div>
+  </div>
+  {formik.errors.password && (
+    <div className="text-red-600 text-sm">{formik.errors.password}</div>
+  )}
+</div>
 
-            <div className="mb-1.5">
-              <input
-                type="password"
-                name="repassword"
-                onChange={formik.handleChange}
-                value={formik.values.repassword}
-                autoComplete="new-password"
-                placeholder="Confirm Password"
-                className="w-full p-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
-              />
-              {formik.touched.repassword && formik.errors.repassword ? (
-                <div className="text-red-600 text-sm">{formik.errors.repassword}</div>
-              ) : null}
-            </div>
-
-            <div className="mb-2">
+<div className="mb-1.5 ">
+  <div className=" relative  "> {/* حاوية ثابتة الارتفاع */}
+    <input
+      type={showRePassword ? "text" : "password"}
+      name="repassword"
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      value={formik.values.repassword}
+      autoComplete="new-password"
+      placeholder="Confirm Password"
+      className="w-full  p-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600 pr-10"
+    />
+    <div>
+    <span
+      onClick={toggleRePasswordVisibility}
+      className=" absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-teal-600 z-10"
+    >
+      {showRePassword ? <FaEyeSlash /> : <FaEye />}
+    </span>
+    </div>
+  </div>
+  {formik.errors.repassword && (
+    <div className="text-red-600 text-sm">{formik.errors.repassword}</div>
+  )}
+</div>
+            <div className="mb-1.5 ">
               <input
                 type="text"
                 name="phone"
@@ -156,7 +177,7 @@ export default function Register() {
               ) : null}
             </div>
 
-            <div className="mb-2">
+            <div className="mb-1.5">
               <select
                 name="government"
                 onChange={formik.handleChange}
@@ -175,26 +196,26 @@ export default function Register() {
               ) : null}
             </div>
 
-            <div className="mb-2">
+            <div className="mb-1.5">
               <select
-                name="center"
+                name="district"
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.center}
+                value={formik.values.district}
                 className="w-full text-gray-600 p-1 border rounded outline-none transition-transform duration-200 focus:border-teal-600"
               >
-                <option value="">Choose a Center</option>
-                <option value="Center1">Center1</option>
-                <option value="Center2">Center2</option>
-                <option value="Center3">Center3</option>
-                <option value="Center4">Center4</option>
+                <option value="">Choose a District</option>
+                <option value="district1">district1</option>
+                <option value="district2">district2</option>
+                <option value="district3">district3</option>
+                <option value="district4">district4</option>
               </select>
-              {formik.touched.center && formik.errors.center ? (
-                <div className="text-red-600 text-sm">{formik.errors.center}</div>
+              {formik.touched.district && formik.errors.district ? (
+                <div className="text-red-600 text-sm">{formik.errors.district}</div>
               ) : null}
             </div>
 
-            <div className="flex space-x-4 mb-5 mt-1">
+            <div className="flex space-x-4  mt-1">
               <label className="flex items-center space-x-2">
                 <input
                   type="radio"
@@ -217,18 +238,27 @@ export default function Register() {
                 />
                 <span>User</span>
               </label>
-              {formik.touched.admin && formik.errors.admin ? (
-                <div className="text-red-600 text-sm">{formik.errors.admin}</div>
-              ) : null}
-            </div>
-
-            <button
-              type="submit"
               
-              className="w-full bg-teal-600 text-white p-2 rounded hover:bg-teal-700"
-            >
-              Sign Up
-            </button>
+            <div className="mb-5 text-white">hhh</div>
+            
+             
+
+            </div>
+            {formik.touched.admin && formik.errors.admin ? (
+                
+                <div className="text-red-600  mb-5 text-sm">{formik.errors.admin}</div>
+              ) : null}
+            <button
+  type="submit"
+  disabled={!formik.isValid}
+  className={`w-full p-2 rounded transition duration-300 ${
+    formik.isValid
+      ? "bg-teal-600 hover:bg-teal-700 text-white"
+      : "bg-gray-400 text-gray-200 cursor-not-allowed"
+  }`}
+>
+  Sign Up
+</button>
 
             <div className="flex justify-center items-center space-x-4 mt-2">
               <div className="w-8 h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded-full transition duration-300 ease-in-out hover:bg-teal-500 hover:text-white shadow-md cursor-pointer">

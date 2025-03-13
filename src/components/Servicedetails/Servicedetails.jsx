@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import style from './ServiceDetails.module.css'
 export default function ServiceDetails() {
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -131,6 +131,28 @@ export default function ServiceDetails() {
               </AnimatePresence>
             </div>
  {/* Choose Governorate Button */}
+ 
+
+  
+ <div className="relative">
+ <motion.select id="government" 
+                variants={buttonVariants}
+                initial="hidden"
+                animate="visible"
+                custom={.7}
+               
+                className="w-full bg-teal-500 focus:border-teal-500 border-none  text-white py-2 px-4 rounded flex justify-between items-center ">
+
+   <option >Choose a Government</option>
+    <option > Government1</option>
+    <option >Government2</option>
+    <option >Government3</option>
+    <option >Government4</option>
+   
+  </motion.select>
+
+ </div>
+
  <div className="relative">
               <motion.button
                 variants={buttonVariants}
