@@ -1,6 +1,6 @@
 import React from 'react'
 import "./Footer.module.css"
-import logo from './../../assets/green_logo.png'
+import logo from './../../assets/logo2.png'
 import { NavLink } from 'react-router-dom'
 export default function Footer() {
   return (
@@ -13,9 +13,12 @@ export default function Footer() {
   <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
     <div className="md:flex md:justify-between">
       <div className="mb-6 md:mb-0">
-        <NavLink className="flex w-64 items-center">
-          <img src={logo} className="h-auto w-full object-cover me-3" alt="Logo" />
-        </NavLink>
+       
+         <NavLink to="" className="flex  md:mt-8  text-teal-600 w-64  hover:text-white flex-wrap items-center rtl:space-x-reverse">
+            <img src={logo} className="h-12 w-20 pt-1" alt="Hanshtabhalk Logo" /> 
+               <span className="self-center  text-2xl font-extrabold whitespace-nowrap dark:text-black">Hanshtabhalk</span>
+           </NavLink>
+        
       </div>
       <div className="grid grid-cols-2 gap-14 sm:gap-6 sm:grid-cols-3">
         <div >

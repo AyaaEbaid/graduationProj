@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-
+import logo from "./../../assets/logo.png"
 export default function Navbar() {
  
   return (
@@ -9,9 +9,9 @@ export default function Navbar() {
 
 <nav className="bg-teal-600  border-gray-200 dark:bg-gray-900">
   <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-  <NavLink to="" className="flex text-white  hover:text-white flex-wrap items-center space-x-3 rtl:space-x-reverse">
-      {/* <img src="" className="h-8" alt="Hanshtabhalk Logo" /> */}
-      <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Hanshtabhalk</span>
+  <NavLink to="" className="flex text-white  hover:text-white flex-wrap items-center rtl:space-x-reverse">
+   <img src={logo} className="h-9 w-14 pt-1" alt="Hanshtabhalk Logo" /> 
+      <span className="self-center  text-2xl font-semibold whitespace-nowrap dark:text-white">Hanshtabhalk</span>
   </NavLink>
 
   <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
@@ -35,7 +35,7 @@ export default function Navbar() {
         </div>
         <ul className="py-2" aria-labelledby="user-menu-button">
           <li>
-            <NavLink to="" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Dashboard</NavLink>
+            <NavLink to="dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Dashboard</NavLink>
           </li>
           <li>
             <NavLink href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Add Anther account</NavLink>
