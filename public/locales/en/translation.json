@@ -1,0 +1,28 @@
+{
+    "services": {
+      "title": "Our Services",
+      "electrical": "Electrical Services",
+      "plumbing": "Plumbing Services",
+      "carpentry": "Carpentry Services",
+      "painting": "Painting Services",
+      "decoration": "Decoration Services"
+    },
+    
+        "aboutus": {
+          "title": "About Us",
+          "paragraph1": "\"Hanshatobhalak\" is an online platform that connects apartment owners looking for finishing and decoration services with craftsmen and specialized stores providing the necessary materials and supplies, making the finishing process comprehensive and direct.",
+          "paragraph2": "Account registration for apartment owners, craftsmen, and store owners. Smart search by specialty and location. Mutual rating systems to ensure quality. Booking and scheduling management. Secure and diverse payment options. Notifications and appointment reminders.",
+          "paragraph3": "Your ultimate destination for finishing projects, where apartment owners and store owners connect with the best workers to complete their projects efficiently and professionally. Explore services, choose your team, and start your project today!"
+        }
+        
+        
+        
+         
+        
+        
+          
+        
+
+        
+      
+  }
