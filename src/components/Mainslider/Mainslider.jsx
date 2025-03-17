@@ -21,7 +21,7 @@ export default function Mainslider() {
       };
   return (
     <>
-    <div className='container mx-auto my-10'>
+    <div className='container mx-auto my-10 overflow-hidden'>
     
     
     <div className='w-full object-fill'>

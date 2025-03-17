@@ -13,7 +13,7 @@ export default function About() {
 
   return (
     <>
-      <section className="py-16" ref={ref}>
+      <section className="py-16 overflow-x-hidden" ref={ref}>
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold mb-12 text-center font-changa">
             {t("aboutus.title")}
