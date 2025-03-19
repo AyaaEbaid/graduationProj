@@ -1,0 +1,117 @@
+{
+    "services": {
+      "title": "Our Services",
+      "electrical": "Electrical Services",
+      "plumbing": "Plumbing Services",
+      "carpentry": "Carpentry Services",
+      "painting": "Painting Services",
+      "decoration": "Decoration Services"
+    },
+    
+        "aboutus": {
+          "title": "About Us",
+          "paragraph1": "\"Hanshatobhalak\" is an online platform that connects apartment owners looking for finishing and decoration services with craftsmen and specialized stores providing the necessary materials and supplies, making the finishing process comprehensive and direct.",
+          "paragraph2": "Account registration for apartment owners, craftsmen, and store owners. Smart search by specialty and location. Mutual rating systems to ensure quality. Booking and scheduling management. Secure and diverse payment options. Notifications and appointment reminders.",
+          "paragraph3": "Your ultimate destination for finishing projects, where apartment owners and store owners connect with the best workers to complete their projects efficiently and professionally. Explore services, choose your team, and start your project today!"
+        },
+        
+          "login": {
+            "email_required": "Email is required",
+            "email_invalid": "Not a valid email",
+            "password_required": "Password is required",
+            "password_validation": "Password must contain at least 8 characters, one uppercase, one lowercase, and one number",
+            "welcome_back": "Welcome Back!",
+            "stay_connected": "To stay connected with us, please log in with your personal information.",
+            "create_account": "Create an Account",
+            "sign_in": "Sign In",
+            "email_placeholder": "Email Address",
+            "password_placeholder": "Password",
+            "forgot_password": "Forgot Password?",
+            "sign_in_button": "Sign In"
+          
+        },
+        "background": {
+          "slogan_line1": "We’ll finish it for you",
+          "slogan_line2": "Making it easier for you..."
+        },
+        "achievements": {
+          "our_achievements": "Our Achievements",
+          "completed_projects": "Completed Projects",
+          "residential_buildings": "Residential Buildings",
+          "tools_used": "Tools Used",
+          "interior_designs": "Interior Designs"
+        },
+        "footer": {
+          "hanshtabhalk":"Hanshtabhalk",
+          "contact_us": "Contact Us",
+          "phone": "Phone:",
+          "email": "Email:",
+          "follow_us": "Follow Us",
+          "facebook": "Facebook",
+          "twitter": "Twitter",
+          "terms_policies": "Terms & Policies",
+          "privacy_policy": "Privacy Policy",
+          "terms_conditions": "Terms & Conditions",
+          "all_rights_reserved": "All rights reserved.",
+          "copyright": "© 2025 Hanshtabhalk."
+        },
+        "resetpassword": {
+          "title": "Reset Password",
+          "email_placeholder": "Your Email",
+          "password_placeholder": "Reset Password",
+          "send_link": "Send Reset Link",
+          "back_to_login": "Back to Login"
+        },
+        "rate": {
+          "title": "How was your experience?",
+          "excellent": "Excellent",
+          "very_good": "Very Good",
+          "good": "Good",
+          "fair": "Fair",
+          "poor": "Poor",
+          "placeholder": "Write your feedback here...",
+          "submit": "Submit Feedback"
+        },
+        
+          "register": {
+            "title": "Create an Account",
+            "name": "Full Name",
+            "email": "Email Address",
+            "password": "Password",
+            "confirmPassword": "Confirm Password",
+            "phone": "Phone Number",
+            "government": "Choose a Government",
+            "district": "Choose a District",
+            "admin": "Admin",
+            "user": "User",
+            "worker": "Worker",
+            "supervisor": "Supervisor",
+            "signUp": "Sign Up",
+            "haveAccount": "Join Us!",
+            "alreadyAccount": "Already have an account?",
+            "signIn": "Sign In"
+          },
+          "validation": {
+            "required": "This field is required",
+            "minLength": "Must be at least {{min}} characters",
+            "maxLength": "Must be at most {{max}} characters",
+            "email": "Invalid email address",
+            "passwordPattern": "Password must contain at least 8 characters, one uppercase, one lowercase, and one number",
+            "passwordMatch": "Passwords do not match",
+            "phone": "Invalid phone number"
+          }
+        
+        
+        
+        
+        
+        
+         
+        
+        
+          
+        
+
+        
+      
+  }

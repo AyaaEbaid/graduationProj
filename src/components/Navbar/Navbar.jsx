@@ -1,21 +1,27 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-
+import LanguageSwitcher from '../../LanguageSwitcher'
+import logo from "./../../assets/logo.png"
 export default function Navbar() {
+  function Hello(){
+    console.log("hi");
+    
+  }
  
   return (
     <>
     
 
-<nav className="bg-teal-600  border-gray-200 dark:bg-gray-900">
+<nav className="bg-teal-600  border-gray-200 dark:bg-gray-900 ">
   <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-  <NavLink to="" className="flex text-white  hover:text-white flex-wrap items-center space-x-3 rtl:space-x-reverse">
-      {/* <img src="" className="h-8" alt="Hanshtabhalk Logo" /> */}
-      <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Hanshtabhalk</span>
+  <NavLink to="" className="flex text-white  hover:text-white flex-wrap items-center rtl:space-x-reverse">
+   <img src={logo} className="h-9 w-14 pt-1" alt="Hanshtabhalk Logo" /> 
+      <span className="self-center  text-2xl font-semibold whitespace-nowrap dark:text-white">Hanshtabhalk</span>
   </NavLink>
+ 
 
   <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-      <button type="button" data-popover-target="popover-default" className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+      <button onClick={()=>{Hello()}} type="button" data-popover-target="popover-default" className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
         <span className="sr-only">Open user menu</span>
         <img className="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="user photo"/>
       </button>
@@ -27,28 +33,7 @@ export default function Navbar() {
     
     <div data-popper-arrow></div>
 </div>
-      {/* <!-- Dropdown menu --> */}
-      <div className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
-        <div className="px-4 py-3">
-          <span className="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
-          <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">name@flowbite.com</span>
-        </div>
-        <ul className="py-2" aria-labelledby="user-menu-button">
-          <li>
-            <NavLink to="" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Dashboard</NavLink>
-          </li>
-          <li>
-            <NavLink href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Settings</NavLink>
-          </li>
-          <li>
-            <NavLink href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Earnings</NavLink>
-          </li>
-          <li>
-            <NavLink href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</NavLink>
-          </li>
-        </ul>
-        
-      </div>
+<LanguageSwitcher/>    
       <div className="items-center pr-3 justify-between hidden w-full md:flex md:w-auto md:order-1">
         <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 ml-3 text-white md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:dark:bg-gray-900 dark:border-gray-700">
           <li>
@@ -72,6 +57,7 @@ export default function Navbar() {
         </svg>
     </button>
   </div>
+  
   
   <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
     <ul className="flex flex-col font-medium p-4 md:p-0 mt-4    md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0  dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
