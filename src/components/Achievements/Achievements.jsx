@@ -1,25 +1,26 @@
 import React from 'react';
 import { FaPaintRoller, FaBuilding, FaTools, FaCouch } from "react-icons/fa";
-
-const achievements = [
-    { icon: <FaPaintRoller className="text-teal-600 text-4xl hover:cursor-pointer hover:text-gray-800" />, value: '150+', label: 'Completed Projects' },
-    { icon: <FaBuilding className="text-teal-600 text-4xl hover:cursor-pointer hover:text-gray-800" />, value: '75+', label: 'Residential Buildings' },
-    { icon: <FaTools className="text-teal-600 text-4xl hover:cursor-pointer hover:text-gray-800" />, value: '200+', label: 'Tools Used' },
-    { icon: <FaCouch className="text-teal-600 text-4xl hover:cursor-pointer hover:text-gray-800" />, value: '120+', label: 'Interior Designs' }
-];
+import { useTranslation } from "react-i18next";
 
 export default function Achievements() {
+  const { t } = useTranslation("achievements");
+
+  const achievements = [
+    { icon: <FaPaintRoller />, value: "150+", label: t("achievements.completed_projects") },
+    { icon: <FaBuilding />, value: "75+", label: t("achievements.residential_buildings") },
+    { icon: <FaTools />, value: "200+", label: t("achievements.tools_used") },
+    { icon: <FaCouch />, value: "120+", label: t("achievements.interior_designs") },
+  ];
+
   return (
     <section 
       className="relative bg-cover mt-10 bg-center py-16 px-4 text-center" 
-      style={{ backgroundImage: "url(./../src/assets/6.jpg)" }} 
+      style={{ backgroundImage: "url(./../src/assets/6.jpg)" }}
     >
-      {/* Transparent Layer */}
       <div className="absolute inset-0 bg-white bg-opacity-75"></div>
 
-      {/* Content */}
       <div className="relative max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold text-gray-800 mb-8">Our Achievements</h2>
+        <h2 className="text-3xl font-bold text-gray-800 mb-8">{t("achievements.our_achievements")}</h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {achievements.map((ach, index) => (
             <div key={index} className="p-6 flex flex-col items-center relative">
