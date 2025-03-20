@@ -91,29 +91,27 @@
             "alreadyAccount": "Already have an account?",
             "signIn": "Sign In"
           },
-          "validation": {
-            "required": "This field is required",
-            "minLength": "Must be at least {{min}} characters",
-            "maxLength": "Must be at most {{max}} characters",
-            "email": "Invalid email address",
-            "passwordPattern": "Password must contain at least 8 characters, one uppercase, one lowercase, and one number",
-            "passwordMatch": "Passwords do not match",
-            "phone": "Invalid phone number"
+          
+          "navbar":{
+            "brand": "Hanshtabhalk",
+            "openUserMenu": "Open user menu",
+            "userPhoto": "user photo",
+            "popoverTitle": "Popover title",
+            "popoverContent": "And here's some amazing content. It's very engaging. Right?",
+            "dashboard": "Dashboard",
+            "settings": "Settings",
+            "earnings": "Earnings",
+            "signOut": "Sign out",
+            "login": "Login",
+            "signUp": "Sign up",
+            "openMainMenu": "Open main menu",
+            "home": "Home",
+            "about": "About",
+            "services": "Services",
+            "rateUs": "Rate us",
+            "contactUs": "Contact us",
+            "placeholder":"Search..."
           }
-        ,
-        "navbar": {
-          "brand": "Hanshtabhalk",
-          "login": "Login",
-          "signup": "Sign up",
-          "home": "Home",
-          "about": "About",
-          "services": "Services",
-          "rateUs": "Rate us",
-          "contact": "Contact us",
-          "profile": "Profile",
-          "openUserMenu": "Open user menu",
-          "openMainMenu": "Open main menu"
-        }
         
         
         

@@ -8,6 +8,9 @@
    --font-family:'Encode Sans Expanded', sans-serif;
     --rating-color:#ffc908;
 }
+html{
+    overflow-x: hidden;
+}
  
 body{
     font-family: var(--font-family) !important;
