@@ -100,7 +100,20 @@
             "passwordMatch": "Passwords do not match",
             "phone": "Invalid phone number"
           }
-        
+        ,
+        "navbar": {
+          "brand": "Hanshtabhalk",
+          "login": "Login",
+          "signup": "Sign up",
+          "home": "Home",
+          "about": "About",
+          "services": "Services",
+          "rateUs": "Rate us",
+          "contact": "Contact us",
+          "profile": "Profile",
+          "openUserMenu": "Open user menu",
+          "openMainMenu": "Open main menu"
+        }
         
         
         
