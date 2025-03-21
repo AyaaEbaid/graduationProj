@@ -7,6 +7,7 @@ import Register from './components/Register/Register'
 import Notfound from './components/Notfound/Notfound'
 import Services from './components/Services/Services'
 import Servicedetails from './components/Servicedetails/Servicedetails'
+import Serviceworker from './components/Serviceworker/Serviceworker'
 import Resetpassword from './components/Resetpassword/Resetpassword'
 import Rate from './components/Rate/Rate'
 import Dashboard from './components/Dashboard/Dashboard'
@@ -28,6 +29,10 @@ function App() {
     {path:"rate",element:<Rate/>},
     {path:"dashboard",element:<Dashboard/>},
     {path:"reset-password",element:<Resetpassword/>},
+    {path:"serviceworker",element:<Serviceworker/>},
+    {path:"worker",element:<Serviceworker/>},
+    
+    ,
 
     {path:"*",element:<Notfound/>}
   ]

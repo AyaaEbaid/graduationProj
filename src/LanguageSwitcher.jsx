@@ -15,9 +15,9 @@ const LanguageSwitcher = () => {
   };
 
   return (
-    <div className="relative inline-block text-left z-20">
+    <div className="relative   inline-block bg-white text-teal-600 rounded-full text-left  z-20">
       <button
-        className="flex items-center gap-2 px-4 py-2 overflow-x-hidden text-white rounded-md"
+        className="flex items-center gap-2  px-2 py-1.5 overflow-x-hidden text- rounded-md"
         onClick={() => setIsOpen(!isOpen)}
       >
         <FaGlobe className="text-xl" />
@@ -25,18 +25,18 @@ const LanguageSwitcher = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-40 bg-white shadow-md rounded-md">
+        <div className="absolute right-0 mt-2 w-32 bg-white shadow-md rounded-md">
           <button
             className="w-full px-4 py-2 text-left hover:bg-gray-100"
             onClick={() => changeLanguage("en")}
           >
-            🇬🇧 English
+             English
           </button>
           <button
             className="w-full px-4 py-2 text-left hover:bg-gray-100"
             onClick={() => changeLanguage("ar")}
           >
-            🇸🇦 العربية
+             العربية
           </button>
         </div>
       )}
