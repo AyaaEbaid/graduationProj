@@ -1,8 +1,8 @@
 export default function Pagination({ currentPage, totalPages, onPageChange }) {
     return (
-      <div className="flex justify-center mt-6 space-x-2">
+      <div className="flex justify-center  mt-6 space-x-2">
         <button
-          className={`px-4 py-2 border rounded-md ${currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`px-4 py-2 border  rounded-md ${currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""}`}
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
@@ -12,7 +12,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
         {[...Array(totalPages)].map((_, index) => (
           <button
             key={index}
-            className={`px-4 py-2 border rounded-md ${currentPage === index + 1 ? "bg-blue-500 text-white" : ""}`}
+            className={`px-4 py-2 border rounded-md ${currentPage === index + 1 ? "bg-teal-600 text-white" : ""}`}
             onClick={() => onPageChange(index + 1)}
           >
             {index + 1}

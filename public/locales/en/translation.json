@@ -132,10 +132,11 @@
               "governorate": ["Governorate 1", "Governorate 2", "Governorate 3"],
               "center": ["Center 1", "Center 2", "Center 3"]
             },
-            
+            "workers_list": "Workers List",
               
-                "workers_list": "Workers List",
                 "job": {
+                  
+                
                   "electrician": "Electrician",
                   "decorator": "Decorator",
                   "painter": "Painter",
