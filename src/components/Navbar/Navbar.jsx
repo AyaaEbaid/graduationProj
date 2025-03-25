@@ -41,7 +41,7 @@ export default function Navbar() {
       
 
 
-          <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+          <div className="flex  items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           <div className="relative mx-4 flex flex-col items-start">
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -71,7 +71,7 @@ export default function Navbar() {
             <button
               type="button"
               data-popover-target="popover-default"
-              className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+              className="flex  text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
               id="user-menu-button"
               aria-expanded="false"
               data-dropdown-toggle="user-dropdown"
@@ -79,7 +79,7 @@ export default function Navbar() {
             >
               <span className="sr-only">{t('navbar.openUserMenu')}</span>
               <img
-                className="w-8 h-8 rounded-full"
+                className="w-8  h-8 rounded-full"
                 src="/docs/images/people/profile-picture-3.jpg"
                 alt={t('navbar.userPhoto')}
               />
@@ -114,7 +114,7 @@ export default function Navbar() {
               <ul className="py-2" aria-labelledby="user-menu-button">
                 <li>
                   <NavLink
-                    to="#"
+                    to="dashboard"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                   >
                     {t('navbar.dashboard')}
@@ -147,10 +147,10 @@ export default function Navbar() {
               </ul>
             </div>
 
-            <LanguageSwitcher />
+         
 
             <div className="items-center pr-3 justify-between hidden w-full md:flex md:w-auto md:order-1">
-              <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 ml-3 text-white md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:dark:bg-gray-900 dark:border-gray-700">
+              <ul className="flex mx-4  flex-col font-medium p-4 md:p-0 mt-4 ml-3 text-white md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:dark:bg-gray-900 dark:border-gray-700">
                 <li>
                   <NavLink
                     to="login"
@@ -168,6 +168,7 @@ export default function Navbar() {
                   </NavLink>
                 </li>
               </ul>
+              <LanguageSwitcher />
             </div>
 
             <button
@@ -184,12 +185,12 @@ export default function Navbar() {
             </button>
           </div>
 
-          <div className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
-            <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          <div className="items-center  justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+            <ul className="flex  flex-col font-medium p-4 md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               <li>
                 <NavLink
                   to=""
-                  className="block py-2 px-3 text-white hover:bg-gray-100 md:hover:bg-white md:hover:rounded-lg rounded-sm md:bg-teal-600 md:text-white md:p-0 md:dark:text-blue-500"
+                  className="block py-2 px-3 text-white hover:bg-gray-100  md:hover:bg-white md:hover:rounded-md rounded-sm md:bg-teal-600 md:text-white md:p-0 md:dark:text-teal-500"
                   aria-current="page"
                 >
                   {t('navbar.home')}

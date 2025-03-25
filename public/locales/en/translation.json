@@ -92,6 +92,7 @@
             "signIn": "Sign In"
           },
           
+          
           "navbar":{
             "brand": "Hanshtabhalk",
             "openUserMenu": "Open user menu",
@@ -112,6 +113,57 @@
             "contactUs": "Contact us",
             "placeholder":"Search..."
           }
+          ,
+          "servicedetails":{
+            "title": "Service Details",
+            "chooseService": "Choose our service",
+            "service": "Choose Service",
+            "governorate": "Choose Governorate",
+            "center": "Choose Center",
+            "searchPlaceholder": "Search...",
+            "submit": "Submit",
+            "validation": {
+              "serviceRequired": "Service is required",
+              "governorateRequired": "Governorate is required",
+              "centerRequired": "Center is required"
+            },
+            "options": {
+              "service": ["Service 1", "Service 2", "Service 3"],
+              "governorate": ["Governorate 1", "Governorate 2", "Governorate 3"],
+              "center": ["Center 1", "Center 2", "Center 3"]
+            },
+            "workers_list": "Workers List",
+              
+                "job": {
+                  
+                
+                  "electrician": "Electrician",
+                  "decorator": "Decorator",
+                  "painter": "Painter",
+                  "plumber": "Plumber",
+                  "carpenter": "Carpenter"
+                }
+              ,
+              
+                "serviceDetails": {
+                  "title": "Service Details",
+                  "chooseService": "Choose Our Service",
+                  "service": "Choose Service",
+                  "governorate": "Choose Governorate",
+                  "center": "Choose Center",
+                  "searchPlaceholder": "Search...",
+                  "submit": "Submit",
+                  "serviceRequired": "Service is required",
+                  "governorateRequired": "Governorate is required",
+                  "centerRequired": "Center is required"
+                }
+              
+              
+              
+            
+            
+          }
+          
         
         
         

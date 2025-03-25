@@ -109,7 +109,35 @@
       "rateUs": "قيمنا",
       "contactUs": "اتصل بنا",
       "placeholder":"ابحث هنا ..."
-    }
+    },
+    
+     
+      
+        "workers_list": "قائمة العمال",
+        "job": {
+          "electrician": "كهربائي",
+          "decorator": "مُزين",
+          "painter": "رسام",
+          "plumber": "سباك",
+          "carpenter": "نجار"
+        },
+        "serviceDetails": {
+          "title": "تفاصيل الخدمة",
+          "chooseService": "اختر خدمتنا",
+          "service": "اختر الخدمة",
+          "governorate": "اختر المحافظة",
+          "center": "اختر المركز",
+          "searchPlaceholder": "بحث...",
+          "submit": "إرسال",
+          "serviceRequired": "الخدمة مطلوبة",
+          "governorateRequired": "المحافظة مطلوبة",
+          "centerRequired": "المركز مطلوب"
+        }
+        
+      
+      
+    
+    
     
   
         
