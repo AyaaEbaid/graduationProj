@@ -22,7 +22,7 @@ export default function Sidebar() {
       {/* زر إخفاء/إظهار الـ Sidebar */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="mb-4 text-xl focus:outline-none"
+        className="mb-4 text-2xl focus:outline-none"
       >
         <FiMenu />
       </button>
@@ -30,7 +30,7 @@ export default function Sidebar() {
       {/* الروابط */}
       <ul className="space-y-4">
         <li>
-          <Link to="/dashboard" className="flex items-center gap-2">
+          <Link to="/dashboardpage" className="flex items-center gap-2">
             <FiHome />
             {isOpen && <span>Dashboard</span>}
           </Link>
@@ -60,9 +60,9 @@ export default function Sidebar() {
           </Link>
         </li>
         <li className="mt-8">
-          <button className="flex items-center gap-2 text-red-300">
+          <button className="flex items-center gap-2 text-2xl">
             <FiLogOut />
-            {isOpen && <span>Logout</span>}
+            {isOpen && <span >Logout</span>}
           </button>
         </li>
       </ul>

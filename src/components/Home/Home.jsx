@@ -12,15 +12,14 @@ export default function Home() {
     <>
     <Background/>
     <Mainslider/>
-    <div id='about-section'>
+    
     <Aboutus/>
-    </div>
+    
     
     <Services/>
     <Achievements/>
-    <div id='footer-section'>
+    
     <Footer/>
-    </div>
    
     
     </>
