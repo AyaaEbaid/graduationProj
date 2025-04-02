@@ -1,42 +1,183 @@
-import React, { useState } from "react";
-
-const initialUsers = [
-  { id: 1, name: "محمد أحمد", email: "mohamed@example.com" },
-  { id: 2, name: "سارة علي", email: "sara@example.com" },
-];
+import React, { useEffect, useState } from "react";
 
 const UsersPage = () => {
-  const [users, setUsers] = useState(initialUsers);
-  const [form, setForm] = useState({ id: null, name: "", email: "" });
-  const [isEditing, setIsEditing] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [newUser, setNewUser] = useState({
+    id: "",
+    fullName: "",
+    email: "",
+    phone: "",
+    role: "",
+  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  // تحميل المستخدمين من Local Storage مرة واحدة عند تحميل الصفحة
+  useEffect(() => {
+    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+    setUsers(storedUsers);
+  }, []);
 
-  const addUser = () => {
-    setUsers([...users, { id: Date.now(), ...form }]);
-    setForm({ id: null, name: "", email: "" });
+  // تحديث Local Storage فقط عند تغيير users بسبب إضافة أو حذف
+  const updateLocalStorage = (updatedUsers) => {
+    setUsers(updatedUsers);
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
   };
 
-  const deleteUser = (id) => setUsers(users.filter((u) => u.id !== id));
+  const handleSaveUser = () => {
+    if (!newUser.fullName || !newUser.email || !newUser.phone || !newUser.role) return;
 
-  const editUser = (user) => {
-    setForm(user);
-    setIsEditing(true);
+    let updatedUsers;
+    if (editingUser) {
+      updatedUsers = users.map((user) =>
+        user.id === editingUser.id ? { ...newUser, id: editingUser.id } : user
+      );
+    } else {
+      updatedUsers = [...users, { ...newUser, id: Date.now().toString() }];
+    }
+
+    updateLocalStorage(updatedUsers);
+    setNewUser({ id: "", fullName: "", email: "", phone: "", role: "" });
+    setEditingUser(null);
+    setIsModalOpen(false);
   };
 
-  const updateUser = () => {
-    setUsers(users.map((u) => (u.id === form.id ? form : u)));
-    setForm({ id: null, name: "", email: "" });
-    setIsEditing(false);
+  const handleDeleteUser = (id) => {
+    const updatedUsers = users.filter((user) => user.id !== id);
+    updateLocalStorage(updatedUsers);
+  };
+
+  const handleEditUser = (user) => {
+    setNewUser(user);
+    setEditingUser(user);
+    setIsModalOpen(true);
   };
 
   return (
-    <div>
-      <h2 className="text-2xl font-semibold">إدارة المستخدمين</h2>
-      <input type="text" name="name" value={form.name} placeholder="الاسم" onChange={handleChange} className="border p-2 mr-2"/>
-      <input type="email" name="email" value={form.email} placeholder="الإيميل" onChange={handleChange} className="border p-2 mr-2"/>
-      <button onClick={isEditing ? updateUser : addUser} className="bg-teal-600 text-white p-2">{isEditing ? "تحديث" : "إضافة"}</button>
-      <ul>{users.map(u => <li key={u.id}>{u.name} ({u.email}) <button onClick={() => deleteUser(u.id)}>🗑</button></li>)}</ul>
+    <div className="p-6">
+      <h2 className="text-2xl font-semibold mb-4">Users Management</h2>
+      
+      <input
+        type="text"
+        placeholder="Search Users..."
+        className="border p-2 rounded mb-4 w-full"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      
+      <button
+        className="bg-teal-600 text-white px-4 py-2 rounded mb-4"
+        onClick={() => {
+          setNewUser({ id: "", fullName: "", email: "", phone: "", role: "" });
+          setEditingUser(null);
+          setIsModalOpen(true);
+        }}
+      >
+        + Add User
+      </button>
+      
+      <table className="min-w-full bg-white border border-gray-300 rounded-lg">
+        <thead>
+          <tr className="bg-gray-200">
+            <th className="border p-2">ID</th>
+            <th className="border p-2">Full Name</th>
+            <th className="border p-2">Email</th>
+            <th className="border p-2">Phone</th>
+            <th className="border p-2">Role</th>
+            <th className="border p-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users
+            .filter((user) =>
+              user.fullName.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+            .map((user) => (
+              <tr key={user.id} className="border">
+                <td className="border p-2">{user.id}</td>
+                <td className="border p-2">{user.fullName}</td>
+                <td className="border p-2">{user.email}</td>
+                <td className="border p-2">{user.phone}</td>
+                <td className="border p-2">{user.role}</td>
+                <td className="border p-2 flex gap-2">
+                  <button
+                    className="bg-yellow-500 text-white px-3 py-1 rounded"
+                    onClick={() => handleEditUser(user)}
+                  >
+                    Update
+                  </button>
+                  <button
+                    className="bg-red-500 text-white px-3 py-1 rounded"
+                    onClick={() => handleDeleteUser(user.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded shadow-lg w-96">
+            <h3 className="text-xl font-semibold mb-4">
+              {editingUser ? "Edit User" : "Add New User"}
+            </h3>
+            <input
+              type="text"
+              placeholder="Full Name"
+              className="border p-2 rounded w-full mb-2"
+              value={newUser.fullName}
+              onChange={(e) =>
+                setNewUser({ ...newUser, fullName: e.target.value })
+              }
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              className="border p-2 rounded w-full mb-2"
+              value={newUser.email}
+              onChange={(e) =>
+                setNewUser({ ...newUser, email: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              placeholder="Phone"
+              className="border p-2 rounded w-full mb-2"
+              value={newUser.phone}
+              onChange={(e) =>
+                setNewUser({ ...newUser, phone: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              placeholder="Role"
+              className="border p-2 rounded w-full mb-2"
+              value={newUser.role}
+              onChange={(e) =>
+                setNewUser({ ...newUser, role: e.target.value })
+              }
+            />
+            <div className="flex justify-end gap-2">
+              <button
+                className="bg-gray-500 text-white px-3 py-1 rounded"
+                onClick={() => setIsModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-teal-600 text-white px-3 py-1 rounded"
+                onClick={handleSaveUser}
+              >
+                {editingUser ? "Update" : "Add"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
