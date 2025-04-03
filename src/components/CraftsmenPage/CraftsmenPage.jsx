@@ -12,7 +12,6 @@ const CraftsmenPage = () => {
     setCraftsmen(storedCraftsmen);
   }, []);
 
-  // إضافة أو تحديث حرفي
   const handleSaveCraftsman = () => {
     if (!newCraftsman.name || !newCraftsman.category || !newCraftsman.phone || !newCraftsman.location) return;
 
@@ -33,14 +32,12 @@ const CraftsmenPage = () => {
     setIsModalOpen(false);
   };
 
-  // حذف حرفي
   const handleDelete = (id) => {
     const updatedCraftsmen = craftsmen.filter(craft => craft.id !== id);
     setCraftsmen(updatedCraftsmen);
     localStorage.setItem("craftsmen", JSON.stringify(updatedCraftsmen));
   };
 
-  // تحميل بيانات الحرفي في المودال عند الضغط على زر التعديل
   const handleEdit = (craft) => {
     setNewCraftsman(craft);
     setEditingCraftsman(craft);
@@ -72,51 +69,68 @@ const CraftsmenPage = () => {
         + Add Craftsman
       </button>
 
-      {/* Table */}
-      <table className="min-w-full bg-white border border-gray-300 rounded-lg">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="border p-2">ID</th>
-            <th className="border p-2">Name</th>
-            <th className="border p-2">Category</th>
-            <th className="border p-2">Phone</th>
-            <th className="border p-2">Location</th>
-            <th className="border p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {craftsmen
-            .filter(craft => craft.name.toLowerCase().includes(searchTerm.toLowerCase()))
-            .map((craft) => (
-              <tr key={craft.id} className="border">
-                <td className="border p-2">{craft.id}</td>
-                <td className="border p-2">{craft.name}</td>
-                <td className="border p-2">{craft.category}</td>
-                <td className="border p-2">{craft.phone}</td>
-                <td className="border p-2">{craft.location}</td>
-                <td className="border p-2 flex gap-2">
-                  <button
-                    className="bg-green-600 text-white px-3 py-1 rounded"
-                    onClick={() => handleEdit(craft)}
-                  >
-                    Update
-                  </button>
-                  <button
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                    onClick={() => handleDelete(craft.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      {/* Table for large screens */}
+      <div className="hidden sm:block overflow-x-auto">
+        <table className="min-w-full bg-white border border-gray-300 rounded-lg">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="border p-2">ID</th>
+              <th className="border p-2">Name</th>
+              <th className="border p-2">Category</th>
+              <th className="border p-2">Phone</th>
+              <th className="border p-2">Location</th>
+              <th className="border p-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {craftsmen
+              .filter(craft => craft.name.toLowerCase().includes(searchTerm.toLowerCase()))
+              .map((craft) => (
+                <tr key={craft.id} className="border">
+                  <td className="border p-2">{craft.id}</td>
+                  <td className="border p-2">{craft.name}</td>
+                  <td className="border p-2">{craft.category}</td>
+                  <td className="border p-2">{craft.phone}</td>
+                  <td className="border p-2">{craft.location}</td>
+                  <td className="border p-2 flex flex-col sm:flex-row gap-2">
+                    <button className="bg-blue-700 text-white px-3 py-1 rounded" onClick={() => handleEdit(craft)}>Update</button>
+                    <button className="bg-red-500 text-white px-3 py-1 rounded" onClick={() => handleDelete(craft.id)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Cards for small screens */}
+      <div className="sm:hidden grid grid-cols-1 gap-6">
+        {craftsmen
+          .filter(craft => craft.name.toLowerCase().includes(searchTerm.toLowerCase()))
+          .map((craft) => (
+            <div key={craft.id} className="bg-white border border-gray-300 rounded-lg p-4 shadow-md">
+              <div className="text-xl font-bold text-black mb-2">ID: {craft.id}</div>
+              <div className="text-xl font-semibold text-black mb-2">Name: {craft.name}</div>
+              <div className="mb-2">
+                <strong>Category:</strong> {craft.category}
+              </div>
+              <div className="mb-2">
+                <strong>Phone:</strong> {craft.phone}
+              </div>
+              <div className="mb-2">
+                <strong>Location:</strong> {craft.location}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <button className="bg-blue-700 text-white px-4 py-2 rounded" onClick={() => handleEdit(craft)}>Update</button>
+                <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={() => handleDelete(craft.id)}>Delete</button>
+              </div>
+            </div>
+          ))}
+      </div>
 
       {/* Add / Edit Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded shadow-lg w-96">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4">
+          <div className="bg-white p-6 rounded shadow-lg w-full max-w-md">
             <h3 className="text-xl font-semibold mb-4">
               {editingCraftsman ? "Edit Craftsman" : "Add New Craftsman"}
             </h3>

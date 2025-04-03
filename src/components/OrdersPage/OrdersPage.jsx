@@ -83,53 +83,91 @@ const OrdersPage = () => {
         + Add Order
       </button>
 
-      {/* Orders Table */}
-      <table className="min-w-full bg-white border border-gray-300 rounded-lg">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="border p-2">ID</th>
-            <th className="border p-2">Customer Name</th>
-            <th className="border p-2">Service</th>
-            <th className="border p-2">Price</th>
-            <th className="border p-2">Status</th>
-            <th className="border p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders
-            .filter((order) =>
-              order.customerName.toLowerCase().includes(searchTerm.toLowerCase())
-            )
-            .map((order) => (
-              <tr key={order.id} className="border">
-                <td className="border p-2">{order.id}</td>
-                <td className="border p-2">{order.customerName}</td>
-                <td className="border p-2">{order.service}</td>
-                <td className="border p-2">{order.price}</td>
-                <td className="border p-2">{order.status}</td>
-                <td className="border p-2 flex gap-2">
-                  <button
-                    className="bg-yellow-500 text-white px-3 py-1 rounded"
-                    onClick={() => handleEditOrder(order)}
-                  >
-                    Update
-                  </button>
-                  <button
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                    onClick={() => handleDeleteOrder(order.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      {/* Responsive Table */}
+      <div className="hidden sm:block">
+        {/* Table for Large Screens */}
+        <table className="min-w-full bg-white border border-gray-300 rounded-lg">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="border p-2">ID</th>
+              <th className="border p-2">Customer Name</th>
+              <th className="border p-2">Service</th>
+              <th className="border p-2">Price</th>
+              <th className="border p-2">Status</th>
+              <th className="border p-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders
+              .filter((order) =>
+                order.customerName.toLowerCase().includes(searchTerm.toLowerCase())
+              )
+              .map((order) => (
+                <tr key={order.id} className="border">
+                  <td className="border p-2">{order.id}</td>
+                  <td className="border p-2">{order.customerName}</td>
+                  <td className="border p-2">{order.service}</td>
+                  <td className="border p-2">{order.price}</td>
+                  <td className="border p-2">{order.status}</td>
+                  <td className="border p-2 flex gap-2">
+                    <button
+                      className="bg-blue-700 text-white px-3 py-1 rounded"
+                      onClick={() => handleEditOrder(order)}
+                    >
+                      Update
+                    </button>
+                    <button
+                      className="bg-red-500 text-white px-3 py-1 rounded"
+                      onClick={() => handleDeleteOrder(order.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Cards for Small Screens */}
+      <div className="sm:hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {orders
+          .filter((order) =>
+            order.customerName.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+          .map((order) => (
+            <div
+              key={order.id}
+              className="bg-white p-4 rounded-lg shadow-md flex flex-col"
+            >
+              <h3 className="text-xl font-semibold mb-2">Order ID: {order.id}</h3>
+              <p className="text-lg">Customer: {order.customerName}</p>
+              <p>Service: {order.service}</p>
+              <p>Price: {order.price}</p>
+              <p>Status: {order.status}</p>
+
+              <div className=" flex flex-wrap gap-2  mt-4 ">
+                <button
+                  className="bg-blue-700 text-white px-4 py-2 rounded"
+                  onClick={() => handleEditOrder(order)}
+                >
+                  Update
+                </button>
+                <button
+                  className="bg-red-500 text-white px-4 py-2 rounded"
+                  onClick={() => handleDeleteOrder(order.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+      </div>
 
       {/* Modal for Add/Edit Order */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded shadow-lg w-96">
+          <div className="bg-white p-6 rounded shadow-lg w-full sm:w-96">
             <h3 className="text-xl font-semibold mb-4">
               {editingOrder ? "Edit Order" : "Add New Order"}
             </h3>

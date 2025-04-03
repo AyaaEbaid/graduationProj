@@ -77,48 +77,88 @@ const UsersPage = () => {
         + Add User
       </button>
       
-      <table className="min-w-full bg-white border border-gray-300 rounded-lg">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="border p-2">ID</th>
-            <th className="border p-2">Full Name</th>
-            <th className="border p-2">Email</th>
-            <th className="border p-2">Phone</th>
-            <th className="border p-2">Role</th>
-            <th className="border p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users
-            .filter((user) =>
-              user.fullName.toLowerCase().includes(searchTerm.toLowerCase())
-            )
-            .map((user) => (
-              <tr key={user.id} className="border">
-                <td className="border p-2">{user.id}</td>
-                <td className="border p-2">{user.fullName}</td>
-                <td className="border p-2">{user.email}</td>
-                <td className="border p-2">{user.phone}</td>
-                <td className="border p-2">{user.role}</td>
-                <td className="border p-2 flex gap-2">
-                  <button
-                    className="bg-yellow-500 text-white px-3 py-1 rounded"
-                    onClick={() => handleEditUser(user)}
-                  >
-                    Update
-                  </button>
-                  <button
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                    onClick={() => handleDeleteUser(user.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      {/* Table for Larger Screens */}
+      <div className="hidden sm:block">
+        <table className="min-w-full bg-white border border-gray-300 rounded-lg">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="border p-2">ID</th>
+              <th className="border p-2">Full Name</th>
+              <th className="border p-2">Email</th>
+              <th className="border p-2">Phone</th>
+              <th className="border p-2">Role</th>
+              <th className="border p-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users
+              .filter((user) =>
+                user.fullName.toLowerCase().includes(searchTerm.toLowerCase())
+              )
+              .map((user) => (
+                <tr key={user.id} className="border">
+                  <td className="border p-2">{user.id}</td>
+                  <td className="border p-2">{user.fullName}</td>
+                  <td className="border p-2">{user.email}</td>
+                  <td className="border p-2">{user.phone}</td>
+                  <td className="border p-2">{user.role}</td>
+                  <td className="border p-2 flex gap-2">
+                    <button
+                      className="bg-blue-700 text-white px-3 py-1 rounded"
+                      onClick={() => handleEditUser(user)}
+                    >
+                      Update
+                    </button>
+                    <button
+                      className="bg-red-500 text-white px-3 py-1 rounded"
+                      onClick={() => handleDeleteUser(user.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
 
+      {/* Cards for Smaller Screens */}
+      <div className="sm:hidden">
+        {users
+          .filter((user) =>
+            user.fullName.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+          .map((user) => (
+            <div key={user.id} className="bg-white p-4 rounded-lg shadow-lg mb-4">
+              {/* ID First, Bold and Black */}
+              <p className="font-bold text-black">ID: {user.id}</p>
+              
+              {/* Adding Full Name */}
+              <h3 className="font-semibold text-lg">{`Full Name: ${user.fullName}`}</h3>
+
+              <p className="text-gray-600">Email: {user.email}</p>
+              <p className="text-gray-600">Phone: {user.phone}</p>
+              <p className="text-gray-600">Role: {user.role}</p>
+              
+              <div className="flex flex-col gap-2 mt-4">
+                <button
+                  className="bg-blue-700 text-white px-4 py-2 rounded w-full"
+                  onClick={() => handleEditUser(user)}
+                >
+                  Update
+                </button>
+                <button
+                  className="bg-red-500 text-white px-4 py-2 rounded w-full"
+                  onClick={() => handleDeleteUser(user.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+      </div>
+
+      {/* Add/Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded shadow-lg w-96">

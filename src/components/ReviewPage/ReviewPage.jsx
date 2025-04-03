@@ -84,46 +84,82 @@ const ReviewsPage = () => {
         + Add Review
       </button>
 
-      {/* Reviews Table */}
-      <table className="min-w-full bg-white border border-gray-300 rounded-lg">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="border p-2">ID</th>
-            <th className="border p-2">Reviewer Name</th>
-            <th className="border p-2">Rating</th>
-            <th className="border p-2">Comment</th>
-            <th className="border p-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {reviews
-            .filter((review) =>
-              review.reviewerName.toLowerCase().includes(searchTerm.toLowerCase())
-            )
-            .map((review) => (
-              <tr key={review.id} className="border">
-                <td className="border p-2">{review.id}</td>
-                <td className="border p-2">{review.reviewerName}</td>
-                <td className="border p-2">{review.rating}</td>
-                <td className="border p-2">{review.comment}</td>
-                <td className="border p-2 flex gap-2">
-                  <button
-                    className="bg-yellow-500 text-white px-3 py-1 rounded"
-                    onClick={() => handleEditReview(review)}
-                  >
-                    Update
-                  </button>
-                  <button
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                    onClick={() => handleDeleteReview(review.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      {/* Reviews Table for screens larger than sm */}
+      <div className="hidden sm:block mt-4">
+        <table className="min-w-full bg-white border border-gray-300 rounded-lg">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="border p-2">ID</th>
+              <th className="border p-2">Reviewer Name</th>
+              <th className="border p-2">Rating</th>
+              <th className="border p-2">Comment</th>
+              <th className="border p-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reviews
+              .filter((review) =>
+                review.reviewerName.toLowerCase().includes(searchTerm.toLowerCase())
+              )
+              .map((review) => (
+                <tr key={review.id} className="border">
+                  <td className="border p-2">{review.id}</td>
+                  <td className="border p-2">{review.reviewerName}</td>
+                  <td className="border p-2">{review.rating}</td>
+                  <td className="border p-2">{review.comment}</td>
+                  <td className="border p-2 flex gap-2">
+                    <button
+                      className="bg-blue-700 text-white px-3 py-1 rounded"
+                      onClick={() => handleEditReview(review)}
+                    >
+                      Update
+                    </button>
+                    <button
+                      className="bg-red-500 text-white px-3 py-1 rounded"
+                      onClick={() => handleDeleteReview(review.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Reviews Cards for screens smaller than sm */}
+      <div className="sm:hidden mt-4 grid grid-cols-1 gap-6">
+        {reviews
+          .filter((review) =>
+            review.reviewerName.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+          .map((review) => (
+            <div key={review.id} className="bg-white border border-gray-300 rounded-lg p-4 shadow-md">
+              <div className="text-xl font-bold text-black mb-2">ID: {review.id}</div>
+              <div className="text-xl font-semibold text-black mb-2">Reviewer: {review.reviewerName}</div>
+              <div className="mb-2">
+                <strong>Rating:</strong> {review.rating}
+              </div>
+              <div className="mb-2">
+                <strong>Comment:</strong> {review.comment}
+              </div>
+              <div className="flex gap-2">
+                <button
+                  className="bg-blue-700 text-white px-4 py-2 rounded"
+                  onClick={() => handleEditReview(review)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="bg-red-500 text-white px-4 py-2 rounded"
+                  onClick={() => handleDeleteReview(review.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+      </div>
 
       {/* Modal for Add/Edit Review */}
       {isModalOpen && (
