@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { FaTachometerAlt, FaUser, FaHammer, FaClipboardList, FaMoneyBill, FaStar, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { 
+  FaTachometerAlt, FaUser, FaHammer, FaClipboardList, 
+  FaMoneyBill, FaStar, FaCog, FaSignOutAlt 
+} from "react-icons/fa";
 import { Routes, Route, useNavigate } from "react-router-dom";
 
 import DashboardPage from "../DashboardPage/DashboardPage";
@@ -27,11 +30,17 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen flex bg-gray-100">
-      <div className={`bg-teal-600 text-white ${toggle ? "w-20" : "w-64"} transition-all`}>
+      <div
+        className={`sidebar bg-teal-600 text-white h-screen overflow-y-auto transition-all duration-300 ${toggle ? "w-20" : "w-64"}`}
+      >
         <button onClick={() => setToggle(!toggle)} className="p-4 text-xl">☰</button>
         <nav>
           {menuItems.map((item, index) => (
-            <div key={index} className="p-4 hover:bg-teal-700 flex items-center cursor-pointer" onClick={() => navigate(item.path)}>
+            <div
+              key={index}
+              className="p-4 hover:bg-teal-700 flex items-center cursor-pointer"
+              onClick={() => navigate(item.path)}
+            >
               {item.icon}
               {!toggle && <span className="ml-4">{item.name}</span>}
             </div>
@@ -41,8 +50,7 @@ const AdminDashboard = () => {
 
       <div className="flex-1 p-6">
         <Routes>
-        <Route path="/*" element={<DashboardPage />} />
-
+          <Route path="/*" element={<DashboardPage />} />
           <Route path="/dashboardpage" element={<DashboardPage />} />
           <Route path="/craftsmen" element={<CraftsmenPage />} />
           <Route path="/users" element={<UsersPage />} />

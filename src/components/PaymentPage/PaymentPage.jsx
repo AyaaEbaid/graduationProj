@@ -136,7 +136,7 @@ const PaymentPage = () => {
       </div>
 
       {/* Cards عرض بيانات الدفع (لشاشات أصغر من sm) */}
-      <div className="sm:hidden mt-4 grid grid-cols-1 gap-6">
+      <div className="sm:hidden mt-4 grid grid-cols-1 gap-6 overflow-hidden max-w-full">
         {payments
           .filter((payment) => payment.clientName.toLowerCase().includes(searchTerm.toLowerCase()))
           .map((payment) => (

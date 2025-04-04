@@ -134,24 +134,24 @@ const ReviewsPage = () => {
             review.reviewerName.toLowerCase().includes(searchTerm.toLowerCase())
           )
           .map((review) => (
-            <div key={review.id} className="bg-white border border-gray-300 rounded-lg p-4 shadow-md">
-              <div className="text-xl font-bold text-black mb-2">ID: {review.id}</div>
-              <div className="text-xl font-semibold text-black mb-2">Reviewer: {review.reviewerName}</div>
-              <div className="mb-2">
+            <div key={review.id} className="bg-white border border-gray-300 rounded-lg p-4 shadow-md overflow-hidden max-w-full">
+              <div className="text-xl font-bold text-black mb-2 break-words">ID: {review.id}</div>
+              <div className="text-xl font-semibold text-black mb-2 break-words">Reviewer: {review.reviewerName}</div>
+              <div className="mb-2 break-words">
                 <strong>Rating:</strong> {review.rating}
               </div>
-              <div className="mb-2">
+              <div className="mb-2 break-words">
                 <strong>Comment:</strong> {review.comment}
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <button
-                  className="bg-blue-700 text-white px-4 py-2 rounded"
+                  className="bg-blue-700 text-white px-3 py-1 rounded"
                   onClick={() => handleEditReview(review)}
                 >
                   Edit
                 </button>
                 <button
-                  className="bg-red-500 text-white px-4 py-2 rounded"
+                  className="bg-red-500 text-white px-3 py-1 rounded"
                   onClick={() => handleDeleteReview(review.id)}
                 >
                   Delete

@@ -68,3 +68,22 @@ i{
 {
     background-color: var(--light-color) !important;
 }
+/* Custom Scrollbar for Sidebar */
+.sidebar::-webkit-scrollbar {
+    width: 8px; /* عرض الشريط */
+  }
+  
+  .sidebar::-webkit-scrollbar-track {
+    background: #ffffff; /* لون خلفية المسار */
+  }
+  
+  .sidebar::-webkit-scrollbar-thumb {
+    background-color: #059669; /* لون thumb (teal-600) */
+    border-radius: 9999px;  /* جعل الأطراف دائرية */
+    border: 2px solid #ffffff; /* حواف بيضاء */
+  }
+  
+  /* يمكنك إضافة Hover لتغيير لون thumb عند الوقوف */
+  .sidebar::-webkit-scrollbar-thumb:hover {
+    background-color: #047857;
+  }

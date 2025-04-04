@@ -107,18 +107,12 @@ const CraftsmenPage = () => {
         {craftsmen
           .filter(craft => craft.name.toLowerCase().includes(searchTerm.toLowerCase()))
           .map((craft) => (
-            <div key={craft.id} className="bg-white border border-gray-300 rounded-lg p-4 shadow-md">
-              <div className="text-xl font-bold text-black mb-2">ID: {craft.id}</div>
-              <div className="text-xl font-semibold text-black mb-2">Name: {craft.name}</div>
-              <div className="mb-2">
-                <strong>Category:</strong> {craft.category}
-              </div>
-              <div className="mb-2">
-                <strong>Phone:</strong> {craft.phone}
-              </div>
-              <div className="mb-2">
-                <strong>Location:</strong> {craft.location}
-              </div>
+            <div key={craft.id} className="bg-white border border-gray-300 rounded-lg p-4 shadow-md overflow-hidden max-w-full">
+              <div className="text-xl font-bold text-black mb-2 break-words">ID: {craft.id}</div>
+              <div className="text-xl font-semibold text-black mb-2 break-words">Name: {craft.name}</div>
+              <div className="mb-2 break-words"><strong>Category:</strong> {craft.category}</div>
+              <div className="mb-2 break-words"><strong>Phone:</strong> {craft.phone}</div>
+              <div className="mb-2 break-words"><strong>Location:</strong> {craft.location}</div>
               <div className="flex flex-wrap gap-2">
                 <button className="bg-blue-700 text-white px-4 py-2 rounded" onClick={() => handleEdit(craft)}>Update</button>
                 <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={() => handleDelete(craft.id)}>Delete</button>
@@ -134,39 +128,13 @@ const CraftsmenPage = () => {
             <h3 className="text-xl font-semibold mb-4">
               {editingCraftsman ? "Edit Craftsman" : "Add New Craftsman"}
             </h3>
-            <input
-              type="text"
-              placeholder="Name"
-              className="border p-2 rounded w-full mb-2"
-              value={newCraftsman.name}
-              onChange={(e) => setNewCraftsman({ ...newCraftsman, name: e.target.value })}
-            />
-            <input
-              type="text"
-              placeholder="Category"
-              className="border p-2 rounded w-full mb-2"
-              value={newCraftsman.category}
-              onChange={(e) => setNewCraftsman({ ...newCraftsman, category: e.target.value })}
-            />
-            <input
-              type="text"
-              placeholder="Phone"
-              className="border p-2 rounded w-full mb-2"
-              value={newCraftsman.phone}
-              onChange={(e) => setNewCraftsman({ ...newCraftsman, phone: e.target.value })}
-            />
-            <input
-              type="text"
-              placeholder="Location"
-              className="border p-2 rounded w-full mb-2"
-              value={newCraftsman.location}
-              onChange={(e) => setNewCraftsman({ ...newCraftsman, location: e.target.value })}
-            />
+            <input type="text" placeholder="Name" className="border p-2 rounded w-full mb-2" value={newCraftsman.name} onChange={(e) => setNewCraftsman({ ...newCraftsman, name: e.target.value })} />
+            <input type="text" placeholder="Category" className="border p-2 rounded w-full mb-2" value={newCraftsman.category} onChange={(e) => setNewCraftsman({ ...newCraftsman, category: e.target.value })} />
+            <input type="text" placeholder="Phone" className="border p-2 rounded w-full mb-2" value={newCraftsman.phone} onChange={(e) => setNewCraftsman({ ...newCraftsman, phone: e.target.value })} />
+            <input type="text" placeholder="Location" className="border p-2 rounded w-full mb-2" value={newCraftsman.location} onChange={(e) => setNewCraftsman({ ...newCraftsman, location: e.target.value })} />
             <div className="flex justify-end gap-2">
               <button className="bg-gray-500 text-white px-3 py-1 rounded" onClick={() => setIsModalOpen(false)}>Cancel</button>
-              <button className="bg-teal-600 text-white px-3 py-1 rounded" onClick={handleSaveCraftsman}>
-                {editingCraftsman ? "Update" : "Add"}
-              </button>
+              <button className="bg-teal-600 text-white px-3 py-1 rounded" onClick={handleSaveCraftsman}>{editingCraftsman ? "Update" : "Add"}</button>
             </div>
           </div>
         </div>
