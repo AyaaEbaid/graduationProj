@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import { 
-  FaTachometerAlt, FaUser, FaHammer, FaClipboardList, 
-  FaMoneyBill, FaStar, FaCog, FaSignOutAlt 
-} from "react-icons/fa";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { FaTachometerAlt, FaUser, FaHammer, FaClipboardList, FaMoneyBill, FaStar, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 
 import DashboardPage from "../DashboardPage/DashboardPage";
 import CraftsmenPage from "../CraftsmenPage/CraftsmenPage";
@@ -27,27 +24,35 @@ const menuItems = [
 const AdminDashboard = () => {
   const [toggle, setToggle] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation(); // لتحديد الصفحة الحالية
 
   return (
     <div className="min-h-screen flex bg-gray-100">
-      <div
-        className={`sidebar bg-teal-600 text-white h-screen overflow-y-auto transition-all duration-300 ${toggle ? "w-20" : "w-64"}`}
-      >
-        <button onClick={() => setToggle(!toggle)} className="p-4 text-xl">☰</button>
+      {/* Sidebar */}
+      <div className={`bg-teal-600 ${toggle ? "w-20" : "w-64"}transition-all`}>
+        <button onClick={() => setToggle(!toggle)} className="p-4 text-xl text-white">☰</button>
         <nav>
-          {menuItems.map((item, index) => (
-            <div
-              key={index}
-              className="p-4 hover:bg-teal-700 flex items-center cursor-pointer"
-              onClick={() => navigate(item.path)}
-            >
-              {item.icon}
-              {!toggle && <span className="ml-4">{item.name}</span>}
-            </div>
-          ))}
+          {menuItems.map((item, index) => {
+            const isActive = location.pathname === item.path;
+            return (
+              <div
+                key={index}
+                onClick={() => navigate(item.path)}
+                className={`p-4 flex items-center cursor-pointer transition 
+                  ${isActive
+                    ? "bg-white text-teal-600"
+                    : "text-white hover:bg-white hover:text-teal-600"
+                  }`}
+              >
+                <span className="text-lg">{item.icon}</span>
+                {!toggle && <span className="ml-4">{item.name}</span>}
+              </div>
+            );
+          })}
         </nav>
       </div>
 
+      {/* Page Content */}
       <div className="flex-1 p-6">
         <Routes>
           <Route path="/*" element={<DashboardPage />} />

@@ -11,7 +11,7 @@ import {
 } from "react-icons/fi";
 
 export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);  // في البداية مغلق
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   const location = useLocation();
 
@@ -27,22 +27,22 @@ export default function Sidebar() {
     const handleResize = () => {
       if (window.innerWidth <= 768) {
         setIsSmallScreen(true);
-        setIsOpen(false);
+        setIsOpen(false); // إغلاق الـ Sidebar تلقائيًا في الشاشات الصغيرة
       } else {
         setIsSmallScreen(false);
-        setIsOpen(true);
+        setIsOpen(true);  // فتح الـ Sidebar في الشاشات الكبيرة
       }
     };
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    handleResize();  // تحقق من حجم الشاشة عند التحميل
+    window.addEventListener("resize", handleResize); // إضافة مستمع لتغيير الحجم
+    return () => window.removeEventListener("resize", handleResize);  // تنظيف المستمع
   }, []);
 
   return (
     <div
       className={`bg-teal-600 text-white p-4 transition-all duration-300 h-screen flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-teal-600 scrollbar-track-white ${
-        isSmallScreen ? "w-20" : isOpen ? "w-64" : "w-20"
+        isSmallScreen ? "w-16" : isOpen ? "w-64" : "w-20"
       }`}
     >
       {/* زر toggle - مخفي في الشاشات الصغيرة */}
