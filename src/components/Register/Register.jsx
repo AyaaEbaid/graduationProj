@@ -115,11 +115,11 @@ export default function Register() {
                   value={formik.values.password}
                   placeholder={t("register.password")}
                   autoComplete="new-password"
-                  className="w-full p-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600 pr-10"
+                  className="w-full p-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600 "
                 />
                 <span
                   onClick={togglePasswordVisibility}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-teal-600 z-10"
+                  className={`absolute ${isArabic?"left-3":"right-3"} top-5 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-teal-600 z-10`}
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
@@ -139,11 +139,11 @@ export default function Register() {
                   value={formik.values.repassword}
                   autoComplete="new-password"
                   placeholder={t("register.confirmPassword")}
-                  className="w-full p-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600 pr-10"
+                  className="w-full p-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600 "
                 />
                 <span
                   onClick={toggleRePasswordVisibility}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-teal-600 z-10"
+                  className={`absolute ${isArabic?"left-3":"right-3"} top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-teal-600 z-10`}
                 >
                   {showRePassword ? <FaEyeSlash /> : <FaEye />}
                 </span>

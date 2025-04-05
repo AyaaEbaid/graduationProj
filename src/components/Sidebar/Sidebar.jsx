@@ -13,6 +13,7 @@ import {
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);  // في البداية مغلق
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+
   const location = useLocation();
 
   const navItems = [
@@ -44,6 +45,7 @@ export default function Sidebar() {
       className={`bg-teal-600 text-white p-4 transition-all duration-300 h-screen flex flex-col overflow-y-auto scrollbar-thin scrollbar-thumb-teal-600 scrollbar-track-white ${
         isSmallScreen ? "w-16" : isOpen ? "w-64" : "w-20"
       }`}
+      
     >
       {/* زر toggle - مخفي في الشاشات الصغيرة */}
       {!isSmallScreen && (
@@ -56,7 +58,7 @@ export default function Sidebar() {
       )}
 
       {/* قائمة الروابط */}
-      <ul className="space-y-4 flex-1">
+      <ul className={`space-y-4   flex-1`}>
         {navItems.map((item) => (
           <li key={item.path}>
             <Link

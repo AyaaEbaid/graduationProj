@@ -43,9 +43,10 @@ const AdminDashboard = () => {
                     ? "bg-white text-teal-600"
                     : "text-white hover:bg-white hover:text-teal-600"
                   }`}
+                  
               >
                 <span className="text-lg">{item.icon}</span>
-                {!toggle && <span className="ml-4">{item.name}</span>}
+                {!toggle && <span className="ltr:ml-4 rtl:mr-4">{item.name}</span>}
               </div>
             );
           })}

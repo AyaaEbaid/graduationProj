@@ -1,47 +1,45 @@
 {
-    "services": {
-      "title": "خدماتنا",
-      "electrical": "الخدمات الكهربائية",
-      "plumbing": "خدمات السباكة",
-      "carpentry": "خدمات النجارة",
-      "painting": "خدمات الدهان",
-      "decoration": "خدمات الديكور"
-    }
-    ,
-        "aboutus": {
-          "title": "نبذه عنا ",
-          "paragraph1": "منصة \"هنشطبهالك\" الإلكترونية تربط بين ملاك الشقق الباحثين عن خدمات التشطيب والديكور والحرفيين والمتاجر المتخصصة التي توفر المواد والمستلزمات اللازمة، مما يجعل عملية التشطيب شاملة ومباشرة.",
-          "paragraph2": "تسجيل حساب لملاك الشقق والحرفيين وأصحاب المتاجر. بحث ذكي حسب التخصص والموقع. أنظمة تقييم متبادلة لضمان الجودة. إدارة الحجوزات والمواعيد. خيارات دفع آمنة ومتنوعة. إشعارات وتذكيرات بالمواعيد.",
-          "paragraph3": "وجهتك النهائية لمشاريع التشطيب، حيث يلتقي ملاك الشقق وأصحاب المتاجر بأفضل العمال لإكمال مشاريعهم بكفاءة واحترافية. استكشف الخدمات، اختر فريقك، وابدأ مشروعك اليوم!"
-        },
-       
-          "login": {
-            "email_required": "البريد الإلكتروني مطلوب",
-            "email_invalid": "البريد الإلكتروني غير صالح",
-            "password_required": "كلمة المرور مطلوبة",
-            "password_validation": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل، حرف كبير، حرف صغير، ورقم واحد",
-            "welcome_back": "مرحبًا بعودتك!",
-            "stay_connected": "للبقاء على اتصال معنا، يرجى تسجيل الدخول بمعلوماتك الشخصية.",
-            "create_account": "إنشاء حساب",
-            "sign_in": "تسجيل الدخول",
-            "email_placeholder": "عنوان البريد الإلكتروني",
-            "password_placeholder": "كلمة المرور",
-            "forgot_password": "هل نسيت كلمة المرور؟",
-            "sign_in_button": "تسجيل الدخول"
-          },
-          "background": {
-            "slogan_line1": "  هنشطبهالك",
-            "slogan_line2": "  سهلنها عليك..."
-          },
-          "achievements": {
-            "our_achievements": "إنجازاتنا",
-            "completed_projects": "المشاريع المكتملة",
-            "residential_buildings": "المباني السكنية",
-            "tools_used": "الأدوات المستخدمة",
-            "interior_designs": "تصاميم داخلية"
-          },
-          "footer": {
-            "hanshtabhalk":"هنشطبهالك",
+  "services": {
+    "title": "خدماتنا",
+    "electrical": "الخدمات الكهربائية",
+    "plumbing": "خدمات السباكة",
+    "carpentry": "خدمات النجارة",
+    "painting": "خدمات الدهان",
+    "decoration": "خدمات الديكور"
+  },
+  "aboutus": {
+    "title": "نبذه عنا ",
+    "paragraph1": "منصة \"هنشطبهالك\" الإلكترونية تربط بين ملاك الشقق الباحثين عن خدمات التشطيب والديكور والحرفيين والمتاجر المتخصصة التي توفر المواد والمستلزمات اللازمة، مما يجعل عملية التشطيب شاملة ومباشرة.",
+    "paragraph2": "تسجيل حساب لملاك الشقق والحرفيين وأصحاب المتاجر. بحث ذكي حسب التخصص والموقع. أنظمة تقييم متبادلة لضمان الجودة. إدارة الحجوزات والمواعيد. خيارات دفع آمنة ومتنوعة. إشعارات وتذكيرات بالمواعيد.",
+    "paragraph3": "وجهتك النهائية لمشاريع التشطيب، حيث يلتقي ملاك الشقق وأصحاب المتاجر بأفضل العمال لإكمال مشاريعهم بكفاءة واحترافية. استكشف الخدمات، اختر فريقك، وابدأ مشروعك اليوم!"
+  },
+  "login": {
+    "email_required": "البريد الإلكتروني مطلوب",
+    "email_invalid": "البريد الإلكتروني غير صالح",
+    "password_required": "كلمة المرور مطلوبة",
+    "password_validation": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل، حرف كبير، حرف صغير، ورقم واحد",
+    "welcome_back": "مرحبًا بعودتك!",
+    "stay_connected": "للبقاء على اتصال معنا، يرجى تسجيل الدخول بمعلوماتك الشخصية.",
+    "create_account": "إنشاء حساب",
+    "sign_in": "تسجيل الدخول",
+    "email_placeholder": "عنوان البريد الإلكتروني",
+    "password_placeholder": "كلمة المرور",
+    "forgot_password": "هل نسيت كلمة المرور؟",
+    "sign_in_button": "تسجيل الدخول"
+  },
+  "background": {
+    "slogan_line1": "  هنشطبهالك",
+    "slogan_line2": "  سهلنها عليك..."
+  },
+  "achievements": {
+    "our_achievements": "إنجازاتنا",
+    "completed_projects": "المشاريع المكتملة",
+    "residential_buildings": "المباني السكنية",
+    "tools_used": "الأدوات المستخدمة",
+    "interior_designs": "تصاميم داخلية"
+  },
+  "footer": {
+    "hanshtabhalk": "هنشطبهالك",
     "contact_us": "اتصل بنا",
     "phone": "الهاتف:",
     "email": "البريد الإلكتروني:",
@@ -53,7 +51,7 @@
     "terms_conditions": "الشروط والأحكام",
     "all_rights_reserved": "جميع الحقوق محفوظة.",
     "copyright": "© 2025 هنشطبهالك."
-  }, 
+  },
   "resetpassword": {
     "title": "إعادة تعيين كلمة المرور",
     "email_placeholder": "بريدك الإلكتروني",
@@ -71,78 +69,78 @@
     "placeholder": "اكتب ملاحظاتك هنا...",
     "submit": "إرسال التقييم"
   },
+  "register": {
+    "title": "إنشاء حساب",
+    "name": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "phone": "رقم الهاتف",
+    "government": "اختر المحافظة",
+    "district": "اختر المنطقة",
+    "admin": "مسؤول",
+    "user": "مستخدم",
+    "worker": "عامل",
+    "supervisor": "مشرف",
+    "signUp": "تسجيل",
+    "haveAccount": "انضم إلينا!",
+    "alreadyAccount": "هل لديك حساب؟",
+    "signIn": "تسجيل الدخول"
+  },
+  "navbar": {
+    "brand": "هنشطبهالك",
+    "openUserMenu": "افتح قائمة المستخدم",
+    "userPhoto": "صورة المستخدم",
+    "popoverTitle": "عنوان البوب أفر",
+    "popoverContent": "وهنا محتوى مذهل. إنه جذاب جدًا. أليس كذلك؟",
+    "dashboard": "لوحة التحكم",
+    "settings": "الإعدادات",
+    "earnings": "الأرباح",
+    "signOut": "تسجيل الخروج",
+    "login": "تسجيل الدخول",
+    "signUp": "إنشاء حساب",
+    "openMainMenu": "افتح القائمة الرئيسية",
+    "home": "الرئيسية",
+    "about": "نبذه عنا",
+    "services": "الخدمات",
+    "rateUs": "قيمنا",
+    "contactUs": "اتصل بنا",
+    "placeholder": "ابحث هنا ..."
+  },
   
-    "register": {
-      "title": "إنشاء حساب",
-      "name": "الاسم الكامل",
-      "email": "البريد الإلكتروني",
-      "password": "كلمة المرور",
-      "confirmPassword": "تأكيد كلمة المرور",
-      "phone": "رقم الهاتف",
-      "government": "اختر المحافظة",
-      "district": "اختر المنطقة",
-      "admin": "مسؤول",
-      "user": "مستخدم",
-      "worker": "عامل",
-      "supervisor": "مشرف",
-      "signUp": "تسجيل",
-      "haveAccount": "انضم إلينا!",
-      "alreadyAccount": "هل لديك حساب؟",
-      "signIn": "تسجيل الدخول"
+  "serviceDetails": {
+    "title": "اختر الخدمة",
+    "servicePlaceholder": "اختر الخدمة",
+    "governoratePlaceholder": "اختر المحافظة",
+    "centerPlaceholder": "اختر المركز",
+    "searchPlaceholder": "بحث...",
+    "submit": "التالي",
+    "validation": {
+      "service": "الخدمة مطلوبة",
+      "governorate": "المحافظة مطلوبة",
+      "center": "المركز مطلوب"
     },
-    "navbar":{
-      "brand": "هنشطبهالك",
-      "openUserMenu": "افتح قائمة المستخدم",
-      "userPhoto": "صورة المستخدم",
-      "popoverTitle": "عنوان البوب أفر",
-      "popoverContent": "وهنا محتوى مذهل. إنه جذاب جدًا. أليس كذلك؟",
-      "dashboard": "لوحة التحكم",
-      "settings": "الإعدادات",
-      "earnings": "الأرباح",
-      "signOut": "تسجيل الخروج",
-      "login": "تسجيل الدخول",
-      "signUp": "إنشاء حساب",
-      "openMainMenu": "افتح القائمة الرئيسية",
-      "home": "الرئيسية",
-      "about": "نبذه عنا",
-      "services": "الخدمات",
-      "rateUs": "قيمنا",
-      "contactUs": "اتصل بنا",
-      "placeholder":"ابحث هنا ..."
-    },
-    
-     
-      
-        "workers_list": "قائمة العمال",
-        "job": {
-          "electrician": "كهربائي",
-          "decorator": "مُزين",
-          "painter": "رسام",
-          "plumber": "سباك",
-          "carpenter": "نجار"
-        },
-        "serviceDetails": {
-          "title": "تفاصيل الخدمة",
-          "chooseService": "اختر خدمتنا",
-          "service": "اختر الخدمة",
-          "governorate": "اختر المحافظة",
-          "center": "اختر المركز",
-          "searchPlaceholder": "بحث...",
-          "submit": "إرسال",
-          "serviceRequired": "الخدمة مطلوبة",
-          "governorateRequired": "المحافظة مطلوبة",
-          "centerRequired": "المركز مطلوب"
-        }
-        
-      
-      
-    
-    
-    
-  
-        
-        
-    
-        
-      
-  }
+    "options": {
+      "service1": "خدمة ١",
+      "service2": "خدمة ٢",
+      "service3": "خدمة ٣",
+      "governorate1": "محافظة ١",
+      "governorate2": "محافظة ٢",
+      "governorate3": "محافظة ٣",
+      "center1": "مركز ١",
+      "center2": "مركز ٢",
+      "center3": "مركز ٣"
+    }
+  },
+  "job": {
+  "electrician": "فني كهرباء",
+  "decorator": "نقاش",
+  "painter": "دهّان",
+  "plumber": "سبّاك",
+  "carpenter": "نجّار"
+},
+"pagination": {
+  "next": "التالي",
+  "previous": "السابق"
+}
+}
