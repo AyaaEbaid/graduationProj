@@ -7,9 +7,20 @@ import Register from './components/Register/Register'
 import Notfound from './components/Notfound/Notfound'
 import Services from './components/Services/Services'
 import Servicedetails from './components/Servicedetails/Servicedetails'
+import Serviceworker from './components/Serviceworker/Serviceworker'
 import Resetpassword from './components/Resetpassword/Resetpassword'
 import Rate from './components/Rate/Rate'
+import { useTranslation } from 'react-i18next'
+import { useEffect } from 'react'
+import AdminDashboard from './components/AdminDashboard/AdminDashboard'
+
 function App() {
+  
+  // const {i18n}=useTranslation()
+  // useEffect(() => {
+  //   document.documentElement.lang = i18n.language;
+  //   document.documentElement.dir = i18n.language === "ar" ? "rtl" : "ltr";
+  // }, [i18n.language]);
  let routers=createBrowserRouter([{
   path:"",element:<Layout/>,children:[
     {index:true,element:<Home/>},
@@ -17,7 +28,13 @@ function App() {
     {path:"register",element:<Register/>},
     {path:"services",element:<Servicedetails/>},
     {path:"rate",element:<Rate/>},
-    {path:"reset-password",element:<Resetpassword/>},
+    {path:"/*",element:<AdminDashboard/>},
+    
+ {path:"reset-password",element:<Resetpassword/>},
+    {path:"serviceworker",element:<Serviceworker/>},
+    {path:"worker",element:<Serviceworker/>},
+    
+    ,
 
     {path:"*",element:<Notfound/>}
   ]

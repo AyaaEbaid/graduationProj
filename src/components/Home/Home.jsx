@@ -12,11 +12,15 @@ export default function Home() {
     <>
     <Background/>
     <Mainslider/>
-    <Aboutus/>
-    <Services/>
     
+    <Aboutus/>
+    
+    
+    <Services/>
     <Achievements/>
+    
     <Footer/>
+   
     
     </>
   )
