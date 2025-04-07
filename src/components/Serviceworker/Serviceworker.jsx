@@ -1,29 +1,33 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Pagination from "../Pagination/Pagination";
 import porofile from "./../../assets/profile.png";
 import { motion } from "framer-motion";
-
-const workersData = [
-  { id: 1, name: "Mohammed Ali", job: "electrician", rating: 4.5, reviews: 15 },
-  { id: 2, name: "Ahmed Youssef", job: "decorator", rating: 4.7, reviews: 22 },
-  { id: 3, name: "Khalid Hassan", job: "painter", rating: 4.2, reviews: 10 },
-  { id: 4, name: "Youssef Omar", job: "plumber", rating: 4.0, reviews: 8 },
-  { id: 5, name: "Omar Ibrahim", job: "carpenter", rating: 4.8, reviews: 18 },
-  { id: 6, name: "Ali Hassan", job: "electrician", rating: 4.3, reviews: 12 },
-  { id: 7, name: "Hassan Saleh", job: "decorator", rating: 4.6, reviews: 9 },
-  { id: 8, name: "Mostafa Ahmed", job: "painter", rating: 4.1, reviews: 11 },
-  { id: 9, name: "Tarek Mohamed", job: "plumber", rating: 4.9, reviews: 20 },
-  { id: 10, name: "Mahmoud Adel", job: "carpenter", rating: 4.4, reviews: 7 },
-  { id: 11, name: "Adel Galal", job: "carpenter", rating: 4.2, reviews: 7 },
-  { id: 12, name: "Moaz Ali", job: "plumber", rating: 4.4, reviews: 7 }
-];
 
 const itemsPerPage = 6;
 
 export default function WorkersList() {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
+
+  const workersData = useMemo(
+    () => [
+      { id: 1, name: "Mohammed Ali", job: "electrician", rating: 4.5, reviews: 15 },
+      { id: 2, name: "Ahmed Youssef", job: "decorator", rating: 4.7, reviews: 22 },
+      { id: 3, name: "Khalid Hassan", job: "painter", rating: 4.2, reviews: 10 },
+      { id: 4, name: "Youssef Omar", job: "plumber", rating: 4.0, reviews: 8 },
+      { id: 5, name: "Omar Ibrahim", job: "carpenter", rating: 4.8, reviews: 18 },
+      { id: 6, name: "Ali Hassan", job: "electrician", rating: 4.3, reviews: 12 },
+      { id: 7, name: "Hassan Saleh", job: "decorator", rating: 4.6, reviews: 9 },
+      { id: 8, name: "Mostafa Ahmed", job: "painter", rating: 4.1, reviews: 11 },
+      { id: 9, name: "Tarek Mohamed", job: "plumber", rating: 4.9, reviews: 20 },
+      { id: 10, name: "Mahmoud Adel", job: "carpenter", rating: 4.4, reviews: 7 },
+      { id: 11, name: "Adel Galal", job: "carpenter", rating: 4.2, reviews: 7 },
+      { id: 12, name: "Moaz Ali", job: "plumber", rating: 4.4, reviews: 7 }
+    ],
+    []
+  );
+
   const totalPages = Math.ceil(workersData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const selectedWorkers = workersData.slice(startIndex, startIndex + itemsPerPage);
