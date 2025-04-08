@@ -132,6 +132,7 @@
       "center3": "مركز ٣"
     }
   },
+  "worker_list":"قائمةالعمال",
   "job": {
   "electrician": "فني كهرباء",
   "decorator": "نقاش",

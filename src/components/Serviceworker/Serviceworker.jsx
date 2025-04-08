@@ -34,7 +34,7 @@ export default function WorkersList() {
 
   return (
     <div className="max-w-5xl min-h-screen mx-auto p-4">
-      <h2 className="text-2xl font-bold text-center mb-6">{t("workers_list")}</h2>
+      <h2 className="text-2xl font-bold text-center mb-6">{t("worker_list")}</h2>
 
       {/* Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">

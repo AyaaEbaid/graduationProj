@@ -13,7 +13,7 @@ export default function Home() {
     <Background/>
     <Mainslider/>
     
-    <Aboutus/>
+    <Aboutus />
     
     
     <Services/>

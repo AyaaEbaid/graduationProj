@@ -131,6 +131,7 @@
       "center3": "Center 3"
     }
   },
+  "worker_list":"Available workers",
   "job": {
   "electrician": "Electrician",
   "decorator": "Decorator",
