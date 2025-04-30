@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom"; // 👈 جديد
 import Pagination from "../Pagination/Pagination";
 import porofile from "./../../assets/profile.png";
 import { motion } from "framer-motion";
@@ -8,6 +9,7 @@ const itemsPerPage = 6;
 
 export default function WorkersList() {
   const { t } = useTranslation();
+  const navigate = useNavigate(); // 👈 جديد
   const [currentPage, setCurrentPage] = useState(1);
 
   const workersData = useMemo(
@@ -32,9 +34,13 @@ export default function WorkersList() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const selectedWorkers = workersData.slice(startIndex, startIndex + itemsPerPage);
 
+  const handleCardClick = (workerId) => {
+    navigate(`/workerportfolio`); // 👈 هنا بنروح لراوت فيه ID العامل
+  };
+
   return (
     <div className="max-w-5xl min-h-screen mx-auto p-4">
-      <h2 className="text-2xl font-bold text-center mb-6">{t("workers_list")}</h2>
+      <h2 className="text-2xl font-bold text-center mb-6">{t("worker_list")}</h2>
 
       {/* Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -44,15 +50,15 @@ export default function WorkersList() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-white p-4 rounded-2xl shadow-lg flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300"
+            className="bg-white p-4 rounded-2xl shadow-lg flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300 cursor-pointer"
+            onClick={() => handleCardClick(worker.id)} // 👈 مهمه جدا
           >
             <div className="w-24 h-24 bg-gray-200 rounded-full overflow-hidden mb-3">
               <img src={porofile} alt={worker.name} className="w-full h-full object-cover" />
             </div>
 
             <h3 className="text-lg font-semibold">{worker.name}</h3>
-            <p className="text-gray-500">{t(`job.${worker.job}`)}</p>
-
+            <p className="text-gray-500">{t(`job.${worker.job}`)}</p> {/* 👈 كان في غلطة صغيرة هنا */}
             <div className="flex items-center justify-center mt-2">
               <span className="text-yellow-500 text-lg mr-1">★</span>
               <span className="text-sm">{worker.rating} ({worker.reviews})</span>

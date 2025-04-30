@@ -1,4 +1,5 @@
 import './App.css'
+import { ToastContainer } from "react-toastify";
 import Home from './components/Home/Home'
 import Layout from './components/Layout/Layout'
 import { BrowserRouter,RouterProvider, createBrowserRouter } from 'react-router-dom'
@@ -13,6 +14,14 @@ import Rate from './components/Rate/Rate'
 import { useTranslation } from 'react-i18next'
 import { useEffect } from 'react'
 import AdminDashboard from './components/AdminDashboard/AdminDashboard'
+import SupervisorDashboard from './components/SupervisorDashboard/SupervisorDashboard'
+import Profile from './components/Profile/Profile'
+import DashboardCraftsman from './components/DashboardCraftsman/DashboardCraftsman'
+import Forgetpassword from './components/Forgetpasword/Forgetpassword'
+import PortectedRoutes from './components/ProtectedRoutes/PortectedRoutes';
+import ProtectedAuth from './components/ProtectedAuth/ProtectedAuth';
+import WorkerPortfolio from './components/WorkerPortfolio/WorkerPortfolio';
+
 
 function App() {
   
@@ -23,16 +32,27 @@ function App() {
   // }, [i18n.language]);
  let routers=createBrowserRouter([{
   path:"",element:<Layout/>,children:[
+
     {index:true,element:<Home/>},
-    {path:"login",element:<Login/>},
-    {path:"register",element:<Register/>},
-    {path:"services",element:<Servicedetails/>},
-    {path:"rate",element:<Rate/>},
-    {path:"/*",element:<AdminDashboard/>},
+    
+    
+    {path:"login",element:<ProtectedAuth><Login/></ProtectedAuth>},
+    {path:"register",element:<ProtectedAuth><Register/></ProtectedAuth>},
+    {path:"profile",element:<PortectedRoutes><Profile/></PortectedRoutes>},
+    {path:"services",element:<PortectedRoutes><Servicedetails/></PortectedRoutes>},
+    {path:"rate",element:<PortectedRoutes><Rate/></PortectedRoutes>},
+    {path:"/*",element:<PortectedRoutes><AdminDashboard/></PortectedRoutes>},
+    {path:"/supervisor/*",element:<PortectedRoutes><SupervisorDashboard/></PortectedRoutes>},
+    {path:"/dashboardcraftsman/*",element:<PortectedRoutes><DashboardCraftsman/></PortectedRoutes>},
+    
+ {path:"forgetpassword",element:<Forgetpassword/>},
     
  {path:"reset-password",element:<Resetpassword/>},
-    {path:"serviceworker",element:<Serviceworker/>},
-    {path:"worker",element:<Serviceworker/>},
+    {path:"serviceworker",element:<PortectedRoutes><Serviceworker/></PortectedRoutes>},
+
+    {path:"worker",element:<PortectedRoutes><Serviceworker/></PortectedRoutes>},
+    {path:"workerportfolio",element:<WorkerPortfolio/>},
+
     
     ,
 
@@ -45,7 +65,11 @@ function App() {
   <RouterProvider router={routers}>
 
   </RouterProvider>
-  
+  <div className=''>
+  <ToastContainer position='top-center' className="pt-20" />
+  </div>
+ 
+
     </>
   )
 }

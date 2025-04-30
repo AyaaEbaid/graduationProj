@@ -87,3 +87,6 @@ i{
   .sidebar::-webkit-scrollbar-thumb:hover {
     background-color: #047857;
   }
+  button[disabled]{
+background-color: rgba(13, 148, 136, .4)!important;
+  }

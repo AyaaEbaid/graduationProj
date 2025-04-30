@@ -86,7 +86,7 @@ const OrdersPage = () => {
       {/* Responsive Table */}
       <div className="hidden sm:block">
         {/* Table for Large Screens */}
-        <table className="min-w-full bg-white border border-gray-300 rounded-lg">
+        <table className="min-w-full text-center bg-white border border-gray-300 rounded-lg">
           <thead>
             <tr className="bg-gray-200">
               <th className="border p-2">ID</th>
@@ -109,9 +109,9 @@ const OrdersPage = () => {
                   <td className="border p-2">{order.service}</td>
                   <td className="border p-2">{order.price}</td>
                   <td className="border p-2">{order.status}</td>
-                  <td className="border p-2 flex gap-2">
+                  <td className="border justify-center p-2 flex gap-2">
                     <button
-                      className="bg-blue-700 text-white px-3 py-1 rounded"
+                      className=" bg-blue-700 text-white px-3 py-1 rounded"
                       onClick={() => handleEditOrder(order)}
                     >
                       Update

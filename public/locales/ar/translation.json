@@ -19,6 +19,7 @@
     "password_required": "كلمة المرور مطلوبة",
     "password_validation": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل، حرف كبير، حرف صغير، ورقم واحد",
     "welcome_back": "مرحبًا بعودتك!",
+    "remember_me": "تذكرني",
     "stay_connected": "للبقاء على اتصال معنا، يرجى تسجيل الدخول بمعلوماتك الشخصية.",
     "create_account": "إنشاء حساب",
     "sign_in": "تسجيل الدخول",
@@ -57,7 +58,8 @@
     "email_placeholder": "بريدك الإلكتروني",
     "password_placeholder": "إعادة تعيين كلمة المرور",
     "send_link": "إرسال رابط التعيين",
-    "back_to_login": "العودة لتسجيل الدخول"
+    "back_to_login": "العودة لتسجيل الدخول",
+   "Email_is_Required":" الايميل مطلوب"
   },
   "rate": {
     "title": "كيف كانت تجربتك؟",
@@ -69,23 +71,57 @@
     "placeholder": "اكتب ملاحظاتك هنا...",
     "submit": "إرسال التقييم"
   },
-  "register": {
-    "title": "إنشاء حساب",
-    "name": "الاسم الكامل",
-    "email": "البريد الإلكتروني",
-    "password": "كلمة المرور",
-    "confirmPassword": "تأكيد كلمة المرور",
-    "phone": "رقم الهاتف",
-    "government": "اختر المحافظة",
-    "district": "اختر المنطقة",
-    "admin": "مسؤول",
-    "user": "مستخدم",
-    "worker": "عامل",
-    "supervisor": "مشرف",
-    "signUp": "تسجيل",
-    "haveAccount": "انضم إلينا!",
-    "alreadyAccount": "هل لديك حساب؟",
-    "signIn": "تسجيل الدخول"
+  
+    "register": {
+      "title": "تسجيل حساب جديد",
+      "name": "الاسم الكامل",
+      "email": "الإيميل",
+      "password": "كلمة المرور",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "phone": "رقم الهاتف",
+      "government": "المحافظة",
+      "district": "المركز",
+      "roleRequired": "الدور مطلوب",
+      "selectSpecialization": "اختر التخصص",
+      "governmentRequired": "المحافظة مطلوبة",
+      "districtRequired": "المركز مطلوب",
+      "fullNameRequired": "الاسم الكامل مطلوب",
+      "fullNameMinLength": "الاسم يجب أن يكون حرفين على الأقل",
+      "fullNameMaxLength": "الاسم يجب ألا يزيد عن 20 حرفًا",
+      "phoneRequired": "رقم الهاتف مطلوب",
+      "invalidPhone": "رقم الهاتف غير صالح",
+      "emailRequired": "الإيميل مطلوب",
+      "invalidEmail": "إيميل غير صالح",
+      "passwordRequired": "كلمة المرور مطلوبة",
+      "passwordMinLength": "كلمة المرور يجب أن تكون 8 أحرف على الأقل",
+      "invalidPassword": "كلمة المرور يجب أن تبدأ بحرف كبير وتحتوي على أحرف صغيرة وأرقام",
+      "confirmPasswordRequired": "تأكيد كلمة المرور مطلوب",
+      "passwordNotMatch": "كلمة المرور غير متطابقة",
+      "noGovernoratesAvailable": "لا توجد محافظات متاحة",
+      "noCentersAvailable": "لا توجد مراكز متاحة",
+      "governorateDetails": "تفاصيل المحافظة",
+      "centerDetails": "تفاصيل المركز",
+      "failedToLoadGovernorates": "فشل تحميل المحافظات",
+      "failedToLoadCenters": "فشل تحميل المراكز",
+      "failedToLoadGovernorateDetails": "فشل تحميل تفاصيل المحافظة",
+      "failedToLoadCenterDetails": "فشل تحميل تفاصيل المركز",
+      "noCentersForGovernorate": "لا توجد مراكز لهذه المحافظة",
+      "user": "مستخدم",
+      "worker": "حرفي",
+      "supervisor": "مشرف",
+      "signUp": "تسجيل",
+      "haveAccount": "لديك حساب؟",
+      "alreadyAccount": "سجل الدخول الآن للاستفادة من خدماتنا",
+      "signIn": "تسجيل الدخول",
+      "specializationRequired": "التخصص مطلوب للحرفي"
+    },
+    "specializations": {
+      "carpenter": "نجار",
+      "plumber": "سباك",
+      "electrician": "كهربائي",
+      "painter": "دهان",
+      "mechanic": "ميكانيكي"
+    
   },
   "navbar": {
     "brand": "هنشطبهالك",
@@ -132,6 +168,7 @@
       "center3": "مركز ٣"
     }
   },
+  "worker_list":"قائمةالعمال",
   "job": {
   "electrician": "فني كهرباء",
   "decorator": "نقاش",
@@ -142,5 +179,16 @@
 "pagination": {
   "next": "التالي",
   "previous": "السابق"
+},
+"forgetPassword": {
+  "page_title": "نسيت كلمة المرور",
+  "main_title": "إعادة تعيين كلمة المرور",
+  "title": "هل نسيت كلمة المرور؟",
+  "description": "أدخل بريدك الإلكتروني وسنرسل لك رابطًا لإعادة تعيين كلمة المرور.",
+  "email_label": "البريد الإلكتروني",
+  "email_placeholder": "أدخل بريدك الإلكتروني",
+  "send_button": "إرسال رابط إعادة التعيين",
+  "email_required": "البريد الإلكتروني مطلوب",
+  "email_invalid": "صيغة البريد الإلكتروني غير صحيحة"
 }
 }
