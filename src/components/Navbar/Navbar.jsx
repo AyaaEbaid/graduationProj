@@ -16,7 +16,7 @@ export default function Navbar() {
   }
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false); // State جديد للتحكم في الـ dropdown
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const { token, setToken } = useContext(TokenContext);
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +29,6 @@ export default function Navbar() {
     hidden: { x: -30, opacity: 0 },
     visible: { x: 0, opacity: 1, transition: { duration: 0.3 } },
   };
-
   const underlineVariants = {
     hidden: { scaleX: 0, originX: 0 },
     visible: { scaleX: 1, originX: 0, transition: { duration: 0.3, ease: "easeInOut" } },
@@ -37,11 +36,11 @@ export default function Navbar() {
 
   return (
     <nav className="bg-teal-600 border-gray-200 dark:bg-gray-900">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">
         {/* شعار الموقع */}
         <NavLink
           to=""
-          className="flex text-white hover:text-white flex-wrap items-center rtl:space-x-reverse"
+          className="flex text-white hover:text-white items-center rtl:space-x-reverse"
         >
           <img src={logo} className="h-9 w-14 pt-1" alt="Hanshtabhalk Logo" />
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
@@ -49,6 +48,7 @@ export default function Navbar() {
           </span>
         </NavLink>
 
+        {/* الـ Toggle والقائمة */}
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           {token ? (
             <>
@@ -66,7 +66,7 @@ export default function Navbar() {
                       initial="hidden"
                       animate="visible"
                       exit="hidden"
-                      className="absolute rtl:left-[-70px] ltr:start-[-150px] mt-12 z-50"
+                      className="absolute rtl:left-0 ltr:right-0 mt-12 z-50"
                     >
                       <motion.input
                         type="text"
@@ -80,7 +80,7 @@ export default function Navbar() {
               </div>
               <div className="relative">
                 <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)} // التحكم في الـ dropdown
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
                   type="button"
                   className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                   id="user-menu-button"
@@ -113,7 +113,6 @@ export default function Navbar() {
                           name@flowbite.com
                         </span>
                       </div>
-
                       <div
                         data-popover
                         id="popover-default"
@@ -130,12 +129,11 @@ export default function Navbar() {
                         </div>
                         <div data-popper-arrow></div>
                       </div>
-
                       <ul className="py-2" aria-labelledby="user-menu-button">
                         <li>
                           <NavLink
                             to="dashboard"
-                            onClick={() => setDropdownOpen(false)} // إغلاق الـ dropdown لما نضغط
+                            onClick={() => setDropdownOpen(false)}
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                           >
                             {t("navbar.dashboard")}
@@ -144,7 +142,7 @@ export default function Navbar() {
                         <li>
                           <NavLink
                             to="profile"
-                            onClick={() => setDropdownOpen(false)} // إغلاق الـ dropdown
+                            onClick={() => setDropdownOpen(false)}
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                           >
                             {t("navbar.settings")}
@@ -154,7 +152,7 @@ export default function Navbar() {
                           <a
                             onClick={() => {
                               signOut();
-                              setDropdownOpen(false); // إغلاق الـ dropdown
+                              setDropdownOpen(false);
                             }}
                             href="#"
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
@@ -170,17 +168,19 @@ export default function Navbar() {
             </>
           ) : (
             <div
-              className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${
-                menuOpen ? "block" : "hidden"
-              }`}
+              className={`${
+                menuOpen
+                  ? "block absolute top-0 right-0 mt-16 w-full bg-teal-600 shadow-lg z-50"
+                  : "hidden"
+              } md:flex md:w-auto md:static md:shadow-none md:order-1 md:z-auto`}
               id="navbar-user"
             >
-              <ul className="flex flex-col mx-4 font-medium p-4 md:p-0 mt-4 ml-3 text-white md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:dark:bg-gray-900 dark:border-gray-700">
+              <ul className="flex  flex-col mx-4 font-medium p-4 md:p-0 mt-4 ml-3 z-[70] text-white md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:dark:bg-gray-900 dark:border-gray-700">
                 <li>
                   <NavLink
                     to="login"
                     onClick={() => setMenuOpen(false)}
-                    className="text-white md:bg-transparent md:px-3 md:py-0.5 md:rounded-3xl md:shadow-lg md:ring md:ring-white"
+                    className="block py-2 px-3 text-white md:bg-transparent md:px-3 md:py-0.5 md:rounded-3xl md:shadow-lg md:ring md:ring-white"
                   >
                     {t("navbar.login")}
                   </NavLink>
@@ -189,7 +189,7 @@ export default function Navbar() {
                   <NavLink
                     to="register"
                     onClick={() => setMenuOpen(false)}
-                    className="text-white md:bg-transparent md:px-3 md:py-0.5 md:rounded-3xl md:shadow-lg md:ring md:ring-white"
+                    className="block py-2 px-3 text-white md:bg-transparent md:px-3 md:py-0.5 md:rounded-3xl md:shadow-lg md:ring md:ring-white"
                   >
                     {t("navbar.signUp")}
                   </NavLink>
@@ -211,13 +211,16 @@ export default function Navbar() {
           </button>
         </div>
 
+        {/* القائمة الرئيسية للمستخدم المسجل */}
         <div
-          className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${
-            menuOpen ? "block" : "hidden"
-          }`}
+          className={`${
+            menuOpen
+              ? "block absolute top-0 right-0 mt-16 w-full bg-teal-600 shadow-lg z-50"
+              : "hidden"
+          } md:flex md:w-auto md:static md:shadow-none md:order-1 md:z-auto`}
           id="navbar-user"
         >
-          <ul className="flex flex-col text-teal-600 font-medium p-4 md:p-0 mt-4 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+          <ul className="flex flex-col text-teal-600 font-medium p-4 md:p-0 mt-0 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
             {token ? (
               <>
                 <li className="relative">

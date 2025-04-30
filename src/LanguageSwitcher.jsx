@@ -15,7 +15,7 @@ const LanguageSwitcher = () => {
   };
 
   return (
-    <div className="relative   inline-block bg-white text-teal-600 rounded-full text-left  z-20">
+    <div className="relative   inline-block bg-white text-teal-600 rounded-full text-left  z-[60]">
       <button
         className="flex items-center gap-2  px-2 py-1.5 overflow-x-hidden text- rounded-md"
         onClick={() => setIsOpen(!isOpen)}
