@@ -181,7 +181,7 @@ export default function Navbar() {
                     to="login"
                     onClick={() => setMenuOpen(false)}
                     className={({ isActive }) =>
-                      `block py-6 px-3 text-white md:bg-transparent md:px-3 md:py-0.5 md:rounded-3xl md:shadow-lg md:ring md:ring-white ${
+                      `block py-2 mt-9 md:mt-0 px-3 text-white md:bg-transparent md:px-3 md:py-0.5 md:rounded-3xl md:shadow-lg md:ring md:ring-white ${
                         isActive ? "bg-teal-800 text-white" : "hover:bg-teal-500"
                       }`
                     }
