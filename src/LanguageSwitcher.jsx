@@ -21,7 +21,7 @@ const LanguageSwitcher = () => {
         onClick={() => setIsOpen(!isOpen)}
       >
         <FaGlobe className="text-xl" />
-        <span>{i18n.language === "ar" ? "العربية" : "English"}</span>
+        <span>{i18n.language === "ar" ? "Ar" : "En"}</span>
       </button>
 
       {isOpen && (
