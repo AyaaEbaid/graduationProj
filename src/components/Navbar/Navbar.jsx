@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaBars, FaTimes } from "react-icons/fa"; // أضفت FaBars وFaTimes
 import LanguageSwitcher from "../../LanguageSwitcher";
 import logo from "./../../assets/logo.png";
 import { TokenContext } from "../../Context/TokenContext";
@@ -175,12 +175,16 @@ export default function Navbar() {
               } md:flex md:w-auto md:static md:shadow-none md:order-1 md:z-auto`}
               id="navbar-user"
             >
-              <ul className="flex  flex-col mx-4 font-medium p-4 md:p-0 mt-4 ml-3 z-[70] text-white md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:dark:bg-gray-900 dark:border-gray-700">
+              <ul className="flex flex-col z-50  mx-4 font-medium p-4 md:p-0  ml-3 text-white md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:dark:bg-gray-900 dark:border-gray-700">
                 <li>
                   <NavLink
                     to="login"
                     onClick={() => setMenuOpen(false)}
-                    className="block py-2 px-3 text-white md:bg-transparent md:px-3 md:py-0.5 md:rounded-3xl md:shadow-lg md:ring md:ring-white"
+                    className={({ isActive }) =>
+                      `block py-6 px-3 text-white md:bg-transparent md:px-3 md:py-0.5 md:rounded-3xl md:shadow-lg md:ring md:ring-white ${
+                        isActive ? "bg-teal-800 text-white" : "hover:bg-teal-500"
+                      }`
+                    }
                   >
                     {t("navbar.login")}
                   </NavLink>
@@ -189,7 +193,11 @@ export default function Navbar() {
                   <NavLink
                     to="register"
                     onClick={() => setMenuOpen(false)}
-                    className="block py-2 px-3 text-white md:bg-transparent md:px-3 md:py-0.5 md:rounded-3xl md:shadow-lg md:ring md:ring-white"
+                    className={({ isActive }) =>
+                      `block py-2 px-3 text-white md:bg-transparent md:px-3 md:py-0.5 md:rounded-3xl md:shadow-lg md:ring md:ring-white ${
+                        isActive ? "bg-teal-800 text-white" : "hover:bg-teal-500"
+                      }`
+                    }
                   >
                     {t("navbar.signUp")}
                   </NavLink>
@@ -202,12 +210,14 @@ export default function Navbar() {
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             type="button"
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            className={`inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 focus:ring-gray-200 ${
+              menuOpen
+                ? "bg-teal-800 text-white"
+                : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+            }`}
           >
             <span className="sr-only">{t("openMainMenu")}</span>
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 17 14">
-              <path stroke="currentColor" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
-            </svg>
+            {menuOpen ? <FaTimes className="w-5 h-5" /> : <FaBars className="w-5 h-5" />}
           </button>
         </div>
 
