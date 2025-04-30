@@ -20,7 +20,6 @@ import DashboardCraftsman from './components/DashboardCraftsman/DashboardCraftsm
 import Forgetpassword from './components/Forgetpasword/Forgetpassword'
 import PortectedRoutes from './components/ProtectedRoutes/PortectedRoutes';
 import ProtectedAuth from './components/ProtectedAuth/ProtectedAuth';
-import GovernratesApi from './components/GovernratesApi/GovernratesApi';
 import WorkerPortfolio from './components/WorkerPortfolio/WorkerPortfolio';
 
 
@@ -35,7 +34,7 @@ function App() {
   path:"",element:<Layout/>,children:[
 
     {index:true,element:<Home/>},
-    {path:"g",element:<GovernratesApi/>},
+    
     
     {path:"login",element:<ProtectedAuth><Login/></ProtectedAuth>},
     {path:"register",element:<ProtectedAuth><Register/></ProtectedAuth>},
