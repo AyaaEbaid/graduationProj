@@ -96,7 +96,7 @@ const PaymentPage = () => {
 
       {/* جدول عرض بيانات الدفع (لشاشات أكبر من sm) */}
       <div className="hidden sm:block mt-4">
-        <table className="w-full bg-white border-collapse border border-gray-300">
+        <table className="w-full text-center bg-white border-collapse border border-gray-300">
           <thead>
             <tr className="bg-gray-200">
               <th className="border p-2">ID</th>
@@ -158,7 +158,7 @@ const PaymentPage = () => {
               <div className="mb-2">
                 <strong>Status:</strong> {payment.status}
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 justify-center">
                 <button className="bg-blue-700 text-white px-4 py-2 rounded" onClick={() => handleEditPayment(payment)}>
                   Edit
                 </button>

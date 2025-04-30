@@ -5,6 +5,7 @@ import Mainslider from '../Mainslider/Mainslider'
 import Services from '../Services/Services'
 import Achievements from '../Achievements/Achievements'
 import Footer from '../Footer/Footer'
+import GovernratesApi from '../GovernratesApi/GovernratesApi'
 
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
     <>
     <Background/>
     <Mainslider/>
+    <GovernratesApi/>
     
     <Aboutus />
     

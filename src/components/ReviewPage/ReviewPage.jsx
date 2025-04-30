@@ -86,7 +86,7 @@ const ReviewsPage = () => {
 
       {/* Reviews Table for screens larger than sm */}
       <div className="hidden sm:block mt-4">
-        <table className="min-w-full bg-white border border-gray-300 rounded-lg">
+        <table className="min-w-full text-center bg-white border border-gray-300 rounded-lg">
           <thead>
             <tr className="bg-gray-200">
               <th className="border p-2">ID</th>
@@ -107,7 +107,7 @@ const ReviewsPage = () => {
                   <td className="border p-2">{review.reviewerName}</td>
                   <td className="border p-2">{review.rating}</td>
                   <td className="border p-2">{review.comment}</td>
-                  <td className="border p-2 flex gap-2">
+                  <td className="border justify-center p-2 flex gap-2">
                     <button
                       className="bg-blue-700 text-white px-3 py-1 rounded"
                       onClick={() => handleEditReview(review)}

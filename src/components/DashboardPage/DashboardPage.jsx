@@ -50,7 +50,7 @@ const Card = ({ title, value, gradient }) => (
     className={`bg-gradient-to-br ${gradient} text-white p-8 h-44 rounded-2xl shadow-xl flex flex-col justify-center items-center transform hover:scale-105 transition duration-300 ease-in-out`}
   >
     <h3 className="text-lg font-semibold mb-2">{title}</h3>
-    <p className="text-5xl font-bold animate-pulse">{value}</p>
+    <p className="text-5xl font-bold ">{value}</p>
   </div>
 );
 

@@ -71,7 +71,7 @@ const CraftsmenPage = () => {
 
       {/* Table for large screens */}
       <div className="hidden sm:block overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-300 rounded-lg">
+        <table className="min-w-full text-center bg-white border border-gray-300 rounded-lg">
           <thead>
             <tr className="bg-gray-200">
               <th className="border p-2">ID</th>
@@ -92,8 +92,8 @@ const CraftsmenPage = () => {
                   <td className="border p-2">{craft.category}</td>
                   <td className="border p-2">{craft.phone}</td>
                   <td className="border p-2">{craft.location}</td>
-                  <td className="border p-2 flex flex-col sm:flex-row gap-2">
-                    <button className="bg-blue-700 text-white px-3 py-1 rounded" onClick={() => handleEdit(craft)}>Update</button>
+                  <td className="border p-2 justify-center  flex flex-col sm:flex-row gap-2">
+                    <button className="bg-blue-700  text-white px-3 py-1 rounded" onClick={() => handleEdit(craft)}>Update</button>
                     <button className="bg-red-500 text-white px-3 py-1 rounded" onClick={() => handleDelete(craft.id)}>Delete</button>
                   </td>
                 </tr>

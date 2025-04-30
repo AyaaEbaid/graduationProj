@@ -1,65 +1,209 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as Yup from "yup";
 import { FaFacebookF, FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
 
 export default function Register() {
-  // استخدام i18next للترجمة
-  const { t,i18n } = useTranslation();
-  const isArabic=i18n.language==="ar";
-  // حالات إظهار/إخفاء كلمات المرور
+  // تعريف الـ state لرسائل المستخدم وحالة التحميل
+  const [userMessage, setUserMessage] = useState(null);
+  const [userError, setUserError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [governorates, setGovernorates] = useState([]);
+  const [governorateDetails, setGovernorateDetails] = useState(null);
+  const [centers, setCenters] = useState([]);
+  const [centerDetails, setCenterDetails] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
-  const navigate = useNavigate();
 
-  // دوال التبديل لعرض أو إخفاء كلمات المرور
+  
+  const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const isArabic = i18n.language === "ar";
+  // قائمة التخصصات الثابتة
+  const specializations = [
+    { id: 1, name: t("specializations.carpenter") },
+    { id: 2, name: t("specializations.plumber") },
+    { id: 3, name: t("specializations.electrician") },
+    { id: 4, name: t("specializations.painter") },
+    { id: 5, name: t("specializations.mechanic") },
+  ];
+
+
+  // جلب المحافظات عند تحميل الصفحة أو تغيير اللغة
+  useEffect(() => {
+    const fetchGovernorates = async () => {
+      try {
+        const response = await axios.get(
+          `https://hanshatabhalak.runasp.net/api/Governorate?language=${i18n.language}`
+        );
+        setGovernorates(response.data.data.$values);
+      } catch (error) {
+        console.error("Error fetching governorates:", error);
+        setUserError(t("register.failedToLoadGovernorates"));
+      }
+    };
+    fetchGovernorates();
+  }, [i18n.language, t]);
+
+  // دالة لجلب المراكز بناءً على المحافظة
+  const fetchCenters = async (govId) => {
+    if (govId) {
+      try {
+        const response = await axios.get(
+          ` https://hanshatabhalak.runasp.net/api/Center?govGovernoratId=${govId}&language=${i18n.language}`
+        );
+        const fetchedCenters = response?.data?.data?.$values || [];
+        if (fetchedCenters.length === 0) {
+          setUserError(t("register.noCentersForGovernorate"));
+        }
+        setCenters(fetchedCenters);
+      } catch (error) {
+        console.error("Error fetching centers:", error);
+        setCenters([]);
+        setUserError(t("register.failedToLoadCenters"));
+      }
+    } else {
+      setCenters([]);
+    }
+  };
+
+  // دالة لجلب تفاصيل المركز
+  const fetchCenterDetails = async (centerId) => {
+    if (centerId) {
+      try {
+        const response = await axios.get(
+          `https://hanshatabhalak.runasp.net/api/Center/${centerId}?language=${i18n.language}`
+        );
+        setCenterDetails(response.data.data);
+      } catch (error) {
+        console.error("Error fetching center details:", error);
+        setCenterDetails(null);
+        setUserError(t("register.failedToLoadCenterDetails"));
+      }
+    } else {
+      setCenterDetails(null);
+    }
+  };
+
+  // دالة لجلب تفاصيل المحافظة
+  const fetchGovernorateDetails = async (govId) => {
+    if (govId) {
+      try {
+        const response = await axios.get(
+          `https://hanshatabhalak.runasp.net/api/Governorate/${govId}?language=${i18n.language}`
+        );
+        setGovernorateDetails(response.data.data);
+      } catch (error) {
+        console.error("Error fetching governorate details:", error);
+        setGovernorateDetails(null);
+        setUserError(t("register.failedToLoadGovernorateDetails"));
+      }
+    } else {
+      setGovernorateDetails(null);
+    }
+  };
+
+  // دوال للتحكم في إظهار/إخفاء كلمة المرور
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleRePasswordVisibility = () => setShowRePassword(!showRePassword);
 
-  // التحقق من صحة النموذج باستخدام Yup مع مفاتيح الترجمة
+  // تعريف مخطط التحقق باستخدام Yup
   let mySchema = Yup.object({
-    name: Yup.string()
-      .required(t("validation.required"))
-      .min(3, t("validation.minLength", { min: 3 }))
-      .max(10, t("validation.maxLength", { max: 10 })),
+    fullName: Yup.string()
+      .required(t("register.fullNameRequired"))
+      .min(2, t("register.fullNameMinLength"))
+      .max(20, t("register.fullNameMaxLength")),
+    governorate: Yup.string().required(t("register.governmentRequired")),
+    center: Yup.string().required(t("register.districtRequired")),
+    phoneNumber: Yup.string()
+      .required(t("register.phoneRequired"))
+      .matches(/^(002)?01[0125][0-9]{8}$/, t("register.invalidPhone")),
     email: Yup.string()
-      .required(t("validation.required"))
-      .email(t("validation.email")),
+      .required(t("register.emailRequired"))
+      .email(t("register.invalidEmail")),
     password: Yup.string()
-      .required(t("validation.required"))
-      .matches(/^[A-Z][a-z0-9]{3,8}$/, t("validation.passwordPattern")),
-    repassword: Yup.string()
-      .required(t("validation.required"))
-      .oneOf([Yup.ref("password")], t("validation.passwordMatch")),
-    phone: Yup.string()
-      .required(t("validation.required"))
-      .matches(/^(?:\+20|0)1[0125]\d{8}$/, t("validation.phone")),
-    government: Yup.string().required(t("validation.required")),
-    district: Yup.string().required(t("validation.required")),
-    admin: Yup.string().required(t("validation.required")),
+      .required(t("register.passwordRequired"))
+      .min(8, t("register.passwordMinLength"))
+      .matches(/^[A-Z][a-z0-9]+$/, t("register.invalidPassword")),
+    confirmPassword: Yup.string()
+      .required(t("register.confirmPasswordRequired"))
+      .oneOf([Yup.ref("password")], t("register.passwordNotMatch")),
+    role: Yup.string().required(t("register.roleRequired")),
+    specialization: Yup.string().test(
+      'specialization-for-craftsman',
+      t('register.specializationRequired'), // استخدام مفتاح الترجمة
+      function (value) {
+        const role = this.parent.role;
+        return role === 'craftsman' ? !!value : true;
+    
+      }
+    ),
   });
 
-  // إعداد Formik مع القيم الابتدائية والتحقق من صحة النموذج
+  // إعداد Formik
   let formik = useFormik({
     initialValues: {
-      name: "",
+      fullName: "",
+      governorate: "",
+      center: "",
+      phoneNumber: "",
       email: "",
       password: "",
-      repassword: "",
-      phone: "",
-      government: "",
-      district: "",
-      admin: "",
+      confirmPassword: "",
+      role: "",
+      specialization: "",
     },
     validationSchema: mySchema,
     onSubmit: (values) => {
-      console.log("Form submitted:", values);
-      navigate("/");
+      registerForm(values);
     },
   });
+
+  // دالة للتعامل مع تغيير المحافظة
+  const handleGovernorateChange = (e) => {
+    formik.handleChange(e);
+    const govId = e.target.value;
+    fetchGovernorateDetails(govId);
+    fetchCenters(govId);
+    formik.setFieldValue("center", "");
+  };
+
+  // دالة للتعامل مع تغيير المركز
+  const handleCenterChange = (e) => {
+    formik.handleChange(e);
+    const centerId = e.target.value;
+    fetchCenterDetails(centerId);
+  };
+
+  // دالة للتعامل مع تغيير الدور
+  const handleRoleChange = (e) => {
+    formik.handleChange(e);
+    const role = e.target.value;
+    if (role !== "craftsman" && role !== "supervisor") {
+      formik.setFieldValue("specialization", "");
+    }
+  };
+
+  // دالة إرسال النموذج
+  async function registerForm(values) {
+    setIsLoading(true);
+    try {
+      const response = await axios.post(
+        `https://hanshatabhalak.runasp.net/api/Auth/register?language=${i18n.language}`,
+        values
+      );
+      setUserMessage(response.data.message);
+      setIsLoading(false);
+      navigate("/login");
+    } catch (err) {
+      setUserError(err.message);
+      setIsLoading(false);
+    }
+  }
 
   return (
     <div className="flex items-center justify-center">
@@ -69,40 +213,67 @@ export default function Register() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-3xl mb-3 mt-2 flex flex-col md:flex-row bg-white shadow-2xl rounded-lg overflow-hidden"
       >
-        {/* الجزء الخاص بالنموذج */}
         <motion.div className="order-2 md:order-1 w-full md:w-1/2 p-8">
           <h2 className="text-2xl font-bold text-teal-600 text-center">
             {t("register.title")}
           </h2>
+          {userError && (
+            <div
+              className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+              role="alert"
+            >
+              {userError}
+            </div>
+          )}
+          {userMessage && (
+            <div
+              className="p-4 mt-2 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+              role="alert"
+            >
+              {userMessage}
+            </div>
+          )}
           <form className="mt-2" onSubmit={formik.handleSubmit}>
-            {/* حقل الاسم الكامل */}
+            {/* حقل الاسم */}
             <div className="mb-1.5">
               <input
                 type="text"
-                name="name"
+                name="fullName"
                 onChange={formik.handleChange}
-                value={formik.values.name}
+                value={formik.values.fullName}
+                onBlur={formik.handleBlur}
                 placeholder={t("register.name")}
                 className="w-full p-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
               />
-              {formik.touched.name && formik.errors.name && (
-                <div className="text-red-600 text-sm">{formik.errors.name}</div>
-              )}
+              {formik.touched.fullName && formik.errors.fullName ? (
+                <div
+                  className="p-4 mt-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                  role="alert"
+                >
+                  {formik.errors.fullName}
+                </div>
+              ) : null}
             </div>
-            {/* حقل البريد الإلكتروني */}
+            {/* حقل الإيميل */}
             <div className="mb-1.5">
               <input
                 type="email"
                 name="email"
                 onChange={formik.handleChange}
                 value={formik.values.email}
+                onBlur={formik.handleBlur}
                 autoComplete="username"
                 placeholder={t("register.email")}
                 className="w-full p-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
               />
-              {formik.touched.email && formik.errors.email && (
-                <div className="text-red-600 text-sm">{formik.errors.email}</div>
-              )}
+              {formik.touched.email && formik.errors.email ? (
+                <div
+                  className="p-4 mt-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                  role="alert"
+                >
+                  {formik.errors.email}
+                </div>
+              ) : null}
             </div>
             {/* حقل كلمة المرور */}
             <div className="mb-1.5">
@@ -111,163 +282,281 @@ export default function Register() {
                   type={showPassword ? "text" : "password"}
                   name="password"
                   onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
                   value={formik.values.password}
+                  onBlur={formik.handleBlur}
                   placeholder={t("register.password")}
                   autoComplete="new-password"
-                  className="w-full p-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600 "
+                  className="w-full p-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
                 />
                 <span
                   onClick={togglePasswordVisibility}
-                  className={`absolute ${isArabic?"left-3":"right-3"} top-5 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-teal-600 z-10`}
+                  className={`absolute ${
+                    isArabic ? "left-3" : "right-3"
+                  } top-4 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-teal-600 z-10`}
                 >
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  {!showPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
               </div>
-              {formik.touched.password && formik.errors.password && (
-                <div className="text-red-600 text-sm">{formik.errors.password}</div>
-              )}
+              {formik.touched.password && formik.errors.password ? (
+                <div
+                  className="p-4 mt-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                  role="alert"
+                >
+                  {formik.errors.password}
+                </div>
+              ) : null}
             </div>
             {/* حقل تأكيد كلمة المرور */}
             <div className="mb-1.5">
               <div className="relative">
                 <input
                   type={showRePassword ? "text" : "password"}
-                  name="repassword"
+                  name="confirmPassword"
                   onChange={formik.handleChange}
+                  value={formik.values.confirmPassword}
                   onBlur={formik.handleBlur}
-                  value={formik.values.repassword}
                   autoComplete="new-password"
                   placeholder={t("register.confirmPassword")}
-                  className="w-full p-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600 "
+                  className="w-full p-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
                 />
                 <span
                   onClick={toggleRePasswordVisibility}
-                  className={`absolute ${isArabic?"left-3":"right-3"} top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-teal-600 z-10`}
+                  className={`absolute ${
+                    isArabic ? "left-3" : "right-3"
+                  } top-4 transform -translate-y-1/2 cursor-pointer text-gray-500 hover:text-teal-600 z-10`}
                 >
-                  {showRePassword ? <FaEyeSlash /> : <FaEye />}
+                  {!showRePassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
               </div>
-              {formik.touched.repassword && formik.errors.repassword && (
-                <div className="text-red-600 text-sm">{formik.errors.repassword}</div>
-              )}
+              {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+                <div
+                  className="p-4 mt-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                  role="alert"
+                >
+                  {formik.errors.confirmPassword}
+                </div>
+              ) : null}
             </div>
             {/* حقل رقم الهاتف */}
             <div className="mb-1.5">
               <input
                 type="text"
-                name="phone"
+                name="phoneNumber"
                 onChange={formik.handleChange}
-                value={formik.values.phone}
+                value={formik.values.phoneNumber}
+                onBlur={formik.handleBlur}
                 placeholder={t("register.phone")}
                 className="w-full p-1 border rounded outline-none transition-transform duration-200 focus:scale-105 focus:border-teal-600"
               />
-              {formik.touched.phone && formik.errors.phone && (
-                <div className="text-red-600 text-sm">{formik.errors.phone}</div>
-              )}
+              {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
+                <div
+                  className="p-4 mt-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                  role="alert"
+                >
+                  {formik.errors.phoneNumber}
+                </div>
+              ) : null}
             </div>
-            {/* حقل اختيار المحافظة */}
+            {/* قائمة المحافظات */}
             <div className="mb-1.5">
               <select
-                name="government"
-                onChange={formik.handleChange}
+                name="governorate"
+                onChange={handleGovernorateChange}
+                value={formik.values.governorate}
                 onBlur={formik.handleBlur}
-                value={formik.values.government}
                 className="w-full text-gray-600 p-1 border rounded outline-none transition-transform duration-200 focus:border-teal-600"
+                disabled={governorates.length === 0}
               >
                 <option value="">{t("register.government")}</option>
-                <option value="Government1">Government1</option>
-                <option value="Government2">Government2</option>
-                <option value="Government3">Government3</option>
-                <option value="Government4">Government4</option>
+                {governorates.length > 0 ? (
+                  governorates.map((gov) => (
+                    <option key={gov.id} value={gov.id}>
+                      {gov.name}
+                    </option>
+                  ))
+                ) : (
+                  <option value="" disabled>
+                    {t("register.noGovernoratesAvailable")}
+                  </option>
+                )}
               </select>
-              {formik.touched.government && formik.errors.government && (
-                <div className="text-red-600 text-sm">{formik.errors.government}</div>
-              )}
+              {formik.touched.governorate && formik.errors.governorate ? (
+                <div
+                  className="p-4 mt-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                  role="alert"
+                >
+                  {formik.errors.governorate}
+                </div>
+              ) : null}
             </div>
-            {/* حقل اختيار المنطقة */}
+            {/* تفاصيل المحافظة */}
+            {/* {governorateDetails && (
+              <div className="mb-1.5 p-2 bg-gray-100 rounded">
+                <h3 className="text-sm font-semibold">
+                  {t("register.governorateDetails")}:
+                </h3>
+                <p>
+                  {t("register.name")}: {governorateDetails.name}
+                </p>
+              </div>
+            )} */}
+            {/* قائمة المراكز */}
             <div className="mb-1.5">
               <select
-                name="district"
-                onChange={formik.handleChange}
+                name="center"
+                onChange={handleCenterChange}
+                value={formik.values.center}
                 onBlur={formik.handleBlur}
-                value={formik.values.district}
                 className="w-full text-gray-600 p-1 border rounded outline-none transition-transform duration-200 focus:border-teal-600"
+                disabled={centers.length === 0 || !formik.values.governorate}
               >
                 <option value="">{t("register.district")}</option>
-                <option value="district1">district1</option>
-                <option value="district2">district2</option>
-                <option value="district3">district3</option>
-                <option value="district4">district4</option>
+                {centers.length > 0 ? (
+                  centers.map((center) => (
+                    <option key={center.id} value={center.id}>
+                      {center.name}
+                    </option>
+                  ))
+                ) : (
+                  <option value="" disabled>
+                    {t("register.noCentersAvailable")}
+                  </option>
+                )}
               </select>
-              {formik.touched.district && formik.errors.district && (
-                <div className="text-red-600 text-sm">{formik.errors.district}</div>
-              )}
+              {formik.touched.center && formik.errors.center ? (
+                <div
+                  className="p-4 mt-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                  role="alert"
+                >
+                  {formik.errors.center}
+                </div>
+              ) : null}
             </div>
-            {/* حقل اختيار نوع الحساب (الراديو) */}
-            <div className={`flex ${isArabic?"space-x-reverse":""}  space-x-2 mt-3 mb-2 text-sm`}>
-              <label className={`flex items-center ${isArabic?"space-x-reverse":""}  space-x-1`}>
+            {/* تفاصيل المركز */}
+            {/* {centerDetails && (
+              <div className="mb-1.5 p-2 bg-gray-100 rounded">
+                <h3 className="text-sm font-semibold">
+                  {t("register.centerDetails")}:
+                </h3>
+                <p>
+                  {t("register.name")}: {centerDetails.name}
+                </p>
+              </div>
+            )} */}
+            {/* اختيار الدور */}
+            <div
+              className={`flex ${
+                isArabic ? "space-x-reverse" : ""
+              } space-x-6 mt-3 mb-2 text-sm`}
+            >
+              <label
+                className={`${
+                  isArabic ? "space-x-reverse" : ""
+                } flex items-center space-x-1`}
+              >
                 <input
                   type="radio"
-                  name="admin"
-                  value="admin"
-                  onChange={formik.handleChange}
-                  checked={formik.values.admin === "admin"}
-                  className="w-5 h-5 text-teal-600"
-                />
-                <span>{t("register.admin")}</span>
-              </label>
-              <label className={`${isArabic?"space-x-reverse":""}  flex items-center space-x-1`}>
-                <input
-                  type="radio"
-                  name="admin"
+                  name="role"
                   value="user"
-                  onChange={formik.handleChange}
-                  checked={formik.values.admin === "user"}
+                  onChange={handleRoleChange}
+                  checked={formik.values.role === "user"}
+                  onBlur={formik.handleBlur}
                   className="w-5 h-5 text-teal-600"
                 />
                 <span>{t("register.user")}</span>
               </label>
-              <label className={`${isArabic?"space-x-reverse":""}  flex items-center space-x-1`}>
+              <label
+                className={`${
+                  isArabic ? "space-x-reverse" : ""
+                } flex items-center space-x-1`}
+              >
                 <input
                   type="radio"
-                  name="admin"
-                  value="worker"
-                  onChange={formik.handleChange}
-                  checked={formik.values.admin === "worker"}
+                  name="role"
+                  value="craftsman"
+                  onChange={handleRoleChange}
+                  onBlur={formik.handleBlur}
+                  checked={formik.values.role === "craftsman"}
                   className="w-5 h-5 text-teal-600"
                 />
                 <span>{t("register.worker")}</span>
               </label>
-              <label className={`${isArabic?"space-x-reverse":""}  flex items-center space-x-1`}>
+              <label
+                className={`${
+                  isArabic ? "space-x-reverse" : ""
+                } flex items-center space-x-1`}
+              >
                 <input
                   type="radio"
-                  name="admin"
+                  name="role"
                   value="supervisor"
-                  onChange={formik.handleChange}
-                  checked={formik.values.admin === "supervisor"}
+                  onChange={handleRoleChange}
+                  checked={formik.values.role === "supervisor"}
+                  onBlur={formik.handleBlur}
                   className="w-5 h-5 text-teal-600"
                 />
                 <span>{t("register.supervisor")}</span>
               </label>
             </div>
-            {formik.touched.admin && formik.errors.admin && (
-              <div className="text-red-600 mb-5 text-sm">{formik.errors.admin}</div>
+            {formik.touched.role && formik.errors.role ? (
+              <div
+                className="p-4 mt-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                role="alert"
+              >
+                {formik.errors.role}
+              </div>
+            ) : null}
+            {/* قائمة التخصصات (تظهر فقط إذا كان الدور craftsman أو supervisor) */}
+            {(formik.values.role === "craftsman" ||
+              formik.values.role === "supervisor") && (
+              <div className="mb-1.5">
+                <select
+                  name="specialization"
+                  onChange={formik.handleChange}
+                  value={formik.values.specialization}
+                  onBlur={formik.handleBlur}
+                  className="w-full text-gray-600 p-1 border rounded outline-none transition-transform duration-200 focus:border-teal-600"
+                >
+                  <option value="">{t("register.selectSpecialization")}</option>
+                  {specializations.map((spec) => (
+                    <option key={spec.id} value={spec.name}>
+                      {spec.name}
+                    </option>
+                  ))}
+                </select>
+                {formik.touched.specialization && formik.errors.specialization ? (
+                  <div
+                    className="p-4 mt-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                    role="alert"
+                  >
+                    {formik.errors.specialization}
+                  </div>
+                ) : null}
+              </div>
             )}
             {/* زر الإرسال */}
-            <button
-              type="submit"
-              disabled={!formik.isValid}
-              className={`w-full p-2 mt-3 rounded transition duration-300 ${
-                formik.isValid
-                  ? "bg-teal-600 hover:bg-teal-700 text-white"
-                  : "bg-gray-400 text-gray-200 cursor-not-allowed"
-              }`}
+            {isLoading ? (
+              <button
+                type="submit"
+                className="w-full p-2 mt-3 rounded transition duration-300 bg-teal-600 hover:bg-teal-700 text-white"
+              >
+                <i className="fa fa-spinner fa-spin"></i>
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="w-full p-2 mt-3 rounded transition duration-300 bg-teal-600 hover:bg-teal-700 text-white"
+                disabled={!(formik.isValid && formik.dirty)}
+              >
+                {t("register.signUp")}
+              </button>
+            )}
+            {/* أزرار التسجيل عبر فيسبوك وجوجل */}
+            <div
+              className={`flex justify-center items-center ${
+                isArabic ? "space-x-reverse" : ""
+              } space-x-4 mt-4`}
             >
-              {t("register.signUp")}
-            </button>
-            {/* أيقونات الدخول عبر فيسبوك وجوجل (موضوعة تحت زر الإرسال) */}
-            <div className={`flex justify-center items-center ${isArabic?"space-x-reverse":""}  space-x-4 mt-4`}>
               <div className="w-8 h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded-full transition duration-300 hover:bg-teal-500 hover:text-white shadow-md cursor-pointer">
                 <FaFacebookF className="text-sm" />
               </div>
@@ -277,7 +566,7 @@ export default function Register() {
             </div>
           </form>
         </motion.div>
-        {/* الجزء الخاص بالتسجيل البديل (الشعار وروابط تسجيل الدخول) */}
+        {/* الجزء الجانبي لتسجيل الدخول */}
         <motion.div className="order-1 md:order-2 w-full md:w-1/2 bg-gradient-to-br from-teal-900 to-teal-400 text-white p-8 flex flex-col justify-center items-center">
           <h2 className="text-3xl font-bold">{t("register.haveAccount")}</h2>
           <p className="text-center mt-2">{t("register.alreadyAccount")}</p>

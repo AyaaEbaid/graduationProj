@@ -19,6 +19,7 @@
     "password_required": "Password is required",
     "password_validation": "Password must contain at least 8 characters, one uppercase, one lowercase, and one number",
     "welcome_back": "Welcome Back!",
+    "remember_me": "Remember Me",
     "stay_connected": "To stay connected with us, please log in with your personal information.",
     "create_account": "Create an Account",
     "sign_in": "Sign In",
@@ -57,7 +58,8 @@
     "email_placeholder": "Your Email",
     "password_placeholder": "Reset Password",
     "send_link": "Send Reset Link",
-    "back_to_login": "Back to Login"
+    "back_to_login": "Back to Login",
+    "Email_is_Required":"Email is Required"
   },
   "rate": {
     "title": "How was your experience?",
@@ -69,23 +71,58 @@
     "placeholder": "Write your feedback here...",
     "submit": "Submit Feedback"
   },
-  "register": {
-    "title": "Create an Account",
-    "name": "Full Name",
-    "email": "Email Address",
-    "password": "Password",
-    "confirmPassword": "Confirm Password",
-    "phone": "Phone Number",
-    "government": "Choose a Government",
-    "district": "Choose a District",
-    "admin": "Admin",
-    "user": "User",
-    "worker": "Worker",
-    "supervisor": "Supervisor",
-    "signUp": "Sign Up",
-    "haveAccount": "Join Us!",
-    "alreadyAccount": "Already have an account?",
-    "signIn": "Sign In"
+  
+
+    "register": {
+      "title": "Create New Account",
+      "name": "Full Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "phone": "Phone Number",
+      "government": "Governorate",
+      "district": "Center",
+      "roleRequired": "Role is required",
+      "selectSpecialization": "Select Specialization",
+      "governmentRequired": "Governorate is required",
+      "districtRequired": "Center is required",
+      "fullNameRequired": "Full name is required",
+      "fullNameMinLength": "Full name must be at least 2 characters",
+      "fullNameMaxLength": "Full name must not exceed 20 characters",
+      "phoneRequired": "Phone number is required",
+      "invalidPhone": "Invalid phone number",
+      "emailRequired": "Email is required",
+      "invalidEmail": "Invalid email",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "invalidPassword": "Password must start with a capital letter and contain lowercase letters and numbers",
+      "confirmPasswordRequired": "Confirm password is required",
+      "passwordNotMatch": "Passwords do not match",
+      "noGovernoratesAvailable": "No governorates available",
+      "noCentersAvailable": "No centers available",
+      "governorateDetails": "Governorate Details",
+      "centerDetails": "Center Details",
+      "failedToLoadGovernorates": "Failed to load governorates",
+      "failedToLoadCenters": "Failed to load centers",
+      "failedToLoadGovernorateDetails": "Failed to load governorate details",
+      "failedToLoadCenterDetails": "Failed to load center details",
+      "noCentersForGovernorate": "No centers available for this governorate",
+      "user": "User",
+      "worker": "Craftsman",
+      "supervisor": "Supervisor",
+      "signUp": "Sign Up",
+      "haveAccount": "Have an Account?",
+      "alreadyAccount": "Sign in now to access our services",
+      "signIn": "Sign In",
+      "specializationRequired": "Specialization is required for Craftsman"
+    },
+    "specializations": {
+      "carpenter": "Carpenter",
+      "plumber": "Plumber",
+      "electrician": "Electrician",
+      "painter": "Painter",
+      "mechanic": "Mechanic"
+    
   },
   "navbar": {
     "brand": "Hanshtabhalk",
@@ -142,5 +179,16 @@
 "pagination": {
   "next": "Next",
   "previous": "Previous"
+},
+"forgetPassword": {
+  "page_title": "Forget Password",
+  "main_title": "Reset Your Password",
+  "title": "Forgot your password?",
+  "description": "Enter your email address and we'll send you a link to reset your password.",
+  "email_label": "Email Address",
+  "email_placeholder": "Enter your email",
+  "send_button": "Send Reset Link",
+  "email_required": "Email is required",
+  "email_invalid": "Invalid email format"
 }
 }
