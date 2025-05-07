@@ -26,10 +26,10 @@ export default function Login() {
     email: Yup.string()
       .required(t("login.email_required"))
       .email(t("email_invalid")),
-    password: Yup.string()
-      .required(t("login.password_required"))
-      .min(8, t("Password must be 8 chars long"))
-      .matches(/^[A-Z][a-z0-9]+$/, t("login.password_validation")),
+      password: Yup.string()
+      .required(t("register.passwordRequired"))
+      .min(8, t("register.passwordMinLength"))
+      .matches(/^[A-Z][a-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/, t("register.invalidPassword")),
   });
 
   // Formik

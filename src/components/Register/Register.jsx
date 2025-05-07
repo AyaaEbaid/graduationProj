@@ -117,10 +117,10 @@ export default function Register() {
     email: Yup.string()
       .required(t("register.emailRequired"))
       .email(t("register.invalidEmail")),
-    password: Yup.string()
+      password: Yup.string()
       .required(t("register.passwordRequired"))
       .min(8, t("register.passwordMinLength"))
-      .matches(/^[A-Z][a-z0-9]+$/, t("register.invalidPassword")),
+      .matches(/^[A-Z][a-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/, t("register.invalidPassword")),
     confirmPassword: Yup.string()
       .required(t("register.confirmPasswordRequired"))
       .oneOf([Yup.ref("password")], t("register.passwordNotMatch")),
