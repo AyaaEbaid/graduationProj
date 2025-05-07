@@ -42,8 +42,8 @@ function App() {
     {path:"services",element:<PortectedRoutes><Servicedetails/></PortectedRoutes>},
     {path:"rate",element:<PortectedRoutes><Rate/></PortectedRoutes>},
     {path:"/*",element:<PortectedRoutes><AdminDashboard/></PortectedRoutes>},
-    {path:"/supervisor/*",element:<PortectedRoutes><SupervisorDashboard/></PortectedRoutes>},
-    {path:"/dashboardcraftsman/*",element:<PortectedRoutes><DashboardCraftsman/></PortectedRoutes>},
+    {path:"/supervisor/*",element:<SupervisorDashboard/>},
+    {path:"/dashboardcraftsman/*",element:<DashboardCraftsman/>},
     
  {path:"forgetpassword",element:<Forgetpassword/>},
     

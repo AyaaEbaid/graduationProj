@@ -16,29 +16,21 @@ export default function Register() {
   const [governorateDetails, setGovernorateDetails] = useState(null);
   const [centers, setCenters] = useState([]);
   const [centerDetails, setCenterDetails] = useState(null);
+  const [specializations, setSpecializations] = useState([]);
+  const [specializationDetails, setSpecializationDetails] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
 
-  
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const isArabic = i18n.language === "ar";
-  // قائمة التخصصات الثابتة
-  const specializations = [
-    { id: 1, name: t("specializations.carpenter") },
-    { id: 2, name: t("specializations.plumber") },
-    { id: 3, name: t("specializations.electrician") },
-    { id: 4, name: t("specializations.painter") },
-    { id: 5, name: t("specializations.mechanic") },
-  ];
-
 
   // جلب المحافظات عند تحميل الصفحة أو تغيير اللغة
   useEffect(() => {
     const fetchGovernorates = async () => {
       try {
         const response = await axios.get(
-          `https://hanshatabhalak.runasp.net/api/Governorate?language=${i18n.language}`
+          `https://hanshatabhalak.runasp.net/api/Governorate?=${i18n.language}`
         );
         setGovernorates(response.data.data.$values);
       } catch (error) {
@@ -54,7 +46,7 @@ export default function Register() {
     if (govId) {
       try {
         const response = await axios.get(
-          ` https://hanshatabhalak.runasp.net/api/Center?govGovernoratId=${govId}&language=${i18n.language}`
+          `https://hanshatabhalak.runasp.net/api/Center?govGovernoratId=${govId}&language=${i18n.language}`
         );
         const fetchedCenters = response?.data?.data?.$values || [];
         if (fetchedCenters.length === 0) {
@@ -134,12 +126,11 @@ export default function Register() {
       .oneOf([Yup.ref("password")], t("register.passwordNotMatch")),
     role: Yup.string().required(t("register.roleRequired")),
     specialization: Yup.string().test(
-      'specialization-for-craftsman',
-      t('register.specializationRequired'), // استخدام مفتاح الترجمة
+      "specialization-for-craftsman",
+      t("register.specializationRequired"),
       function (value) {
         const role = this.parent.role;
-        return role === 'craftsman' ? !!value : true;
-    
+        return role === "craftsman" ? !!value : true;
       }
     ),
   });
@@ -165,42 +156,101 @@ export default function Register() {
 
   // دالة للتعامل مع تغيير المحافظة
   const handleGovernorateChange = (e) => {
-    formik.handleChange(e);
     const govId = e.target.value;
+    formik.setFieldValue("governorate", govId);
     fetchGovernorateDetails(govId);
     fetchCenters(govId);
-    formik.setFieldValue("center", "");
+    formik.setFieldValue("center", ""); // إعادة تعيين المركز عند تغيير المحافظة
   };
 
   // دالة للتعامل مع تغيير المركز
   const handleCenterChange = (e) => {
-    formik.handleChange(e);
     const centerId = e.target.value;
+    formik.setFieldValue("center", centerId);
     fetchCenterDetails(centerId);
   };
 
   // دالة للتعامل مع تغيير الدور
   const handleRoleChange = (e) => {
-    formik.handleChange(e);
     const role = e.target.value;
-    if (role !== "craftsman" && role !== "supervisor") {
+    formik.setFieldValue("role", role);
+    if (role !== "craftsman") {
       formik.setFieldValue("specialization", "");
     }
+  };
+
+  // جلب التخصصات عند تحميل الصفحة أو تغيير اللغة
+  useEffect(() => {
+    const fetchSpecializations = async () => {
+      try {
+        const response = await axios.get(
+          `https://hanshatabhalak.runasp.net/api/Specialization?language=${i18n.language}`
+        );
+        setSpecializations(response.data.data.$values);
+      } catch (error) {
+        console.error("Error fetching specializations:", error);
+        setUserError(t("register.failedToLoadSpecializations"));
+      }
+    };
+    fetchSpecializations();
+  }, [i18n.language, t]);
+
+  const fetchSpecializationDetails = async (specId) => {
+    if (specId) {
+      try {
+        const response = await axios.get(
+          `https://hanshatabhalak.runasp.net/api/Specialization/${specId}?language=${i18n.language}`
+        );
+        setSpecializationDetails(response.data.data);
+      } catch (error) {
+        console.error(error.message);
+        setSpecializationDetails(null);
+        setUserError(error.message);
+      }
+    } else {
+      setSpecializationDetails(null);
+    }
+  };
+
+  // استدعاء الدالة عند تغيير التخصص
+  const handleSpecializationChange = (e) => {
+    const specId = e.target.value;
+    formik.setFieldValue("specialization", specId);
+    fetchSpecializationDetails(specId);
   };
 
   // دالة إرسال النموذج
   async function registerForm(values) {
     setIsLoading(true);
     try {
+      // تحويل البيانات إلى الصيغة المتوقعة من الخادم
+      const payload = {
+        fullName: values.fullName,
+        governorateId: parseInt(values.governorate) || 0,
+        centerId: parseInt(values.center) || 0,
+        phoneNumber: values.phoneNumber,
+        email: values.email,
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+        role: values.role,
+        specializationId: values.specialization ? parseInt(values.specialization) : 0,
+      };
+
       const response = await axios.post(
         `https://hanshatabhalak.runasp.net/api/Auth/register?language=${i18n.language}`,
-        values
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
       setUserMessage(response.data.message);
       setIsLoading(false);
       navigate("/login");
     } catch (err) {
-      setUserError(err.message);
+      const errorMessage = err.response?.data?.message || err.message;
+      setUserError(errorMessage);
       setIsLoading(false);
     }
   }
@@ -389,17 +439,6 @@ export default function Register() {
                 </div>
               ) : null}
             </div>
-            {/* تفاصيل المحافظة */}
-            {/* {governorateDetails && (
-              <div className="mb-1.5 p-2 bg-gray-100 rounded">
-                <h3 className="text-sm font-semibold">
-                  {t("register.governorateDetails")}:
-                </h3>
-                <p>
-                  {t("register.name")}: {governorateDetails.name}
-                </p>
-              </div>
-            )} */}
             {/* قائمة المراكز */}
             <div className="mb-1.5">
               <select
@@ -432,22 +471,11 @@ export default function Register() {
                 </div>
               ) : null}
             </div>
-            {/* تفاصيل المركز */}
-            {/* {centerDetails && (
-              <div className="mb-1.5 p-2 bg-gray-100 rounded">
-                <h3 className="text-sm font-semibold">
-                  {t("register.centerDetails")}:
-                </h3>
-                <p>
-                  {t("register.name")}: {centerDetails.name}
-                </p>
-              </div>
-            )} */}
             {/* اختيار الدور */}
             <div
               className={`flex ${
                 isArabic ? "space-x-reverse" : ""
-              } space-x-6 mt-3 mb-2 text-sm`}
+              } space-x-12 mt-3 mb-2 text-sm`}
             >
               <label
                 className={`${
@@ -475,27 +503,11 @@ export default function Register() {
                   name="role"
                   value="craftsman"
                   onChange={handleRoleChange}
-                  onBlur={formik.handleBlur}
                   checked={formik.values.role === "craftsman"}
+                  onBlur={formik.handleBlur}
                   className="w-5 h-5 text-teal-600"
                 />
                 <span>{t("register.worker")}</span>
-              </label>
-              <label
-                className={`${
-                  isArabic ? "space-x-reverse" : ""
-                } flex items-center space-x-1`}
-              >
-                <input
-                  type="radio"
-                  name="role"
-                  value="supervisor"
-                  onChange={handleRoleChange}
-                  checked={formik.values.role === "supervisor"}
-                  onBlur={formik.handleBlur}
-                  className="w-5 h-5 text-teal-600"
-                />
-                <span>{t("register.supervisor")}</span>
               </label>
             </div>
             {formik.touched.role && formik.errors.role ? (
@@ -506,26 +518,31 @@ export default function Register() {
                 {formik.errors.role}
               </div>
             ) : null}
-            {/* قائمة التخصصات (تظهر فقط إذا كان الدور craftsman أو supervisor) */}
-            {(formik.values.role === "craftsman" ||
-              formik.values.role === "supervisor") && (
+            {/* قائمة التخصصات (تظهر فقط إذا كان الدور craftsman) */}
+            {formik.values.role === "craftsman" && (
               <div className="mb-1.5">
                 <select
                   name="specialization"
-                  onChange={formik.handleChange}
+                  onChange={handleSpecializationChange}
                   value={formik.values.specialization}
                   onBlur={formik.handleBlur}
                   className="w-full text-gray-600 p-1 border rounded outline-none transition-transform duration-200 focus:border-teal-600"
                 >
                   <option value="">{t("register.selectSpecialization")}</option>
-                  {specializations.map((spec) => (
-                    <option key={spec.id} value={spec.name}>
-                      {spec.name}
+                  {specializations.length > 0 ? (
+                    specializations.map((spec) => (
+                      <option key={spec.id} value={spec.id}>
+                        {spec.nameEn || spec.nameAr || `specializations ${spec.id}`}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="" disabled>
+                      {t("register.noSpecializationsAvailable")}
                     </option>
-                  ))}
+                  )}
                 </select>
                 {formik.touched.specialization && formik.errors.specialization ? (
-                  <div
+                 <div
                     className="p-4 mt-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
                     role="alert"
                   >
