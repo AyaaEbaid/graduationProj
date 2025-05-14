@@ -22,12 +22,14 @@ export default function Home() {
   return (
     <>
       <Background />
-      <Mainslider />
+      
       <div id="about-us">
         <Aboutus />
       </div>
       <Services />
+      <Mainslider />
       <Achievements />
+      
       <div id="contact-us">
         <Footer />
       </div>

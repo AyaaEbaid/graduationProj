@@ -1,78 +1,84 @@
-import { useTranslation } from "react-i18next";
+import React from "react";
 
-export default function Pagination({ currentPage, totalPages, onPageChange }) {
-  const { t } = useTranslation();
+const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+  // Handle page change
+  const handlePageClick = (page) => {
+    if (page !== currentPage && page >= 1 && page <= totalPages) {
+      onPageChange(page);
+    }
+  };
 
-  const siblingCount = 2;
-  const range = [];
+  // Handle previous page
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      onPageChange(currentPage - 1);
+    }
+  };
 
-  let startPage = Math.max(1, currentPage - siblingCount);
-  let endPage = Math.min(totalPages, currentPage + siblingCount);
+  // Handle next page
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      onPageChange(currentPage + 1);
+    }
+  };
 
-  for (let i = startPage; i <= endPage; i++) {
-    range.push(i);
-  }
+  // Generate page numbers to display (e.g., show 5 pages around current page)
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    const maxPagesToShow = 5; // Number of pages to show at once
+    let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+    let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
 
-  const showLeftDots = startPage > 2;
-  const showRightDots = endPage < totalPages - 1;
+    if (endPage - startPage + 1 < maxPagesToShow) {
+      startPage = Math.max(1, endPage - maxPagesToShow + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+
+    return pageNumbers;
+  };
+
+  // Render only if there are multiple pages
+  if (totalPages <= 1) return null;
 
   return (
-    <div className="flex justify-center mt-6 space-x-2">
+    <div className="flex justify-center items-center space-x-2 mt-4">
+      {/* Previous Button */}
       <button
-        className={`px-4 py-2 border rounded-md ${
-          currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
-        }`}
-        onClick={() => onPageChange(currentPage - 1)}
+        onClick={handlePrevious}
         disabled={currentPage === 1}
+        className="px-3 py-1 bg-gray-200 text-gray-700 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300 transition"
       >
-        {t("pagination.previous")}
+        Previous
       </button>
 
-      {showLeftDots && (
-        <>
-          <button
-            className="px-4 py-2 border rounded-md"
-            onClick={() => onPageChange(1)}
-          >
-            1
-          </button>
-          {startPage > 3 && <span className="px-4 py-2">...</span>}
-        </>
-      )}
-
-      {range.map((page) => (
+      {/* Page Numbers */}
+      {getPageNumbers().map((page) => (
         <button
           key={page}
-          className={`px-4 py-2 border rounded-md ${
-            currentPage === page ? "bg-teal-600 text-white" : ""
-          }`}
-          onClick={() => onPageChange(page)}
+          onClick={() => handlePageClick(page)}
+          className={`px-3 py-1 rounded-md ${
+            currentPage === page
+              ? "bg-teal-500 text-white"
+              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+          } transition`}
         >
           {page}
         </button>
       ))}
 
-      {showRightDots && (
-        <>
-          {endPage < totalPages - 2 && <span className="px-4 py-2">...</span>}
-          <button
-            className="px-4 py-2 border rounded-md"
-            onClick={() => onPageChange(totalPages)}
-          >
-            {totalPages}
-          </button>
-        </>
-      )}
-
+      {/* Next Button */}
       <button
-        className={`px-4 py-2 border rounded-md ${
-          currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""
-        }`}
-        onClick={() => onPageChange(currentPage + 1)}
+        onClick={handleNext}
         disabled={currentPage === totalPages}
+        className="px-3 py-1 bg-gray-200 text-gray-700 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300 transition"
       >
-        {t("pagination.next")}
+        Next
       </button>
     </div>
   );
-}
+};
+
+export default Pagination;
