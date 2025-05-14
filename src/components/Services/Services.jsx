@@ -22,14 +22,17 @@ export default function Services() {
     }
   }, [inView, controls]);
 
-  // تعريف الخدمات باستخدام مفاتيح الترجمة بدلاً من النصوص الثابتة
   const services = [
-    { id: 1, nameKey: "services.electrical", img: worker1 },
-    { id: 2, nameKey: "services.plumbing", img: worker2 },
-    { id: 3, nameKey: "services.carpentry", img: worker3 },
-    { id: 4, nameKey: "services.painting", img: worker4 },
-    { id: 5, nameKey: "services.decoration", img: worker5 },
+    { id: 1, nameKey: "services.electrical", img: worker1, link: "/serviceworker" },
+    { id: 2, nameKey: "services.plumbing", img: worker2, link: "/serviceworker3" },
+    { id: 3, nameKey: "services.carpentry", img: worker3, link: "/serviceworker2" },
+    { id: 4, nameKey: "services.painting", img: worker4, link: "/serviceworker4" },
+    { id: 5, nameKey: "services.decoration", img: worker5, link: "/serviceworker5" },
   ];
+
+  const handleNavigation = (link) => {
+    window.location.href = link;
+  };
 
   return (
     <div ref={ref} className="container mx-auto py-10 px-10">
@@ -50,7 +53,8 @@ export default function Services() {
             animate={controls}
             transition={{ duration: 1, delay: index * 0.6 }}
             whileHover={{ scale: 1.1 }}
-            className="bg-white border-2 text-center mx-auto h-48 border-[#018A80] p-4 rounded-lg shadow-lg flex flex-col items-center"
+            onClick={() => handleNavigation(service.link)}
+            className="bg-white border-2 text-center mx-auto h-48 border-[#018A80] p-4 rounded-lg shadow-lg flex flex-col items-center cursor-pointer"
           >
             <img
               src={service.img}
@@ -70,7 +74,8 @@ export default function Services() {
             animate={controls}
             transition={{ duration: 0.9, delay: (index + 3) * 0.2 }}
             whileHover={{ scale: 1.1 }}
-            className="bg-white mx-auto border-2 border-[#018A80] p-4 rounded-lg shadow-lg flex flex-col items-center"
+            onClick={() => handleNavigation(service.link)}
+            className="bg-white mx-auto border-2 border-[#018A80] p-4 rounded-lg shadow-lg flex flex-col items-center cursor-pointer"
           >
             <img
               src={service.img}

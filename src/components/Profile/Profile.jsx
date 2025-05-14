@@ -1,29 +1,142 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import profile from "../../assets/profile.png";
 
 export default function AccountSettings() {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [password, setPassword] = useState("");
-  const [rePassword, setRePassword] = useState("");
-  const [governorate, setGovernorate] = useState("");
-  const [district, setDistrict] = useState("");
+  const [governorate, setGovernorate] = useState(""); // هنسيبه فاضي عشان يظهر "Select Government"
+  const [district, setDistrict] = useState(""); // هنسيبه فاضي عشان يظهر "Select Centers"
+  const [governorates, setGovernorates] = useState([]);
+  const [governorateDetails, setGovernorateDetails] = useState(null); // هنسيبه لكن مش هنعرضه
+  const [centers, setCenters] = useState([]);
+  const [centerDetails, setCenterDetails] = useState(null); // هنسيبه لكن مش هنعرضه
+  const language = "en"; // اللغة محددة إنجليزي
+
+  // جلب المحافظات لما الصفحة تفتح
+  useEffect(() => {
+    const fetchGovernorates = async () => {
+      try {
+        const response = await axios.get(
+            `https://hanshatabhalak.runasp.net/api/Governorate?language=${language}`
+        );
+        console.log("Governorate API Response:", response.data);
+        const governorateData = response.data.data?.$values || [];
+        setGovernorates(governorateData);
+        // مش هنختار أي محافظة تلقائيًا، هنسيب الـ dropdown فاضي
+      } catch (error) {
+        console.error("Error fetching governorates:", error);
+        if (error.response) {
+          console.log("Error Response:", error.response.data);
+        }
+      }
+    };
+    fetchGovernorates();
+  }, [language]);
+
+  // دالة جلب تفاصيل المحافظة (هنسيبها لو عايزة تستخدميها بعدين)
+  const fetchGovernorateDetails = async (govId) => {
+    if (govId) {
+      try {
+        const response = await axios.get(
+          `https://hanshatabhalak.runasp.net/api/Governorate/${govId}?language=${language}`
+        );
+        console.log("Governorate Details Response:", response.data);
+        setGovernorateDetails(response.data.data);
+      } catch (error) {
+        console.error("Error fetching governorate details:", error);
+        setGovernorateDetails(null);
+      }
+    } else {
+      setGovernorateDetails(null);
+    }
+  };
+
+  // دالة جلب المراكز بناءً على المحافظة
+  const fetchCenters = async (govId) => {
+    if (govId) {
+      try {
+        const response = await axios.get(
+          `https://hanshatabhalak.runasp.net/api/Center?govGovernoratId=${govId}&language=${language}`
+        );
+        console.log("Centers API Response:", response.data);
+        const centerData = response?.data?.data?.$values || [];
+        console.log("Parsed Centers Data:", centerData);
+        setCenters(centerData);
+        // مش هنختار أي مركز تلقائيًا، هنسيب الـ dropdown فاضي
+        setDistrict(""); // نضمن إن الـ district فاضي في البداية
+      } catch (error) {
+        console.error("Error fetching centers:", error);
+        if (error.response) {
+          console.log("Error Response:", error.response.data);
+        }
+        setCenters([]);
+        setDistrict("");
+      }
+    } else {
+      setCenters([]);
+      setDistrict("");
+    }
+  };
+
+  // دالة جلب تفاصيل المركز (هنسيبها لو عايزة تستخدميها بعدين)
+  const fetchCenterDetails = async (centerId) => {
+    if (centerId) {
+      try {
+        const response = await axios.get(
+          `https://hanshatabhalak.runasp.net/api/Center/${centerId}?language=${language}`
+        );
+        console.log("Center Details Response:", response.data);
+        setCenterDetails(response.data.data);
+      } catch (error) {
+        console.error("Error fetching center details:", error);
+        setCenterDetails(null);
+      }
+    } else {
+      setCenterDetails(null);
+    }
+  };
+
+  // التعامل مع تغيير المحافظة
+  const handleGovernorateChange = (e) => {
+    if (!e || !e.target) {
+      console.error("Event or event.target is undefined in handleGovernorateChange");
+      return;
+    }
+    const govId = e.target.value;
+    console.log("handleGovernorateChange called with ID:", govId);
+    setGovernorate(govId);
+    fetchGovernorateDetails(govId); // هنسيب الدالة لكن مش هنعرض الـ details
+    fetchCenters(govId);
+    setDistrict(""); // نضمن إن الـ district يترست لما المحافظة تتغير
+  };
+
+  // التعامل مع تغيير المركز
+  const handleDistrictChange = (e) => {
+    if (!e || !e.target) {
+      console.error("Event or event.target is undefined in handleDistrictChange");
+      return;
+    }
+    const centerId = e.target.value;
+    console.log("handleDistrictChange called with ID:", centerId);
+    setDistrict(centerId);
+    fetchCenterDetails(centerId); // هنسيب الدالة لكن مش هنعرض الـ details
+  };
 
   const handleSave = () => {
     console.log("Saving...", {
       name,
-      email,
       phone,
-      address,
       governorate,
       district,
-      password,
-      rePassword,
     });
   };
+
+  // لوج للتأكد من تحديث المراكز
+  useEffect(() => {
+    console.log("Centers State Updated:", centers);
+  }, [centers]);
 
   return (
     <motion.div
@@ -32,81 +145,62 @@ export default function AccountSettings() {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      <div className="w-full max-w-5xl bg-white shadow-lg rounded-xl p-10">
-        <h2 className="text-3xl font-bold text-teal-600 mb-10 text-center">
+      <div className="w-full max-w-4xl bg-white shadow-lg rounded-xl p-8">
+        <h2 className="text-2xl font-bold text-teal-600 mb-8 text-center">
           Account Settings
         </h2>
 
-        <div className="flex flex-col md:flex-row items-start gap-12">
-          {/* Profile image */}
-          <div className="flex flex-col items-center min-w-[220px]">
+        <div className="flex flex-col md:flex-row items-start gap-8">
+          {/* صورة الملف الشخصي */}
+          <div className="flex flex-col items-center min-w-[180px]">
             <img
               src={profile}
               alt="Profile"
-              className="w-40 h-40 rounded-full object-cover"
+              className="w-32 h-32 rounded-full object-cover shadow-md"
             />
-            <button className="mt-6 text-base font-medium text-teal-600 border border-teal-600 px-8 py-2 rounded hover:bg-teal-600 hover:text-white transition">
+            <button className="mt-4 text-sm font-medium text-teal-600 border border-teal-600 px-6 py-1.5 rounded hover:bg-teal-600 hover:text-white transition">
               Change
             </button>
           </div>
 
-          {/* Form */}
-          <div className="flex-1 space-y-5">
-            {/* Name */}
+          {/* النموذج */}
+          <div className="flex-1 space-y-6">
+            {/* حقل الاسم */}
             <InputField label="Name" value={name} onChange={setName} />
 
-            {/* Email */}
-            <InputField label="Email" type="email" value={email} onChange={setEmail} />
-
-            {/* Phone */}
+            {/* حقل الهاتف */}
             <InputField label="Phone" value={phone} onChange={setPhone} />
 
-            {/* Address */}
-            <InputField label="Address" value={address} onChange={setAddress} />
-
-            {/* Governorate - مستقلة */}
+            {/* dropdown للمحافظات */}
             <Dropdown
               label="Governorate"
-              value={governorate}
-              setValue={setGovernorate}
-              options={["Cairo", "Giza", "Alexandria"]}
+              value={governorate || ""}
+              setValue={handleGovernorateChange}
+              options={governorates.map((gov) => ({
+                id: gov.id.toString(),
+                name: gov.name,
+              }))}
+              disabled={governorates.length === 0}
             />
 
-            {/* District - مستقلة */}
+            {/* dropdown للمراكز */}
             <Dropdown
               label="District"
-              value={district}
-              setValue={setDistrict}
-              options={[
-                "Nasr City",
-                "Heliopolis",
-                "Maadi",
-                "Dokki",
-                "Mohandessin",
-                "6th October",
-                "Smouha",
-                "Stanley",
-                "Gleem",
-              ]}
+              value={district || ""}
+              setValue={handleDistrictChange}
+              options={centers.map((center) => ({
+                id: center.id.toString(),
+                name: center.name,
+              }))}
+              disabled={governorate === "" || centers.length === 0} // معطل لحد ما تختاري محافظة
             />
 
-            {/* Password */}
-            <InputField label="Password" type="password" value={password} onChange={setPassword} />
-
-            {/* Re-password */}
-            <InputField
-              label="Re-password"
-              type="password"
-              value={rePassword}
-              onChange={setRePassword}
-            />
-
-            {/* Save Button */}
+            {/* زر الحفظ */}
             <div className="text-right pt-4">
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={handleSave}
-                className="bg-teal-600 hover:bg-teal-700 text-white px-10 py-3 rounded-md transition font-medium"
+                className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-2 rounded-md transition font-medium text-sm"
               >
                 Save Changes
               </motion.button>
@@ -120,31 +214,40 @@ export default function AccountSettings() {
 
 function InputField({ label, value, onChange, type = "text" }) {
   return (
-    <div className="flex flex-col md:flex-row items-center gap-4">
-      <label className="w-32 text-gray-700 font-medium">{label}</label>
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      <label className="min-w-[100px] text-gray-700 font-medium text-sm shrink-0">
+        {label}
+      </label>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="flex-1 bg-gray-50 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+        className="flex-1 bg-gray-50 border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
       />
     </div>
   );
 }
 
-function Dropdown({ label, value, setValue, options }) {
+function Dropdown({ label, value, setValue, options, disabled = false }) {
   return (
-    <div className="flex flex-col md:flex-row items-center gap-4">
-      <label className="w-32 text-gray-700 font-medium">{label}</label>
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      <label className="min-w-[100px] text-gray-700 font-medium text-sm shrink-0">
+        {label}
+      </label>
       <select
         value={value}
-        onChange={(e) => setValue(e.target.value)}
-        className="flex-1 bg-gray-50 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+        onChange={(e) => {
+          console.log(`Dropdown ${label} onChange triggered with value:`, e.target.value);
+          setValue(e);
+        }}
+        disabled={disabled}
+        className="flex-1 bg-gray-50 border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 transition disabled:bg-gray-200 disabled:cursor-not-allowed"
       >
-        <option value="">Select {label}</option>
+        {/* نغير النص عشان يظهر "Select Government" أو "Select Centers" حسب الـ label */}
+        <option value="">{`Select ${label === "Governorate" ? "Government" : "Centers"}`}</option>
         {options.map((opt) => (
-          <option key={opt} value={opt}>
-            {opt}
+          <option key={opt.id} value={opt.id}>
+            {opt.name}
           </option>
         ))}
       </select>

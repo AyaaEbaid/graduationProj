@@ -80,7 +80,7 @@ export default function WorkersList() {
       setError(null);
       try {
         const response = await axios.get(
-          `https://hanshatabhalak.runasp.net/api/Craftsman/GetCraftsmenPaginated?specializationId=${1}&centerId=${selectedCenter}&PageNumber=${currentPage}&PageSize=${itemsPerPage}&language=${i18n.language}`
+          `https://hanshatabhalak.runasp.net/api/Craftsman/GetCraftsmenPaginated?specializationId=${4}&centerId=${selectedCenter}&PageNumber=${currentPage}&PageSize=${itemsPerPage}&language=${i18n.language}`
         );
         const workers = response.data.data?.data?.$values || [];
         setWorkersData(workers);
@@ -155,7 +155,7 @@ export default function WorkersList() {
 
   return (
     <div className="max-w-5xl min-h-screen mx-auto p-4">
-      <h2 className="text-2xl font-bold text-center mb-6">Available Worker For Electrical Service </h2>
+      <h2 className="text-2xl font-bold text-center mb-6">Available Worker For Carpentry  Service</h2>
 
       <div className="flex justify-center space-x-4 mb-6">
         <div>

@@ -9,6 +9,10 @@ import Notfound from './components/Notfound/Notfound'
 import Services from './components/Services/Services'
 import Servicedetails from './components/Servicedetails/Servicedetails'
 import Serviceworker from './components/Serviceworker/Serviceworker'
+import Serviceworker2 from './components/Serviceworker2/Serviceworker2'
+import Serviceworker3 from './components/Serviceworker3/Serviceworker3'
+import Serviceworker4 from './components/Serviceworker4/Serviceworker4'
+import Serviceworker5 from './components/Serviceworker5/Serviceworker5'
 import Resetpassword from './components/Resetpassword/Resetpassword'
 import Rate from './components/Rate/Rate'
 import { useTranslation } from 'react-i18next'
@@ -21,6 +25,7 @@ import Forgetpassword from './components/Forgetpasword/Forgetpassword'
 import PortectedRoutes from './components/ProtectedRoutes/PortectedRoutes';
 import ProtectedAuth from './components/ProtectedAuth/ProtectedAuth';
 import WorkerPortfolio from './components/WorkerPortfolio/WorkerPortfolio';
+import Craftsmanedits from './components/Craftsmanedits/Craftsmanedits';
 
 
 function App() {
@@ -49,9 +54,15 @@ function App() {
     
  {path:"reset-password",element:<Resetpassword/>},
     {path:"serviceworker",element:<PortectedRoutes><Serviceworker/></PortectedRoutes>},
+    {path:"serviceworker2",element:<PortectedRoutes><Serviceworker2/></PortectedRoutes>},
+    {path:"serviceworker3",element:<PortectedRoutes><Serviceworker3/></PortectedRoutes>},
+    {path:"serviceworker4",element:<PortectedRoutes><Serviceworker4/></PortectedRoutes>},
+    {path:"serviceworker5",element:<PortectedRoutes><Serviceworker5/></PortectedRoutes>},
+   
 
     {path:"worker",element:<PortectedRoutes><Serviceworker/></PortectedRoutes>},
-    {path:"workerportfolio",element:<WorkerPortfolio/>},
+    {path:"craftsedit",element:<Craftsmanedits/>},
+    {path:"workerportfolio/:id",element:<WorkerPortfolio/>},
 
     
     ,
