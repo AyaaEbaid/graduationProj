@@ -7,13 +7,16 @@ import "./i18n"
 import './index.css'
 import App from './App.jsx'
 import TokenContextProvider from './Context/TokenContext.jsx';
+import { ImageCraftsmanProvider } from './Context/ImageCraftsmanContext.jsx';
 
 
 createRoot(document.getElementById('root')).render(
+ <ImageCraftsmanProvider>
  <TokenContextProvider>
   <StrictMode>
     <App />
   </StrictMode>
   </TokenContextProvider>
+  </ImageCraftsmanProvider>
   ,
 )

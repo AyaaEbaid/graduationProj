@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next";
 import axios from "axios";
 
 export default function Register() {
-  // تعريف الـ state لرسائل المستخدم وحالة التحميل
   const [userMessage, setUserMessage] = useState(null);
   const [userError, setUserError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,14 +24,14 @@ export default function Register() {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.language === "ar";
 
-  // جلب المحافظات عند تحميل الصفحة أو تغيير اللغة
+  // جلب المحافظات
   useEffect(() => {
     const fetchGovernorates = async () => {
       try {
         const response = await axios.get(
-          `https://hanshatabhalak.runasp.net/api/Governorate?=${i18n.language}`
-        );
-        setGovernorates(response.data.data.$values);
+          `https://hanshatabhalak.runasp.net/api/Governorate?language=${i18n.language}`
+        ); // تصحيح علامة المساواة إلى نقطة استفهام
+        setGovernorates(response.data.data.$values || []);
       } catch (error) {
         console.error("Error fetching governorates:", error);
         setUserError(t("register.failedToLoadGovernorates"));
@@ -41,7 +40,6 @@ export default function Register() {
     fetchGovernorates();
   }, [i18n.language, t]);
 
-  // دالة لجلب المراكز بناءً على المحافظة
   const fetchCenters = async (govId) => {
     if (govId) {
       try {
@@ -63,7 +61,6 @@ export default function Register() {
     }
   };
 
-  // دالة لجلب تفاصيل المركز
   const fetchCenterDetails = async (centerId) => {
     if (centerId) {
       try {
@@ -81,7 +78,6 @@ export default function Register() {
     }
   };
 
-  // دالة لجلب تفاصيل المحافظة
   const fetchGovernorateDetails = async (govId) => {
     if (govId) {
       try {
@@ -99,11 +95,9 @@ export default function Register() {
     }
   };
 
-  // دوال للتحكم في إظهار/إخفاء كلمة المرور
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleRePasswordVisibility = () => setShowRePassword(!showRePassword);
 
-  // تعريف مخطط التحقق باستخدام Yup
   let mySchema = Yup.object({
     fullName: Yup.string()
       .required(t("register.fullNameRequired"))
@@ -117,7 +111,7 @@ export default function Register() {
     email: Yup.string()
       .required(t("register.emailRequired"))
       .email(t("register.invalidEmail")),
-      password: Yup.string()
+    password: Yup.string()
       .required(t("register.passwordRequired"))
       .min(8, t("register.passwordMinLength"))
       .matches(/^[A-Z][a-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/, t("register.invalidPassword")),
@@ -135,7 +129,6 @@ export default function Register() {
     ),
   });
 
-  // إعداد Formik
   let formik = useFormik({
     initialValues: {
       fullName: "",
@@ -154,23 +147,20 @@ export default function Register() {
     },
   });
 
-  // دالة للتعامل مع تغيير المحافظة
   const handleGovernorateChange = (e) => {
     const govId = e.target.value;
     formik.setFieldValue("governorate", govId);
     fetchGovernorateDetails(govId);
     fetchCenters(govId);
-    formik.setFieldValue("center", ""); // إعادة تعيين المركز عند تغيير المحافظة
+    formik.setFieldValue("center", "");
   };
 
-  // دالة للتعامل مع تغيير المركز
   const handleCenterChange = (e) => {
     const centerId = e.target.value;
     formik.setFieldValue("center", centerId);
     fetchCenterDetails(centerId);
   };
 
-  // دالة للتعامل مع تغيير الدور
   const handleRoleChange = (e) => {
     const role = e.target.value;
     formik.setFieldValue("role", role);
@@ -179,17 +169,25 @@ export default function Register() {
     }
   };
 
-  // جلب التخصصات عند تحميل الصفحة أو تغيير اللغة
+  // جلب التخصصات مع معالجة كلا الحالتين (قائمة أو كائن واحد)
   useEffect(() => {
     const fetchSpecializations = async () => {
       try {
         const response = await axios.get(
           `https://hanshatabhalak.runasp.net/api/Specialization?language=${i18n.language}`
         );
-        setSpecializations(response.data.data.$values);
+        const data = response.data.data;
+        if (data.$values) {
+          setSpecializations(data.$values); // إذا كانت قائمة
+        } else if (data.id) {
+          setSpecializations([data]); // إذا كان كائن واحد، اجعله قائمة
+        } else {
+          setSpecializations([]); // إذا لم يكن هناك بيانات صالحة
+        }
       } catch (error) {
         console.error("Error fetching specializations:", error);
         setUserError(t("register.failedToLoadSpecializations"));
+        setSpecializations([]);
       }
     };
     fetchSpecializations();
@@ -203,27 +201,24 @@ export default function Register() {
         );
         setSpecializationDetails(response.data.data);
       } catch (error) {
-        console.error(error.message);
+        console.error("Error fetching specialization details:", error);
         setSpecializationDetails(null);
-        setUserError(error.message);
+        setUserError(t("register.failedToLoadSpecializationDetails"));
       }
     } else {
       setSpecializationDetails(null);
     }
   };
 
-  // استدعاء الدالة عند تغيير التخصص
   const handleSpecializationChange = (e) => {
     const specId = e.target.value;
     formik.setFieldValue("specialization", specId);
     fetchSpecializationDetails(specId);
   };
 
-  // دالة إرسال النموذج
   async function registerForm(values) {
     setIsLoading(true);
     try {
-      // تحويل البيانات إلى الصيغة المتوقعة من الخادم
       const payload = {
         fullName: values.fullName,
         governorateId: parseInt(values.governorate) || 0,
@@ -255,6 +250,7 @@ export default function Register() {
     }
   }
 
+  // بقية الكود (واجهة المستخدم) يبقى كما هو مع تعديل طفيف في خيارات التخصصات
   return (
     <div className="flex items-center justify-center">
       <motion.div
@@ -532,7 +528,7 @@ export default function Register() {
                   {specializations.length > 0 ? (
                     specializations.map((spec) => (
                       <option key={spec.id} value={spec.id}>
-                        {spec.nameEn || spec.nameAr || `specializations ${spec.id}`}
+                        {isArabic ? spec.nameAr || spec.name : spec.nameEn || spec.name || `Specialization ${spec.id}`}
                       </option>
                     ))
                   ) : (
@@ -542,7 +538,7 @@ export default function Register() {
                   )}
                 </select>
                 {formik.touched.specialization && formik.errors.specialization ? (
-                 <div
+                  <div
                     className="p-4 mt-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
                     role="alert"
                   >

@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Pagination from "../Pagination/Pagination";
-import porofile from "./../../assets/profile.png";
+import porofile from "./../../assets/profile.png"; // صورة افتراضية
 import { motion } from "framer-motion";
 
 export default function WorkersList() {
@@ -73,7 +73,7 @@ export default function WorkersList() {
     fetchCenters();
   }, [selectedGovernorate, i18n.language, t]);
 
-  // جلب العمال
+  // جلب العمال مع الصور
   useEffect(() => {
     const fetchWorkers = async () => {
       setLoading(true);
@@ -83,6 +83,20 @@ export default function WorkersList() {
           `https://hanshatabhalak.runasp.net/api/Craftsman/GetCraftsmenPaginated?specializationId=${2}&centerId=${selectedCenter}&PageNumber=${currentPage}&PageSize=${itemsPerPage}&language=${i18n.language}`
         );
         const workers = response.data.data?.data?.$values || [];
+
+        // جلب صورة كل عامل
+        for (const worker of workers) {
+          try {
+            const imageResponse = await axios.get(
+              `https://hanshatabhalak.runasp.net/api/Craftsman/${worker.id}/getImage?language=${i18n.language}`
+            );
+            worker.imageUrl = `https://hanshatabhalak.runasp.net${imageResponse.data.imageUrl}`;
+          } catch (imageErr) {
+            console.error(`Error fetching image for worker ${worker.id}:`, imageErr.message);
+            worker.imageUrl = porofile; // استخدام الصورة الافتراضية لو فيه خطأ
+          }
+        }
+
         setWorkersData(workers);
         console.log("استجابة الـ API:", response.data);
         console.log("بيانات كل العمال:", workers);
@@ -155,7 +169,9 @@ export default function WorkersList() {
 
   return (
     <div className="max-w-5xl min-h-screen mx-auto p-4">
-      <h2 className="text-2xl font-bold text-center mb-6">Available Workers for Plumbing Service</h2>
+      <h2 className="text-2xl font-bold text-center mb-6">
+        {t("availableWorkerForElectricalService")}
+      </h2>
 
       <div className="flex justify-center space-x-4 mb-6">
         <div>
@@ -198,8 +214,16 @@ export default function WorkersList() {
         </div>
       </div>
 
-      {loading && <p className="text-center">  <i className="fa fa-spinner fa-spin"></i></p>}
-      {error && <p className="text-center text-red-500">{t("error")}: {error}</p>}
+      {loading && (
+        <p className="text-center">
+          <i className="fa fa-spinner fa-spin"></i>
+        </p>
+      )}
+      {error && (
+        <p className="text-center text-red-500">
+          {t("error")}: {error}
+        </p>
+      )}
       {!loading && !error && filteredWorkers.length === 0 && (
         <p className="text-center">{t("no_workers_found")}</p>
       )}
@@ -215,9 +239,9 @@ export default function WorkersList() {
               className="bg-white p-4 rounded-2xl shadow-lg flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300 cursor-pointer"
               onClick={() => handleCardClick(worker.id)}
             >
-              <div className="w-24 h-24 bg-gray-200 rounded-full overflow-hidden mb-3">
+              <div className="w-24 h-24 rounded-full overflow-hidden mb-3">
                 <img
-                  src={worker.image || porofile}
+                  src={worker.imageUrl || porofile}
                   alt={worker.name}
                   className="w-full h-full object-cover"
                 />

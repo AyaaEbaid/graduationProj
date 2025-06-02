@@ -26,6 +26,7 @@ import PortectedRoutes from './components/ProtectedRoutes/PortectedRoutes';
 import ProtectedAuth from './components/ProtectedAuth/ProtectedAuth';
 import WorkerPortfolio from './components/WorkerPortfolio/WorkerPortfolio';
 import Craftsmanedits from './components/Craftsmanedits/Craftsmanedits';
+import Booking from './components/Booking/Booking';
 
 
 function App() {
@@ -63,6 +64,7 @@ function App() {
     {path:"worker",element:<PortectedRoutes><Serviceworker/></PortectedRoutes>},
     {path:"craftsedit",element:<Craftsmanedits/>},
     {path:"workerportfolio/:id",element:<WorkerPortfolio/>},
+    {path:"booking/:id",element:<Booking/>},
 
     
     ,

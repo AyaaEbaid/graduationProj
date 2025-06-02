@@ -2,86 +2,96 @@ import React, { useState, useEffect, useMemo } from "react";
 import { FaMapMarkerAlt, FaFileAlt, FaWrench, FaStar, FaImage, FaBriefcase } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import BookingModal from "../Booking/Booking";
+import { useImageCraftsman } from "../../Context/ImageCraftsmanContext"; // استيراد الـ Context
 
 const WorkerPortfolio = () => {
   const { id } = useParams();
+  const { imageUrl } = useImageCraftsman(); // جلب imageUrl من الـ Context
   const [worker, setWorker] = useState(null);
-  const [services, setServices] = useState([]); // خدمات (قسم واحد بس)
+  const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [workerError, setWorkerError] = useState(null);
-  const [servicesError, setServicesError] = useState(null);
   const [activeTab, setActiveTab] = useState("about");
-  const [profileImage, setProfileImage] = useState("/default-avatar.png");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // تحديث craftsmanId في localStorage
+  useEffect(() => {
+    if (id && !isNaN(id)) {
+      localStorage.setItem("craftsmanId", id);
+    }
+  }, [id]);
 
   useEffect(() => {
     const fetchData = async () => {
       if (!id || isNaN(id)) {
-        setWorkerError("Worker ID is missing or invalid. Please go back and try again.");
         setLoading(false);
         return;
       }
 
-      // 1. جلب بيانات العامل أولًا
-      let specializationId = 1; // قيمة افتراضية
+      let specializationId = 1;
       try {
+        console.log("Fetching worker with ID:", id);
         const workerResponse = await axios.get(
           `https://hanshatabhalak.runasp.net/api/Craftsman/${id}?language=en`
         );
         console.log("Worker Data from API:", workerResponse.data);
         const workerData = workerResponse.data.data;
 
-        const imageUrl = workerData.image && workerData.image !== "" ? workerData.image : "/default-avatar.png";
-        specializationId = workerData.specializationId || 1; // استخدام specializationId من بيانات العامل
-        console.log("Specialization ID from Worker Data:", specializationId); // للتأكد من القيمة
+        specializationId = workerData.specializationId || 1;
+
+        let expectedSpecializationId;
+        if (workerData.specialization === "Electrical") expectedSpecializationId = 1;
+        else if (workerData.specialization === "Plumbing") expectedSpecializationId = 2;
+        else if (workerData.specialization === "Painting") expectedSpecializationId = 3;
+        else if (workerData.specialization === "Carpentry") expectedSpecializationId = 4;
+        else if (workerData.specialization === "Gypsum Board") expectedSpecializationId = 5;
+        else expectedSpecializationId = specializationId;
+
+        if (specializationId !== expectedSpecializationId) {
+          console.warn(
+            `Warning: Specialization ID (${specializationId}) does not match specialization (${workerData.specialization})! Using ${expectedSpecializationId}`
+          );
+          specializationId = expectedSpecializationId;
+        }
 
         setWorker({
+          id: id,
           name: workerData.name || "Unknown",
-          specialty: workerData.specializationName || "Professional Carpenter",
+          specialty: workerData.specialization || "Unknown Specialty",
           rating: workerData.rating || 0,
           experience: workerData.experience || 0,
-          completedJobs: workerData.completed_jobs || 0,
+          completedJobs: workerData.completedJobs || 0,
           location: `${workerData.governorate || "Unknown"}, ${workerData.center || "Unknown"}`,
           about: workerData.description || "No description available",
           specializationId: specializationId,
           portfolioImages: workerData.image ? [workerData.image] : [],
           reviews: [
-            {
-              name: "John Doe",
-              date: "May 10, 2024",
-              rating: 4.5,
-              comment: "Great service! Very professional and on time.",
-            },
-            {
-              name: "Jane Smith",
-              date: "April 15, 2024",
-              rating: 5,
-              comment: "Amazing work! Highly recommend.",
-            },
+            { name: "John Doe", date: "May 10, 2024", rating: 4.5, comment: "Great service!" },
+            { name: "Jane Smith", date: "April 15, 2024", rating: 5, comment: "Amazing work!" },
           ],
         });
-
-        setProfileImage(imageUrl);
       } catch (err) {
-        console.error("Error fetching worker data:", err.message, err.response?.data);
-        setWorkerError("Failed to fetch worker data. Please try again later.");
+        console.error("Error fetching worker data:", err.message, err.response?.data, err.response?.status);
+        setLoading(false);
+        return;
       }
 
-      // 2. جلب كل الخدمات بناءً على specializationId (الـ API الأولى بس)
       try {
         const specializationResponse = await axios.get(
           `https://hanshatabhalak.runasp.net/api/Service?SpecializationId=${specializationId}&language=en`
         );
         console.log("Services from Specialization API:", specializationResponse.data);
         const servicesData = specializationResponse.data?.data?.$values || [];
-        setServices(servicesData.map(service => ({
-          name: service.name,
-          price: service.price,
-          description: service.description,
-        })));
+        setServices(
+          servicesData.map((service) => ({
+            name: service.name || "Unnamed Service",
+            price: service.price || 0,
+            description: service.description || "No description available",
+          }))
+        );
       } catch (err) {
-        console.error("Error fetching services from Specialization API:", err.message, err.response?.data);
-        setServicesError("Failed to fetch services. Please try again later.");
-        setServices([]); // ضبط القيمة على Array فاضي في حالة الخطأ
+        console.error("Error fetching services:", err.message, err.response?.data, err.response?.status);
+        setServices([]);
       }
 
       setLoading(false);
@@ -92,9 +102,17 @@ const WorkerPortfolio = () => {
 
   const workerData = useMemo(() => worker, [worker]);
 
+  const handleRequestService = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleBook = (selectedServices, totalPrice, selectedDate) => {
+    console.log("Booked:", { selectedServices, totalPrice, selectedDate });
+    setIsModalOpen(false);
+  };
+
   if (loading) return <div className="text-center p-6">Loading...</div>;
-  if (workerError) return <div className="text-center text-red-500 p-6">{workerError}</div>;
-  if (!workerData) return <div className="text-center p-6">No data available.</div>;
+  if (!workerData) return <div className="text-center p-6">No worker data available.</div>;
 
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4">
@@ -104,7 +122,7 @@ const WorkerPortfolio = () => {
           <div className="flex flex-col items-center md:flex-row md:items-center md:gap-6">
             <img
               className="w-32 h-32 rounded-full border-4 border-teal-500 object-cover"
-              src={profileImage}
+              src={imageUrl || "/default-avatar.png"}
               alt={workerData.name}
               onError={(e) => {
                 e.target.onerror = null;
@@ -112,14 +130,13 @@ const WorkerPortfolio = () => {
               }}
             />
             <div className="text-center md:text-left mt-4 md:mt-0">
-              <h2 className="text-3xl font-bold">{workerData.name}</h2>
+              <h2 className="text-2xl font-bold">{workerData.name}</h2>
               <p className="bg-teal-100 text-teal-700 inline-block mt-2 px-4 py-1 rounded-full text-sm font-semibold">
                 {workerData.specialty}
               </p>
             </div>
           </div>
 
-          {/* Stats */}
           <div className="flex gap-10 mt-8 md:mt-0">
             <div className="text-center flex flex-col items-center">
               <FaStar className="text-yellow-400 text-3xl mb-1" />
@@ -139,7 +156,6 @@ const WorkerPortfolio = () => {
           </div>
         </div>
 
-        {/* Tabs */}
         <div className="flex justify-center space-x-12 mt-12 border-b border-gray-300">
           {["about", "portfolio", "reviews"].map((tab) => (
             <button
@@ -154,7 +170,6 @@ const WorkerPortfolio = () => {
           ))}
         </div>
 
-        {/* Tab Content */}
         <div className="mt-10">
           {activeTab === "about" && (
             <div className="space-y-8 text-gray-700">
@@ -177,20 +192,20 @@ const WorkerPortfolio = () => {
                   <FaWrench className="text-teal-500 mr-2" />
                   Services
                 </h3>
-                {servicesError && <p className="text-red-500 mb-2">{servicesError}</p>}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {services.length > 0 ? (
                     services.map((service, index) => (
                       <div
                         key={index}
-                        className="bg-teal-100 text-teal-700 p-2 rounded-lg text-center"
+                        className="bg-white text-teal-700 p-4 rounded-lg text-center flex flex-col justify-between h-32 shadow-md border border-gray-200"
                       >
-                        <span>{service.name} - ${service.price}</span>
-                        <p className="text-sm text-gray-600">{service.description}</p>
+                        <span className="font-semibold">{service.name}</span>
+                        <p className="text-sm text-gray-600 mt-1">{service.description}</p>
+                        <p className="font-bold mt-2">{service.price} EGP</p>
                       </div>
                     ))
                   ) : (
-                    <span className="bg-teal-100 text-teal-700 px-4 py-2 rounded-full text-center">
+                    <span className="bg-white text-teal-700 px-4 py-2 rounded-full text-center col-span-full">
                       No services available
                     </span>
                   )}
@@ -274,12 +289,22 @@ const WorkerPortfolio = () => {
           )}
         </div>
 
-        {/* Request Button */}
         <div className="mt-12 flex justify-center">
-          <button className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-10 rounded-full text-lg flex items-center">
+          <button
+            onClick={handleRequestService}
+            className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-10 rounded-full text-lg flex items-center"
+          >
             Request Service
           </button>
         </div>
+
+        {/* Render BookingModal */}
+        <BookingModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          workerId={workerData.specializationId}
+          onBook={handleBook}
+        />
       </div>
     </div>
   );
