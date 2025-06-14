@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
-import { FaUser, FaCalendarAlt, FaTools, FaCalendarTimes } from 'react-icons/fa';
+import { FaUser, FaCalendarAlt, FaTools, FaCalendarTimes, FaCheck } from 'react-icons/fa';
 import { TokenContext } from '../../Context/TokenContext';
 
 const BookingUser = () => {
@@ -85,25 +85,22 @@ const BookingUser = () => {
               >
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="font-semibold text-lg">
-                    {t('booking.bookingNumber')} {booking.bookingId}
+                    {t('booking.booking')}
                   </h2>
                   <span className={`text-xs font-semibold px-2 py-1 rounded-full ${getStatusColor(booking.status)}`}>
                     {booking.status}
                   </span>
                 </div>
 
-              
-
-                <div className="flex items-center mb-4 text-sm text-gray-700">
-                  <FaUser className="mr-2 text-teal-600" />
+                <div className="flex items-center gap-2 mb-4 text-sm text-gray-700">
+                  <FaUser className="text-teal-600" />
                   <span className="font-medium">
                     {t('booking.craftsManName')}: {booking.craftsManName || t('booking.noCraftsman')}
                   </span>
                 </div>
 
-              
-                <div className="flex items-center mb-4 text-sm text-gray-700">
-                  <FaCalendarAlt className="mr-2 text-teal-600" />
+                <div className="flex items-center gap-2 mb-4 text-sm text-gray-700">
+                  <FaCalendarAlt className="text-teal-600" />
                   <span>
                     {t('booking.bookDate')}: {booking.bookDate ? new Date(booking.bookDate).toLocaleDateString() : t('booking.noDate')}
                   </span>
@@ -111,16 +108,19 @@ const BookingUser = () => {
 
                 <hr className="border-gray-200 my-2" />
 
-                <h3 className="font-semibold mb-2 text-teal-700 flex items-center">
-                  <FaTools className="mr-2 text-teal-600" />
+                <h3 className="font-semibold mb-2 text-teal-700 flex items-center gap-2">
+                  <FaTools className="text-teal-600" />
                   {t('booking.services')}
                 </h3>
 
                 <ul className="text-sm mb-4 space-y-2">
                   {booking.services?.$values?.length > 0 ? (
                     booking.services.$values.map((service, index) => (
-                      <li key={`${booking.bookingId}-service-${index}`} className="flex justify-between">
-                        <span>{service.name}</span>
+                      <li key={`${booking.bookingId}-service-${index}`} className="flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                          <FaCheck className="text-teal-600" />
+                          <span>{service.name}</span>
+                        </div>
                         <span className="text-teal-600 font-semibold">${service.price || 0}</span>
                       </li>
                     ))
@@ -129,7 +129,8 @@ const BookingUser = () => {
                   )}
                 </ul>
 
-             
+                <hr className="border-gray-200 my-2" />
+
                 <p className="font-semibold text-right mt-2 text-teal-700">
                   {t('booking.totalPrice')}: ${total.toFixed(2)}
                 </p>

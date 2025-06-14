@@ -302,7 +302,7 @@
   
   "booking": {
     "title": "My Bookings",
-    "bookingNumber": "Booking Number:",
+    "booking": "Booking ",
     "craftsManName": "Craftsman Name",
     "noCraftsman": "No craftsman assigned",
     "bookDate": "Booking Date",
@@ -312,7 +312,46 @@
     "totalPrice": "Total Price",
     "noBookings": "No bookings available",
     "noBookingsYet": "You have no bookings yet"
-  }
+  },
+
+  "bookingcraftsman": {
+    "title": "My Bookings",
+    "bookingNumber": "Booking",
+    "customerName": "Customer",
+    "noCustomer": "No customer name available",
+    "bookDate": "Booking Date",
+    "noDate": "No date provided",
+    "services": "Services",
+    "noServices": "No services added",
+    "totalPrice": "Total Price",
+    "noBookings": "No Bookings Available",
+    "noBookingsYet": "You have no bookings yet"
+  },
+  
+
+  "header": {
+    "craftsmanProfile": {
+      "title": "Craftsman Profile",
+      "specialty": "Specialty",
+      "rating": "Rating",
+      "experience": "Experience",
+      "completedJobs": "Completed Jobs",
+      "aboutTab": "About",
+      "portfolioTab": "Portfolio",
+      "location": "Location",
+      "about": "About",
+      "availability": "Availability",
+      "available": "Available",
+      "notAvailable": "Not Available",
+      "requestService": "Request Service",
+      "loading": "Loading...",
+      "noData": "No craftsman data available.",
+      "unauthorized": "Please log in to view your profile."
+    }
+  
+
+}
+
 
 
 

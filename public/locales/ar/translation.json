@@ -298,7 +298,7 @@
 },
   "booking": {
   "title": "حجوزاتي",
-    "bookingNumber": "رقم الحجز:",
+    "booking": " الحجز",
     "craftsManName": "اسم الحرفي",
     "noCraftsman": "لا يوجد حرفي",
     "bookDate": "تاريخ الحجز",
@@ -309,7 +309,44 @@
     "noBookings": "لا توجد حجوزات",
     "noBookingsYet": "لا يوجد أي حجوزات حتى الآن"
   
+},
+
+  "bookingcraftsman": {
+    "title": "حجوزاتي",
+    "bookingNumber": " الحجز",
+    "customerName": "العميل",
+    "noCustomer": "لا يوجد اسم للعميل",
+    "bookDate": "تاريخ الحجز",
+    "noDate": "لا يوجد تاريخ محدد",
+    "services": "الخدمات",
+    "noServices": "لم يتم إضافة خدمات",
+    "totalPrice": "السعر الإجمالي",
+    "noBookings": "لا توجد حجوزات",
+    "noBookingsYet": "لم تقم بأي حجوزات بعد"
+  },
+  
+  "header": {
+    "craftsmanProfile": {
+      "title": "ملف الحرفي",
+      "specialty": "التخصص",
+      "rating": "التقييم",
+      "experience": "الخبرة",
+      "completedJobs": "الأعمال المكتملة",
+      "aboutTab": "نبذة",
+      "portfolioTab": "معرض الأعمال",
+      "location": "الموقع",
+      "about": "نبذة عن",
+      "availability": "التوفر",
+      "available": "متاح",
+      "notAvailable": "غير متاح",
+      "requestService": "طلب خدمة",
+      "loading": "جارٍ التحميل...",
+      "noData": "لا توجد بيانات للحرفي.",
+      "unauthorized": "يرجى تسجيل الدخول لعرض ملفك الشخصي."
+    }
+  
 }
+
 
 
 

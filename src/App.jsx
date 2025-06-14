@@ -25,9 +25,11 @@ import Forgetpassword from './components/Forgetpasword/Forgetpassword'
 import PortectedRoutes from './components/ProtectedRoutes/PortectedRoutes';
 import ProtectedAuth from './components/ProtectedAuth/ProtectedAuth';
 import WorkerPortfolio from './components/WorkerPortfolio/WorkerPortfolio';
-import Craftsmanedits from './components/Craftsmanedits/Craftsmanedits';
+
 import Booking from './components/Booking/Booking';
 import BookingUser from './components/bookingUser/bookingUser';
+import BookingCraftsman from './components/BookingCraftsman/BookingCraftsman';
+import CraftsmanProfile from './components/CrafrsmanProfile/CraftsmanProfile';
 
 
 function App() {
@@ -64,10 +66,11 @@ function App() {
     {path:"serviceworker4",element:<PortectedRoutes><Serviceworker4/></PortectedRoutes>},
     {path:"serviceworker5",element:<PortectedRoutes><Serviceworker5/></PortectedRoutes>},
     {path:"book",element:<PortectedRoutes><bookingUser/></PortectedRoutes>},
+    {path:"bookCraft",element:<BookingCraftsman/>},
    
 
     {path:"worker",element:<PortectedRoutes><Serviceworker/></PortectedRoutes>},
-    {path:"craftsedit",element:<Craftsmanedits/>},
+    {path:"crafProfile",element:<CraftsmanProfile/>},
     {path:"workerportfolio/:id",element:<WorkerPortfolio/>},
     {path:"booking/:id",element:<Booking/>},
     
