@@ -137,37 +137,13 @@
     "signUp": "إنشاء حساب",
     "openMainMenu": "افتح القائمة الرئيسية",
     "home": "الرئيسية",
-    "about": "نبذه عنا",
+    "booking": " الحجوزات",
     "services": "الخدمات",
     "rateUs": "قيمنا",
     "contactUs": "اتصل بنا",
     "placeholder": "ابحث هنا ..."
   },
   
-  "serviceDetails": {
-    "title": "اختر الخدمة",
-    "servicePlaceholder": "اختر الخدمة",
-    "governoratePlaceholder": "اختر المحافظة",
-    "centerPlaceholder": "اختر المركز",
-    "searchPlaceholder": "بحث...",
-    "submit": "التالي",
-    "validation": {
-      "service": "الخدمة مطلوبة",
-      "governorate": "المحافظة مطلوبة",
-      "center": "المركز مطلوب"
-    },
-    "options": {
-      "service1": "خدمة ١",
-      "service2": "خدمة ٢",
-      "service3": "خدمة ٣",
-      "governorate1": "محافظة ١",
-      "governorate2": "محافظة ٢",
-      "governorate3": "محافظة ٣",
-      "center1": "مركز ١",
-      "center2": "مركز ٢",
-      "center3": "مركز ٣"
-    }
-  },
   "worker_list":"قائمةالعمال",
   "job": {
   "electrician": "فني كهرباء",
@@ -190,5 +166,153 @@
   "send_button": "إرسال رابط إعادة التعيين",
   "email_required": "البريد الإلكتروني مطلوب",
   "email_invalid": "صيغة البريد الإلكتروني غير صحيحة"
+},
+
+  "serviceDetails": {
+    "loading_services": "جاري تحميل الخدمات...",
+    "error_message": "فشل في جلب الخدمات. يرجى المحاولة لاحقًا.",
+    "services_title": "الخدمات",
+    "see_more": "عرض المزيد",
+    "no_workers": "لا يوجد عمال متاحون في الوقت الحالي.",
+    "no_image": "لا توجد صورة",
+    "governorate_label": "المحافظة:",
+    "center_label": "المركز:",
+    "view_profile": "عرض الملف الشخصي",
+    "unknown": "غير معروف",
+    "specializations": {
+      "Plumbing": "السباكة",
+      "Carpentry": "النجارة",
+      "Electrician": "كهربائي",
+      "Painting": "الدهان",
+      "Masonry": "البناء"
+    }
+  },
+  "workerList": {
+    "availableWorkerForElectricalService": "العمال المتاحين لخدمة الكهرباء",
+    "governorate": "المحافظة",
+    "center": "المركز",
+    "select_governorate": "اختر محافظة",
+    "select_center": "اختر مركز",
+    "loading": "جارٍ التحميل...",
+    "error": "حدث خطأ",
+    "no_workers_found": "لا يوجد عمال",
+    "view_profile": "عرض الملف",
+    "no_image": "لا توجد صورة",
+    "not_specified": "غير محدد",
+    "experience": "الخبرة",
+    "years": "سنوات",
+    "showing": "عرض",
+    "of": "من",
+    "workers": "عمال",
+    "failedToLoadGovernorates": "فشل تحميل المحافظات",
+    "failedToLoadCenters": "فشل تحميل المراكز",
+    "noCentersForGovernorate": "لا توجد مراكز لهذه المحافظة",
+    "failedToFetchWorkers": "فشل تحميل بيانات العمال"
+  },
+  "pag":{
+  "previous": "السابق",
+  "next": "التالي"
+},
+
+  "workerList2": {
+    "availableWorkerForPlumbingService": "الحرفيين المتاحين لخدمة النجارة",
+    "governorate": "المحافظة",
+    "center": "المركز",
+    "select_governorate": "اختر محافظة",
+    "select_center": "اختر مركز",
+    "noCentersForGovernorate": "لا توجد مراكز لهذه المحافظة",
+    "failedToLoadGovernorates": "فشل في تحميل المحافظات",
+    "failedToLoadCenters": "فشل في تحميل المراكز",
+    "failedToFetchWorkers": "فشل في تحميل بيانات الحرفيين",
+    "error": "خطأ",
+    "no_workers_found": "لا يوجد حرفيين مطابقين",
+    "not_specified": "غير محدد",
+    "experience": "الخبرة",
+    "years": "سنة",
+    "view_profile": "عرض الملف الشخصي",
+    "showing": "عرض",
+    "of": "من",
+    "workers": "حرفي"
+  },
+ 
+  "workerList3": {
+    "availableWorkerForEPlumbingService": "العمال المتاحين لسباكة الكهرباء",
+    "governorate": "المحافظة",
+    "select_governorate": "اختر المحافظة",
+    "center": "المركز",
+    "select_center": "اختر المركز",
+    "failedToLoadGovernorates": "فشل تحميل المحافظات",
+    "noCentersForGovernorate": "لا توجد مراكز لهذه المحافظة",
+    "failedToLoadCenters": "فشل تحميل المراكز",
+    "failedToFetchWorkers": "فشل تحميل بيانات العمال",
+    "error": "خطأ",
+    "no_workers_found": "لا يوجد عمال",
+    "not_specified": "غير محدد",
+    "experience": "الخبرة",
+    "years": "سنوات",
+    "view_profile": "عرض الملف",
+    "showing": "عرض",
+    "of": "من",
+    "workers": "العمال"
+  },
+  
+  "workerList4": {
+    "availableWorkerForElectricalService": "العمال المتاحين لخدمة النقاشه",
+    "governorate": "المحافظة",
+    "select_governorate": "اختر المحافظة",
+    "center": "المركز",
+    "select_center": "اختر المركز",
+    "no_workers_found": "لا يوجد عمال مطابقين",
+    "not_specified": "غير محدد",
+    "experience": "الخبرة",
+    "years": "سنوات",
+    "view_profile": "عرض الملف",
+    "error": "خطأ",
+    "failedToLoadGovernorates": "فشل في تحميل المحافظات",
+    "failedToLoadCenters": "فشل في تحميل المراكز",
+    "noCentersForGovernorate": "لا توجد مراكز لهذه المحافظة",
+    "failedToFetchWorkers": "فشل في تحميل بيانات العمال",
+    "showing": "عرض",
+    "of": "من",
+    "workers": "عامل"
+  },
+  "workerList5": {
+  "availableWorkerForElectricalService": "العمال المتاحين لخدمة جبس بورد",
+  "governorate": "المحافظة",
+  "center": "المركز",
+  "select_governorate": "اختر المحافظة",
+  "select_center": "اختر المركز",
+  "noCentersForGovernorate": "لا توجد مراكز لهذه المحافظة",
+  "failedToLoadGovernorates": "فشل في تحميل المحافظات",
+  "failedToLoadCenters": "فشل في تحميل المراكز",
+  "failedToFetchWorkers": "فشل في جلب بيانات العمال",
+  "no_workers_found": "لم يتم العثور على عمال",
+  "not_specified": "غير محدد",
+  "experience": "الخبرة",
+  "years": "سنوات",
+  "view_profile": "عرض الملف الشخصي",
+  "error": "حدث خطأ",
+  "showing": "عرض",
+  "of": "من",
+  "workers": "عمال"
+},
+  "booking": {
+  "title": "حجوزاتي",
+    "bookingNumber": "رقم الحجز:",
+    "craftsManName": "اسم الحرفي",
+    "noCraftsman": "لا يوجد حرفي",
+    "bookDate": "تاريخ الحجز",
+    "noDate": "لا يوجد تاريخ",
+    "services": "الخدمات",
+    "noServices": "لا توجد خدمات",
+    "totalPrice": "الإجمالي",
+    "noBookings": "لا توجد حجوزات",
+    "noBookingsYet": "لا يوجد أي حجوزات حتى الآن"
+  
 }
+
+
+
+
+
 }

@@ -2,8 +2,10 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const ServiceDetails = () => {
+  const { t, i18n } = useTranslation();
   const [services, setServices] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -27,24 +29,25 @@ const ServiceDetails = () => {
         for (const id of possibleSpecializationIds) {
           try {
             const response = await axios.get(
-              `https://hanshatabhalak.runasp.net/api/Craftsman?SpecializationId=${id}&language=en`
+              `https://hanshatabhalak.runasp.net/api/Craftsman?SpecializationId=${id}&language=${i18n.language}`
             );
             const workers = response.data?.data?.$values || [];
-            // جلب صورة كل عامل
+            // Fetch image for each worker
             for (const worker of workers) {
-  try {
-    const imageResponse = await axios.get(
-      `https://hanshatabhalak.runasp.net/api/Craftsman/${worker.id}/getImage?language=en`
-    );
-    const imageUrl = imageResponse.data.imageUrl;
-    worker.imageUrl = imageUrl && !imageUrl.includes("no image available")
-      ? `https://hanshatabhalak.runasp.net${imageUrl}`
-      : "/path/to/default/image.jpg";
-  } catch (imageErr) {
-    console.error(`Error fetching image for worker ${worker.id}:`, imageErr.message);
-    worker.imageUrl = "/path/to/default/image.jpg";
-  }
-}
+              let imageUrl = "";
+              try {
+                const imageResponse = await axios.get(
+                  `https://hanshatabhalak.runasp.net/api/Craftsman/${worker.id}/getImage?language=${i18n.language}`
+                );
+                imageUrl = imageResponse.data.imageUrl;
+              } catch (imageErr) {
+                console.error(`Error fetching image for worker ${worker.id}: `, imageErr.message);
+                worker.imageUrl = null;
+                continue;
+              }
+              const isValidImageUrl = imageUrl && typeof imageUrl === "string" && imageUrl.startsWith("/") && !imageUrl.includes(t("serviceDetails.no_image"));
+              worker.imageUrl = isValidImageUrl ? `https://hanshatabhalak.runasp.net${imageUrl}` : null;
+            }
             allWorkersData.push(...workers);
           } catch (err) {
             console.error(`Error fetching SpecializationId ${id}:`, err.message);
@@ -61,15 +64,15 @@ const ServiceDetails = () => {
             .slice(0, 4)
             .map((worker) => ({
               id: worker.id,
-              name: worker.name || "Unknown",
-              job: worker.specialization.split(" ")[0],
-              governorate: worker.governorate || "Unknown",
-              center: worker.center || "Unknown",
-              imageUrl: worker.imageUrl || "", // إضافة رابط الصورة
+              name: worker.name || t("serviceDetails.unknown"),
+              job: worker.specialization.split(" ")[0], // May need translation if API doesn't handle it
+              governorate: worker.governorate || t("serviceDetails.unknown"),
+              center: worker.center || t("serviceDetails.unknown"),
+              imageUrl: worker.imageUrl || "",
             }));
           return {
             id: index + 1,
-            title: specialization,
+            title: t(`${specialization}`), // Translate specialization
             icon: iconMapping[specialization] || iconMapping.Default,
             workers,
           };
@@ -79,7 +82,7 @@ const ServiceDetails = () => {
         setError(null);
       } catch (error) {
         console.error("General Error fetching data:", error.message);
-        setError("Failed to fetch services. Please try again later.");
+        setError(t("serviceDetails.error_message"));
         setServices([]);
       } finally {
         setLoading(false);
@@ -87,14 +90,14 @@ const ServiceDetails = () => {
     };
 
     fetchServices();
-  }, []);
+  }, [i18n.language]); // Re-fetch when language changes
 
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="flex flex-col items-center">
           <div className="w-12 h-12 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="mt-4 text-gray-600 text-lg">Loading Services...</p>
+          <p className="mt-4 text-gray-600 text-lg">{t("serviceDetails.loading_services")}</p>
         </div>
       </div>
     );
@@ -105,9 +108,9 @@ const ServiceDetails = () => {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-6" dir={i18n.language === "ar" ? "rtl" : "ltr"}>
       <h1 className="text-4xl font-extrabold mb-16 text-center text-gray-800 tracking-tight">
-        Services
+        {t("serviceDetails.services_title")}
       </h1>
 
       {services.map((service) => (
@@ -139,7 +142,7 @@ const ServiceDetails = () => {
               }
               className="text-teal-500 hover:underline font-medium"
             >
-              See More
+              {t("serviceDetails.see_more")}
             </Link>
           </div>
 
@@ -165,17 +168,17 @@ const ServiceDetails = () => {
                         />
                       ) : (
                         <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                          <span className="text-gray-500">No Image</span>
+                          <span className="text-gray-500">{t("serviceDetails.no_image")}</span>
                         </div>
                       )}
                     </div>
                     <h3 className="text-xl font-bold text-gray-800 mb-2">{worker.name}</h3>
                     <p className="text-gray-600 text-sm font-medium mb-1">{worker.job}</p>
                     <p className="text-gray-500 text-sm mb-1">
-                      <span className="font-semibold">Governorate:</span> {worker.governorate}
+                      <span className="font-semibold">{t("serviceDetails.governorate_label")}</span> {worker.governorate}
                     </p>
                     <p className="text-gray-500 text-sm mb-4">
-                      <span className="font-semibold">Center:</span> {worker.center}
+                      <span className="font-semibold">{t("serviceDetails.center_label")}</span> {worker.center}
                     </p>
                     <button
                       onClick={(e) => {
@@ -184,14 +187,14 @@ const ServiceDetails = () => {
                       }}
                       className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors"
                     >
-                      View Profile
+                      {t("serviceDetails.view_profile")}
                     </button>
                   </motion.div>
                 </Link>
               ))
             ) : (
               <p className="text-center text-gray-500 col-span-full text-lg">
-                No workers available at the moment.
+                {t("serviceDetails.no_workers")}
               </p>
             )}
           </div>

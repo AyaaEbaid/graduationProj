@@ -1,29 +1,38 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import { FaMapMarkerAlt, FaFileAlt, FaWrench, FaStar, FaImage, FaBriefcase } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import BookingModal from "../Booking/Booking";
-import { useImageCraftsman } from "../../Context/ImageCraftsmanContext"; // استيراد الـ Context
+import { useImageCraftsman } from "../../Context/ImageCraftsmanContext";
+import { TokenContext } from "../../Context/TokenContext"; // استورد الـ Context من المسار الصحيح
 
 const WorkerPortfolio = () => {
   const { id } = useParams();
-  const { imageUrl } = useImageCraftsman(); // جلب imageUrl من الـ Context
+  const { imageUrl } = useImageCraftsman();
   const [worker, setWorker] = useState(null);
   const [services, setServices] = useState([]);
+  const [portfolioImages, setPortfolioImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [imageLoading, setImageLoading] = useState({});
   const [activeTab, setActiveTab] = useState("about");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  const { token } = useContext(TokenContext); // استخدام التوكن من الـ Context
 
   // تحديث craftsmanId في localStorage
   useEffect(() => {
     if (id && !isNaN(id)) {
       localStorage.setItem("craftsmanId", id);
+      console.log("Stored craftsmanId in localStorage:", id); // للتحقق
+    } else {
+      console.warn("Invalid or undefined id from useParams:", id);
     }
   }, [id]);
 
   useEffect(() => {
     const fetchData = async () => {
       if (!id || isNaN(id)) {
+        console.error("Invalid or undefined id from useParams:", id);
         setLoading(false);
         return;
       }
@@ -32,7 +41,12 @@ const WorkerPortfolio = () => {
       try {
         console.log("Fetching worker with ID:", id);
         const workerResponse = await axios.get(
-          `https://hanshatabhalak.runasp.net/api/Craftsman/${id}?language=en`
+          `https://hanshatabhalak.runasp.net/api/Craftsman/${id}?language=en`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // إضافة التوكن في الـ header
+            },
+          }
         );
         console.log("Worker Data from API:", workerResponse.data);
         const workerData = workerResponse.data.data;
@@ -78,7 +92,12 @@ const WorkerPortfolio = () => {
 
       try {
         const specializationResponse = await axios.get(
-          `https://hanshatabhalak.runasp.net/api/Service?SpecializationId=${specializationId}&language=en`
+          `https://hanshatabhalak.runasp.net/api/Service?SpecializationId=${specializationId}&language=en`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // إضافة التوكن في الـ header
+            },
+          }
         );
         console.log("Services from Specialization API:", specializationResponse.data);
         const servicesData = specializationResponse.data?.data?.$values || [];
@@ -94,11 +113,34 @@ const WorkerPortfolio = () => {
         setServices([]);
       }
 
+      // جلب صور البورتفوليو من الـ API
+      try {
+        const portfolioResponse = await axios.get(
+          `https://hanshatabhalak.runasp.net/api/Cataloge/${id}/getCatalogeImages?language=en`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // إضافة التوكن في الـ header
+            },
+          }
+        );
+        console.log("Portfolio Images from API:", portfolioResponse.data);
+        const images = portfolioResponse.data?.data?.result?.$values || [];
+        setPortfolioImages(
+          images.map((img) => ({
+            url: `https://hanshatabhalak.runasp.net${img}`, // تحويل المسار النسبي لكامل
+            alt: `Portfolio Image ${img.split("/").pop() || ""}`,
+          }))
+        );
+      } catch (err) {
+        console.error("Error fetching portfolio images:", err.message, err.response?.data, err.response?.status);
+        setPortfolioImages([]); // إذا فشل الطلب، يظهر placeholder
+      }
+
       setLoading(false);
     };
 
     fetchData();
-  }, [id]);
+  }, [id, token]);
 
   const workerData = useMemo(() => worker, [worker]);
 
@@ -109,6 +151,23 @@ const WorkerPortfolio = () => {
   const handleBook = (selectedServices, totalPrice, selectedDate) => {
     console.log("Booked:", { selectedServices, totalPrice, selectedDate });
     setIsModalOpen(false);
+  };
+
+  // التحكم في lightbox
+  const openLightbox = (index) => {
+    setSelectedImageIndex(index);
+  };
+
+  const closeLightbox = () => {
+    setSelectedImageIndex(null);
+  };
+
+  const nextImage = () => {
+    setSelectedImageIndex((prev) => (prev + 1) % portfolioImages.length);
+  };
+
+  const prevImage = () => {
+    setSelectedImageIndex((prev) => (prev - 1 + portfolioImages.length) % portfolioImages.length);
   };
 
   if (loading) return <div className="text-center p-6">Loading...</div>;
@@ -215,26 +274,34 @@ const WorkerPortfolio = () => {
           )}
 
           {activeTab === "portfolio" && (
-            <div className="grid grid-cols-2 gap-4">
-              {workerData.portfolioImages.length > 0 ? (
-                workerData.portfolioImages.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    alt={`Portfolio ${index + 1}`}
-                    className="w-full h-32 object-cover rounded-lg"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "/default-avatar.png";
-                    }}
-                  />
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {portfolioImages.length > 0 ? (
+                portfolioImages.map((image, index) => (
+                  <div key={index} className="relative cursor-pointer" onClick={() => openLightbox(index)}>
+                    {imageLoading[index] !== false && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-gray-200 bg-opacity-50 rounded-lg">
+                        <div className="w-8 h-8 border-4 border-teal-600 border-t-transparent rounded-full animate-spin"></div>
+                      </div>
+                    )}
+                    <img
+                      src={image.url}
+                      alt={image.alt}
+                      className="w-full h-48 object-cover rounded-lg"
+                      onLoad={() => setImageLoading((prev) => ({ ...prev, [index]: false }))}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "/default-avatar.png";
+                        setImageLoading((prev) => ({ ...prev, [index]: false }));
+                      }}
+                    />
+                  </div>
                 ))
               ) : (
                 <>
                   {[1, 2, 3, 4].map((_, index) => (
                     <div
                       key={index}
-                      className="bg-gray-200 h-32 flex items-center justify-center rounded-lg"
+                      className="bg-gray-200 h-48 flex items-center justify-center rounded-lg"
                     >
                       <FaImage className="text-gray-400 text-3xl" />
                     </div>
@@ -298,11 +365,41 @@ const WorkerPortfolio = () => {
           </button>
         </div>
 
-        {/* Render BookingModal */}
+        {/* Lightbox */}
+        {selectedImageIndex !== null && (
+          <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50" onClick={closeLightbox}>
+            <button
+              onClick={(e) => { e.stopPropagation(); prevImage(); }}
+              className="absolute left-4 text-white text-4xl font-bold hover:text-gray-300"
+            >
+              ←
+            </button>
+            <img
+              src={portfolioImages[selectedImageIndex].url}
+              alt={portfolioImages[selectedImageIndex].alt}
+              className="max-h-[80vh] max-w-[90vw] object-contain"
+              onClick={(e) => e.stopPropagation()} // منع إغلاق الـ lightbox بالنقر على الصورة
+            />
+            <button
+              onClick={(e) => { e.stopPropagation(); nextImage(); }}
+              className="absolute right-4 text-white text-4xl font-bold hover:text-gray-300"
+            >
+              →
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); closeLightbox(); }}
+              className="absolute top-4 right-4 text-white text-4xl font-bold hover:text-gray-300"
+            >
+              ×
+            </button>
+          </div>
+        )}
+
         <BookingModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          workerId={workerData.specializationId}
+          craftsmanId={workerData ? workerData.id : id} // استخدام workerData.id أو id من useParams كـ backup
+          specializationId={workerData ? workerData.specializationId : 1} // قيمة backup
           onBook={handleBook}
         />
       </div>

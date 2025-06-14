@@ -258,19 +258,25 @@ export default function Navbar() {
                     )}
                   </NavLink>
                 </li>
-                <li className="relative">
+               
+                 <li className="relative">
                   <NavLink
-                    to="#about-us"
+                    to="book"
                     onClick={() => setMenuOpen(false)}
-                    className="block py-2 px-3 text-white rounded-sm transition-colors duration-200 relative group hover:text-white"
+                    className={({ isActive }) =>
+                      `block py-2 px-3 text-white rounded-sm transition-colors duration-200 relative group ${
+                        isActive ? "text-white" : "hover:text-white"
+                      }`
+                    }
                   >
-                    {() => (
+                    {({ isActive }) => (
                       <>
-                        {t("navbar.about")}
+                        {t("navbar.booking")}
                         <motion.div
                           className="absolute bottom-0 left-0 w-full h-0.5 bg-white"
                           variants={underlineVariants}
                           initial="hidden"
+                          animate={isActive ? "visible" : "hidden"}
                           whileHover={{ scaleX: 1 }}
                         />
                       </>

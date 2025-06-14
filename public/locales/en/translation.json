@@ -138,36 +138,14 @@
     "signUp": "Sign up",
     "openMainMenu": "Open main menu",
     "home": "Home",
-    "about": "About",
+    "booking": "Booking",
     "services": "Services",
     "rateUs": "Rate us",
     "contactUs": "Contact us",
     "placeholder": "Search..."
   },
-  "serviceDetails": {
-    "title": "Choose our service",
-    "servicePlaceholder": "Choose Service",
-    "governoratePlaceholder": "Choose Governorate",
-    "centerPlaceholder": "Choose Center",
-    "searchPlaceholder": "Search...",
-    "submit": "Submit",
-    "validation": {
-      "service": "Service is required",
-      "governorate": "Governorate is required",
-      "center": "Center is required"
-    },
-    "options": {
-      "service1": "Service 1",
-      "service2": "Service 2",
-      "service3": "Service 3",
-      "governorate1": "Governorate 1",
-      "governorate2": "Governorate 2",
-      "governorate3": "Governorate 3",
-      "center1": "Center 1",
-      "center2": "Center 2",
-      "center3": "Center 3"
-    }
-  },
+
+  
   "worker_list":"Available workers",
   "job": {
   "electrician": "Electrician",
@@ -190,5 +168,157 @@
   "send_button": "Send Reset Link",
   "email_required": "Email is required",
   "email_invalid": "Invalid email format"
-}
+},
+  "serviceDetails": {
+    "loading_services": "Loading Services...",
+    "error_message": "Failed to fetch services. Please try again later.",
+    "services_title": "Services",
+    "see_more": "See More",
+    "no_workers": "No workers available at the moment.",
+    "no_image": "No Image",
+    "governorate_label": "Governorate:",
+    "center_label": "Center:",
+    "view_profile": "View Profile",
+    "unknown": "Unknown",
+    "specializations": {
+      "Plumbing": "Plumbing",
+      "Carpentry": "Carpentry",
+      "Electrician": "Electrician",
+      "Painting": "Painting",
+      "Masonry": "Masonry"
+    }
+  
+},
+  "workerList": {
+    "availableWorkerForElectricalService": "Available workers for electrical service",
+    "governorate": "Governorate",
+    "center": "Center",
+    "select_governorate": "Select governorate",
+    "select_center": "Select center",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "no_workers_found": "No workers found",
+    "view_profile": "View Profile",
+    "no_image": "No Image",
+    "not_specified": "Not specified",
+    "experience": "Experience",
+    "years": "years",
+    "showing": "Showing",
+    "of": "of",
+    "workers": "workers",
+    "failedToLoadGovernorates": "Failed to load governorates",
+    "failedToLoadCenters": "Failed to load centers",
+    "noCentersForGovernorate": "No centers for this governorate",
+    "failedToFetchWorkers": "Failed to fetch workers"
+  },
+  "pag":{
+  "previous": "Previous",
+  "next": "Next"
+  },
+  
+  "workerList2": {
+    "availableWorkerForPlumbingService": "Available Workers for Carpentry Service",
+    "governorate": "Governorate",
+    "center": "Center",
+    "select_governorate": "Select Governorate",
+    "select_center": "Select Center",
+    "noCentersForGovernorate": "No centers available for this governorate",
+    "failedToLoadGovernorates": "Failed to load governorates",
+    "failedToLoadCenters": "Failed to load centers",
+    "failedToFetchWorkers": "Failed to fetch workers data",
+    "error": "Error",
+    "no_workers_found": "No matching workers found",
+    "not_specified": "Not specified",
+    "experience": "Experience",
+    "years": "years",
+    "view_profile": "View Profile",
+    "showing": "Showing",
+    "of": "of",
+    "workers": "workers"
+  },
+ 
+  "workerList3": {
+    "availableWorkerForEPlumbingService": "Available Workers for  Plumbing Service",
+    "governorate": "Governorate",
+    "select_governorate": "Select Governorate",
+    "center": "Center",
+    "select_center": "Select Center",
+    "failedToLoadGovernorates": "Failed to load governorates",
+    "noCentersForGovernorate": "No centers available for this governorate",
+    "failedToLoadCenters": "Failed to load centers",
+    "failedToFetchWorkers": "Failed to fetch workers data",
+    "error": "Error",
+    "no_workers_found": "No workers found",
+    "not_specified": "Not specified",
+    "experience": "Experience",
+    "years": "years",
+    "view_profile": "View Profile",
+    "showing": "Showing",
+    "of": "of",
+    "workers": "workers"
+  },
+ 
+  "workerList4": {
+    "availableWorkerForElectricalService": "Available Workers for Painting Service",
+    "governorate": "Governorate",
+    "select_governorate": "Select Governorate",
+    "center": "Center",
+    "select_center": "Select Center",
+    "no_workers_found": "No matching workers found",
+    "not_specified": "Not specified",
+    "experience": "Experience",
+    "years": "years",
+    "view_profile": "View Profile",
+    "error": "Error",
+    "failedToLoadGovernorates": "Failed to load governorates",
+    "failedToLoadCenters": "Failed to load centers",
+    "noCentersForGovernorate": "No centers found for this governorate",
+    "failedToFetchWorkers": "Failed to fetch workers data",
+    "showing": "Showing",
+    "of": "of",
+    "workers": "workers"
+  },
+  
+  "workerList5": {
+    "availableWorkerForElectricalService": "Available Workers for Gypsum Board Services",
+    "governorate": "Governorate",
+    "select_governorate": "Select Governorate",
+    "center": "Center",
+    "select_center": "Select Center",
+    "failedToLoadGovernorates": "Failed to load governorates",
+    "failedToLoadCenters": "Failed to load centers",
+    "noCentersForGovernorate": "No centers found for the selected governorate",
+    "failedToFetchWorkers": "Failed to fetch workers",
+    "error": "Error",
+    "no_workers_found": "No workers found",
+    "not_specified": "Not specified",
+    "experience": "Experience",
+    "years": "years",
+    "view_profile": "View Profile",
+    "showing": "Showing",
+    "of": "of",
+    "workers": "workers"
+  },
+  
+  "booking": {
+    "title": "My Bookings",
+    "bookingNumber": "Booking Number:",
+    "craftsManName": "Craftsman Name",
+    "noCraftsman": "No craftsman assigned",
+    "bookDate": "Booking Date",
+    "noDate": "No date",
+    "services": "Services",
+    "noServices": "No services found",
+    "totalPrice": "Total Price",
+    "noBookings": "No bookings available",
+    "noBookingsYet": "You have no bookings yet"
+  }
+
+
+
+
+  
+
+
+
 }
