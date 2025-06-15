@@ -64,7 +64,7 @@ export default function Login() {
         `https://hanshatabhalak.runasp.net/api/Auth/login?language=${i18n.language}`,
         values
       );
-      console.log(data.data.message);
+      console.log(data.data);
       setUserMessage(data.data.message);
       localStorage.setItem("userToken", data.data.token);
       setToken(data.data.token);

@@ -6,7 +6,7 @@ import Pagination from "../Pagination/Pagination";
 import porofile from "./../../assets/profile.png";
 import { motion } from "framer-motion";
 
-export default function WorkersList() {
+export default function WorkersList4() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
@@ -22,10 +22,9 @@ export default function WorkersList() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const specializationId = 3; // قيمة ثابتة
+  const specializationId = 3;
   const itemsPerPage = 3;
 
-  // جلب المحافظات
   useEffect(() => {
     const fetchGovernorates = async () => {
       setLoading(true);
@@ -36,7 +35,7 @@ export default function WorkersList() {
         );
         setGovernorates(response.data.data?.$values || []);
       } catch (err) {
-        setError(err.message || t("failedToLoadGovernorates"));
+        setError(err.message || t("workerList4.failedToLoadGovernorates"));
       } finally {
         setLoading(false);
       }
@@ -44,7 +43,6 @@ export default function WorkersList() {
     fetchGovernorates();
   }, [i18n.language, t]);
 
-  // جلب المراكز
   useEffect(() => {
     if (!selectedGovernorate) {
       setCenters([]);
@@ -61,11 +59,11 @@ export default function WorkersList() {
         );
         const centerData = response.data.data?.$values || [];
         if (centerData.length === 0) {
-          setError(t("noCentersForGovernorate"));
+          setError(t("workerList4.noCentersForGovernorate"));
         }
         setCenters(centerData);
       } catch (err) {
-        setError(err.message || t("failedToLoadCenters"));
+        setError(err.message || t("workerList4.failedToLoadCenters"));
       } finally {
         setLoading(false);
       }
@@ -73,7 +71,6 @@ export default function WorkersList() {
     fetchCenters();
   }, [selectedGovernorate, i18n.language, t]);
 
-  // جلب العمال
   useEffect(() => {
     const fetchWorkers = async () => {
       setLoading(true);
@@ -83,16 +80,29 @@ export default function WorkersList() {
           `https://hanshatabhalak.runasp.net/api/Craftsman/GetCraftsmenPaginated?specializationId=${3}&centerId=${selectedCenter}&PageNumber=${currentPage}&PageSize=${itemsPerPage}&language=${i18n.language}`
         );
         const workers = response.data.data?.data?.$values || [];
-        setWorkersData(workers);
-        console.log("استجابة الـ API:", response.data);
-        console.log("بيانات كل العمال:", workers);
 
+        for (const worker of workers) {
+          let imageUrl = "";
+          try {
+            const imageResponse = await axios.get(
+              `https://hanshatabhalak.runasp.net/api/Craftsman/${worker.id}/getImage?language=${i18n.language}`
+            );
+            imageUrl = imageResponse.data.imageUrl;
+          } catch {
+            worker.imageUrl = null;
+            continue;
+          }
+          const isValidImageUrl = imageUrl && typeof imageUrl === "string" && imageUrl.startsWith("/") && !imageUrl.includes("no image available");
+          worker.imageUrl = isValidImageUrl ? `https://hanshatabhalak.runasp.net${imageUrl}` : null;
+        }
+
+        setWorkersData(workers);
         const totalRecordsFromApi = response.data.data?.totalRecords || 0;
         setTotalRecords(totalRecordsFromApi);
         const calculatedTotalPages = Math.ceil(totalRecordsFromApi / itemsPerPage);
         setTotalPages(calculatedTotalPages || 1);
       } catch (err) {
-        setError(err.message || t("failedToFetchWorkers"));
+        setError(err.message || t("workerList4.failedToFetchWorkers"));
       } finally {
         setLoading(false);
       }
@@ -100,36 +110,20 @@ export default function WorkersList() {
     fetchWorkers();
   }, [currentPage, selectedCenter, i18n.language, t, specializationId]);
 
-  // فلترة العمال
   useEffect(() => {
     let filtered = workersData;
 
-    console.log("المحافظات:", governorates);
-    console.log("المراكز:", centers);
-    console.log("بيانات العمال قبل الفلترة:", workersData);
-
     if (selectedGovernorate) {
       const gov = governorates.find((g) => g.id === parseInt(selectedGovernorate));
-      if (gov) {
-        filtered = filtered.filter((worker) => worker.governorate === gov.name);
-      } else {
-        console.warn("مفيش محافظة بالـ ID ده:", selectedGovernorate);
-        filtered = [];
-      }
+      filtered = gov ? filtered.filter((worker) => worker.governorate === gov.name) : [];
     }
 
     if (selectedCenter) {
       const center = centers.find((c) => c.id === parseInt(selectedCenter));
-      if (center) {
-        filtered = filtered.filter((worker) => worker.center === center.name);
-      } else {
-        console.warn("مفيش مركز بالـ ID ده:", selectedCenter);
-        filtered = [];
-      }
+      filtered = center ? filtered.filter((worker) => worker.center === center.name) : [];
     }
 
     setFilteredWorkers(filtered);
-    console.log("بيانات العمال بعد الفلترة:", filtered);
   }, [workersData, selectedGovernorate, selectedCenter, governorates, centers]);
 
   const handleCardClick = (workerId) => {
@@ -155,12 +149,14 @@ export default function WorkersList() {
 
   return (
     <div className="max-w-5xl min-h-screen mx-auto p-4">
-      <h2 className="text-2xl font-bold text-center mb-6">Available Worker For Painting Service</h2>
+      <h2 className="text-2xl font-bold text-center mb-6">
+        {t("workerList4.availableWorkerForElectricalService")}
+      </h2>
 
-      <div className="flex justify-center space-x-4 mb-6">
+      <div className={`flex justify-center mb-6 gap-4 ${i18n.dir() === 'rtl' ? 'flex-row-reverse' : ''}`}>
         <div>
           <label htmlFor="governorate" className="block text-sm font-medium text-gray-700">
-            {t("governorate")}
+            {t("workerList4.governorate")}
           </label>
           <select
             id="governorate"
@@ -168,7 +164,7 @@ export default function WorkersList() {
             onChange={handleGovernorateChange}
             className="mt-1 block w-48 p-2 border rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500"
           >
-            <option value="">{t("select_governorate")}</option>
+            <option value="">{t("workerList4.select_governorate")}</option>
             {governorates.map((gov) => (
               <option key={gov.id} value={gov.id}>
                 {gov.name}
@@ -179,7 +175,7 @@ export default function WorkersList() {
 
         <div>
           <label htmlFor="center" className="block text-sm font-medium text-gray-700">
-            {t("center")}
+            {t("workerList4.center")}
           </label>
           <select
             id="center"
@@ -188,7 +184,7 @@ export default function WorkersList() {
             className="mt-1 block w-48 p-2 border rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500"
             disabled={!selectedGovernorate}
           >
-            <option value="">{t("select_center")}</option>
+            <option value="">{t("workerList4.select_center")}</option>
             {centers.map((center) => (
               <option key={center.id} value={center.id}>
                 {center.name}
@@ -198,10 +194,20 @@ export default function WorkersList() {
         </div>
       </div>
 
-      {loading && <p className="text-center">  <i className="fa fa-spinner fa-spin"></i></p>}
-      {error && <p className="text-center text-red-500">{t("error")}: {error}</p>}
+      {loading && (
+        <p className="text-center">
+          <i className="fa fa-spinner fa-spin"></i>
+        </p>
+      )}
+
+      {error && (
+        <p className="text-center text-red-500">
+          {t("workerList4.error")}: {error}
+        </p>
+      )}
+
       {!loading && !error && filteredWorkers.length === 0 && (
-        <p className="text-center">{t("no_workers_found")}</p>
+        <p className="text-center">{t("workerList4.no_workers_found")}</p>
       )}
 
       {!loading && !error && filteredWorkers.length > 0 && (
@@ -215,29 +221,29 @@ export default function WorkersList() {
               className="bg-white p-4 rounded-2xl shadow-lg flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300 cursor-pointer"
               onClick={() => handleCardClick(worker.id)}
             >
-              <div className="w-24 h-24 bg-gray-200 rounded-full overflow-hidden mb-3">
-                <img
-                  src={worker.image || porofile}
-                  alt={worker.name}
-                  className="w-full h-full object-cover"
-                />
+              <div className="w-24 h-24 rounded-full overflow-hidden mb-3">
+                {worker.imageUrl ? (
+                  <img src={worker.imageUrl} alt={worker.name} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <span className="text-gray-500">No Image</span>
+                  </div>
+                )}
               </div>
               <h3 className="text-lg font-semibold">{worker.name}</h3>
-              <p className="text-gray-500">{worker.specialization || t("not_specified")}</p>
+              <p className="text-gray-500">{worker.specialization || t("workerList4.not_specified")}</p>
+              <p className="text-gray-400 text-sm">{worker.governorate} - {worker.center}</p>
               <p className="text-gray-400 text-sm">
-                {worker.governorate} - {worker.center}
-              </p>
-              <p className="text-gray-400 text-sm">
-                {t("experience")}: {worker.experience || 0} {t("years")}
+                {t("workerList4.experience")}: {worker.experience || 0} {t("workerList4.years")}
               </p>
               <button
                 onClick={(e) => {
-                  e.stopPropagation(); // Prevent card's onClick from firing
+                  e.stopPropagation();
                   handleCardClick(worker.id);
                 }}
                 className="mt-4 px-4 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-600 transition"
               >
-                {t("view_profile")}
+                {t("workerList4.view_profile")}
               </button>
             </motion.div>
           ))}
@@ -252,7 +258,7 @@ export default function WorkersList() {
             onPageChange={handlePageChange}
           />
           <p className="text-center text-gray-500 mt-2">
-            {t("showing")} {filteredWorkers.length} {t("of")} {totalRecords} {t("workers")}
+            {t("workerList4.showing")} {filteredWorkers.length} {t("workerList4.of")} {totalRecords} {t("workerList4.workers")}
           </p>
         </div>
       )}

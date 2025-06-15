@@ -22,10 +22,9 @@ export default function WorkersList() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const specializationId = 3; // قيمة ثابتة
+  const specializationId = 3;
   const itemsPerPage = 3;
 
-  // جلب المحافظات
   useEffect(() => {
     const fetchGovernorates = async () => {
       setLoading(true);
@@ -36,7 +35,7 @@ export default function WorkersList() {
         );
         setGovernorates(response.data.data?.$values || []);
       } catch (err) {
-        setError(err.message || t("failedToLoadGovernorates"));
+        setError(err.message || t("workerList.failedToLoadGovernorates"));
       } finally {
         setLoading(false);
       }
@@ -44,7 +43,6 @@ export default function WorkersList() {
     fetchGovernorates();
   }, [i18n.language, t]);
 
-  // جلب المراكز
   useEffect(() => {
     if (!selectedGovernorate) {
       setCenters([]);
@@ -61,11 +59,11 @@ export default function WorkersList() {
         );
         const centerData = response.data.data?.$values || [];
         if (centerData.length === 0) {
-          setError(t("noCentersForGovernorate"));
+          setError(t("workerList.noCentersForGovernorate"));
         }
         setCenters(centerData);
       } catch (err) {
-        setError(err.message || t("failedToLoadCenters"));
+        setError(err.message || t("workerList.failedToLoadCenters"));
       } finally {
         setLoading(false);
       }
@@ -73,7 +71,6 @@ export default function WorkersList() {
     fetchCenters();
   }, [selectedGovernorate, i18n.language, t]);
 
-  // جلب العمال
   useEffect(() => {
     const fetchWorkers = async () => {
       setLoading(true);
@@ -83,16 +80,31 @@ export default function WorkersList() {
           `https://hanshatabhalak.runasp.net/api/Craftsman/GetCraftsmenPaginated?specializationId=${1}&centerId=${selectedCenter}&PageNumber=${currentPage}&PageSize=${itemsPerPage}&language=${i18n.language}`
         );
         const workers = response.data.data?.data?.$values || [];
+
+        for (const worker of workers) {
+          let imageUrl = "";
+          try {
+            const imageResponse = await axios.get(
+              `https://hanshatabhalak.runasp.net/api/Craftsman/${worker.id}/getImage?language=${i18n.language}`
+            );
+            imageUrl = imageResponse.data.imageUrl;
+          } catch (imageErr) {
+            console.error(`Error fetching image for worker ${worker.id}:`, imageErr.message);
+            worker.imageUrl = null;
+            continue;
+          }
+          const isValidImageUrl = imageUrl && typeof imageUrl === "string" && imageUrl.startsWith("/") && !imageUrl.includes(t("workerList.no_image"));
+          worker.imageUrl = isValidImageUrl ? `https://hanshatabhalak.runasp.net${imageUrl}` : null;
+        }
+
         setWorkersData(workers);
-        console.log("استجابة الـ API:", response.data);
-        console.log("بيانات كل العمال:", workers);
 
         const totalRecordsFromApi = response.data.data?.totalRecords || 0;
         setTotalRecords(totalRecordsFromApi);
         const calculatedTotalPages = Math.ceil(totalRecordsFromApi / itemsPerPage);
         setTotalPages(calculatedTotalPages || 1);
       } catch (err) {
-        setError(err.message || t("failedToFetchWorkers"));
+        setError(err.message || t("workerList.failedToFetchWorkers"));
       } finally {
         setLoading(false);
       }
@@ -100,20 +112,14 @@ export default function WorkersList() {
     fetchWorkers();
   }, [currentPage, selectedCenter, i18n.language, t, specializationId]);
 
-  // فلترة العمال
   useEffect(() => {
     let filtered = workersData;
-
-    console.log("المحافظات:", governorates);
-    console.log("المراكز:", centers);
-    console.log("بيانات العمال قبل الفلترة:", workersData);
 
     if (selectedGovernorate) {
       const gov = governorates.find((g) => g.id === parseInt(selectedGovernorate));
       if (gov) {
         filtered = filtered.filter((worker) => worker.governorate === gov.name);
       } else {
-        console.warn("مفيش محافظة بالـ ID ده:", selectedGovernorate);
         filtered = [];
       }
     }
@@ -123,17 +129,15 @@ export default function WorkersList() {
       if (center) {
         filtered = filtered.filter((worker) => worker.center === center.name);
       } else {
-        console.warn("مفيش مركز بالـ ID ده:", selectedCenter);
         filtered = [];
       }
     }
 
     setFilteredWorkers(filtered);
-    console.log("بيانات العمال بعد الفلترة:", filtered);
   }, [workersData, selectedGovernorate, selectedCenter, governorates, centers]);
 
   const handleCardClick = (workerId) => {
-    navigate(`/workerportfolio/${workerId}`);
+    navigate( `/workerportfolio/${workerId}`);
   };
 
   const handlePageChange = (newPage) => {
@@ -155,12 +159,17 @@ export default function WorkersList() {
 
   return (
     <div className="max-w-5xl min-h-screen mx-auto p-4">
-      <h2 className="text-2xl font-bold text-center mb-6">Available Worker For Electrical Service </h2>
+      <h2 className="text-2xl font-bold text-center mb-6">
+        {t("workerList.availableWorkerForElectricalService")}
+      </h2>
 
-      <div className="flex justify-center space-x-4 mb-6">
+      <div
+        className={`flex justify-center mb-6 gap-4 ${i18n.language === "ar" ? "flex-row" : "flex-row-reverse"} justify-center space-x-6 mb-6`}
+        dir={i18n.language === "ar" ? "rtl" : "ltr"}
+      >
         <div>
           <label htmlFor="governorate" className="block text-sm font-medium text-gray-700">
-            {t("governorate")}
+            {t("workerList.governorate")}
           </label>
           <select
             id="governorate"
@@ -168,7 +177,7 @@ export default function WorkersList() {
             onChange={handleGovernorateChange}
             className="mt-1 block w-48 p-2 border rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500"
           >
-            <option value="">{t("select_governorate")}</option>
+            <option value="">{t("workerList.select_governorate")}</option>
             {governorates.map((gov) => (
               <option key={gov.id} value={gov.id}>
                 {gov.name}
@@ -179,7 +188,7 @@ export default function WorkersList() {
 
         <div>
           <label htmlFor="center" className="block text-sm font-medium text-gray-700">
-            {t("center")}
+            {t("workerList.center")}
           </label>
           <select
             id="center"
@@ -188,7 +197,7 @@ export default function WorkersList() {
             className="mt-1 block w-48 p-2 border rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500"
             disabled={!selectedGovernorate}
           >
-            <option value="">{t("select_center")}</option>
+            <option value="">{t("workerList.select_center")}</option>
             {centers.map((center) => (
               <option key={center.id} value={center.id}>
                 {center.name}
@@ -198,10 +207,19 @@ export default function WorkersList() {
         </div>
       </div>
 
-      {loading && <p className="text-center">  <i className="fa fa-spinner fa-spin"></i></p>}
-      {error && <p className="text-center text-red-500">{t("error")}: {error}</p>}
+      {loading && (
+        <div className="text-center p-4">
+          <i className="fa fa-spinner fa-spin mr-2"></i>
+          {t("workerList.loading")}
+        </div>
+      )}
+      {error && (
+        <p className="text-center text-red-500">
+          {t("workerList.error")}: {error}
+        </p>
+      )}
       {!loading && !error && filteredWorkers.length === 0 && (
-        <p className="text-center">{t("no_workers_found")}</p>
+        <p className="text-center">{t("workerList.no_workers_found")}</p>
       )}
 
       {!loading && !error && filteredWorkers.length > 0 && (
@@ -215,29 +233,35 @@ export default function WorkersList() {
               className="bg-white p-4 rounded-2xl shadow-lg flex flex-col items-center text-center transform hover:scale-105 transition-all duration-300 cursor-pointer"
               onClick={() => handleCardClick(worker.id)}
             >
-              <div className="w-24 h-24 bg-gray-200 rounded-full overflow-hidden mb-3">
-                <img
-                  src={worker.image || porofile}
-                  alt={worker.name}
-                  className="w-full h-full object-cover"
-                />
+              <div className="w-24 h-24 rounded-full overflow-hidden mb-3">
+                {worker.imageUrl ? (
+                  <img
+                    src={worker.imageUrl}
+                    alt={worker.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <span className="text-gray-500">{t("workerList.no_image")}</span>
+                  </div>
+                )}
               </div>
               <h3 className="text-lg font-semibold">{worker.name}</h3>
-              <p className="text-gray-500">{worker.specialization || t("not_specified")}</p>
+              <p className="text-gray-500">{worker.specialization || t("workerList.not_specified")}</p>
               <p className="text-gray-400 text-sm">
                 {worker.governorate} - {worker.center}
               </p>
               <p className="text-gray-400 text-sm">
-                {t("experience")}: {worker.experience || 0} {t("years")}
+                {t("workerList.experience")}: {worker.experience || 0} {t("workerList.years")}
               </p>
               <button
                 onClick={(e) => {
-                  e.stopPropagation(); // Prevent card's onClick from firing
+                  e.stopPropagation();
                   handleCardClick(worker.id);
                 }}
                 className="mt-4 px-4 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-600 transition"
               >
-                {t("view_profile")}
+                {t("workerList.view_profile")}
               </button>
             </motion.div>
           ))}
@@ -252,7 +276,7 @@ export default function WorkersList() {
             onPageChange={handlePageChange}
           />
           <p className="text-center text-gray-500 mt-2">
-            {t("showing")} {filteredWorkers.length} {t("of")} {totalRecords} {t("workers")}
+            {t("workerList.showing")} {filteredWorkers.length} {t("workerList.of")} {totalRecords} {t("workerList.workers")}
           </p>
         </div>
       )}
