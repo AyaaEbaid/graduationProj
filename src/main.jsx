@@ -8,9 +8,15 @@ import './index.css'
 import App from './App.jsx'
 import TokenContextProvider from './Context/TokenContext.jsx';
 import { ImageCraftsmanProvider } from './Context/ImageCraftsmanContext.jsx';
+import { LocationProvider } from './Context/LocationContext.jsx';
+import { SpecializationProvider } from './Context/SpecailizationContext.jsx';
+
 
 
 createRoot(document.getElementById('root')).render(
+ 
+ <LocationProvider>
+ <SpecializationProvider>
  <ImageCraftsmanProvider>
  <TokenContextProvider>
   <StrictMode>
@@ -18,5 +24,8 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>
   </TokenContextProvider>
   </ImageCraftsmanProvider>
+  </SpecializationProvider>
+  </LocationProvider>
+  
   ,
 )

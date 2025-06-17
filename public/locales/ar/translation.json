@@ -59,8 +59,21 @@
     "password_placeholder": "إعادة تعيين كلمة المرور",
     "send_link": "إرسال رابط التعيين",
     "back_to_login": "العودة لتسجيل الدخول",
-   "Email_is_Required":" الايميل مطلوب"
-  },
+   "Email_is_Required":" الايميل مطلوب",
+    "validation": {
+      "email_required": "البريد الإلكتروني مطلوب",
+      "email_invalid": "البريد الإلكتروني غير صحيح",
+      "password_required": "كلمة المرور مطلوبة",
+      "password_length": "كلمة المرور يجب أن تتكون على الأقل من 8 حروف",
+      "password_invalid": "كلمة المرور غير صالحة"
+    },
+    "messages":{
+      "success": "تم تغيير كلمة المرور بنجاح",
+      "failed": "فشل تغيير كلمة المرور"
+
+    }
+     
+},
   "rate": {
     "title": "كيف كانت تجربتك؟",
     "excellent": "ممتاز",
@@ -325,31 +338,64 @@
     "noBookingsYet": "لم تقم بأي حجوزات بعد"
   },
   
+
   "header": {
     "craftsmanProfile": {
-      "title": "ملف الحرفي",
-      "specialty": "التخصص",
-      "rating": "التقييم",
-      "experience": "الخبرة",
-      "completedJobs": "الأعمال المكتملة",
-      "aboutTab": "نبذة",
+      "loading": "جاري التحميل...",
+      "unauthorized": "وصول غير مصرح به",
+      "noData": "لا توجد بيانات متاحة",
+      "aboutTab": "حول",
       "portfolioTab": "معرض الأعمال",
       "location": "الموقع",
-      "about": "نبذة عن",
       "availability": "التوفر",
-      "available": "متاح",
-      "notAvailable": "غير متاح",
-      "requestService": "طلب خدمة",
-      "loading": "جارٍ التحميل...",
-      "noData": "لا توجد بيانات للحرفي.",
-      "unauthorized": "يرجى تسجيل الدخول لعرض ملفك الشخصي."
+      "available": "متوفر",
+      "notAvailable": "غير متوفر",
+      "description": "الوصف",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "experience": "سنوات الخبرة",
+      "completedJobs": "الوظائف المكتملة",
+      "changeImage": "تغيير الصورة",
+      "addCatalog": "إضافة إلى المعرض",
+      "editMyProfile": "تعديل ملفي الشخصي",
+      "saveChanges": "حفظ التغييرات",
+      "close": "إغلاق",
+      "saveSuccess": "تم حفظ الملف الشخصي بنجاح",
+      "saveError": "خطأ أثناء حفظ الملف الشخصي",
+      "imageUpdated": "تم تحديث الصورة بنجاح",
+      "imageUpdateError": "خطأ أثناء تحديث الصورة",
+      "catalogUpdated": "تم تحديث المعرض بنجاح",
+      "catalogUpdateError": "خطأ أثناء تحديث المعرض",
+      "noImage": "لا توجد صورة",
+      "noCatalog": "لا يوجد معرض"
+    },
+    
+  "resetpassword": {
+    "title": "إعادة تعيين كلمة المرور",
+    "email_placeholder": "البريد الإلكتروني",
+    "password_placeholder": "كلمة المرور الجديدة",
+    "send_link": "إعادة تعيين كلمة المرور",
+    "back_to_login": "الرجوع إلى تسجيل الدخول",
+    "validation": {
+      "email_required": "البريد الإلكتروني مطلوب",
+      "email_invalid": "البريد الإلكتروني غير صحيح",
+      "password_required": "كلمة المرور مطلوبة",
+      "password_length": "كلمة المرور يجب أن تتكون على الأقل من 8 حروف",
+      "password_invalid": "كلمة المرور غير صالحة"
+    },
+    "messages": {
+      "success": "تم تغيير كلمة المرور بنجاح",
+      "failed": "فشل تغيير كلمة المرور"
     }
+ 
+  }
+  }
+}
+
+
+
+
+
   
-}
 
 
-
-
-
-
-}

@@ -53,14 +53,7 @@
     "all_rights_reserved": "All rights reserved.",
     "copyright": "© 2025 Hanshtabhalk."
   },
-  "resetpassword": {
-    "title": "Reset Password",
-    "email_placeholder": "Your Email",
-    "password_placeholder": "Reset Password",
-    "send_link": "Send Reset Link",
-    "back_to_login": "Back to Login",
-    "Email_is_Required":"Email is Required"
-  },
+ 
   "rate": {
     "title": "How was your experience?",
     "excellent": "Excellent",
@@ -327,36 +320,60 @@
     "noBookings": "No Bookings Available",
     "noBookingsYet": "You have no bookings yet"
   },
-  
 
   "header": {
     "craftsmanProfile": {
-      "title": "Craftsman Profile",
-      "specialty": "Specialty",
-      "rating": "Rating",
-      "experience": "Experience",
-      "completedJobs": "Completed Jobs",
+      "changeImage": "Change Image",
+      "imageUpdated": "Profile image updated successfully!",
+      "imageUpdateError": "Error updating profile image.",
+      "addCatalog": "Add Your Catalog",
+      "catalogUpdated": "Catalog updated successfully!",
+      "catalogUpdateError": "Error updating catalog.",
+      "editMyProfile": "Edit My Profile",
+      "saveChanges": "Save Changes",
+      "close": "Close",
+      "saveSuccess": "Profile updated successfully!",
+      "saveError": "Error saving profile",
+      "loading": "Loading...",
+      "unauthorized": "Unauthorized",
+      "noData": "No profile data available",
       "aboutTab": "About",
       "portfolioTab": "Portfolio",
       "location": "Location",
-      "about": "About",
       "availability": "Availability",
       "available": "Available",
       "notAvailable": "Not Available",
-      "requestService": "Request Service",
-      "loading": "Loading...",
-      "noData": "No craftsman data available.",
-      "unauthorized": "Please log in to view your profile."
+      "description": "Description",
+      "email": "Email",
+      "phone": "Phone",
+      "experience": "Years of Experience",
+      "completedJobs": "Completed Jobs",
+      "governorateId": "Governorate",
+      "centerId": "Center",
+      "addProfileData": "Please add your profile data.",
+      "noImage": "No Image",
+      "noCatalog":"No Catalog" 
     }
+  },
   
-
-}
-
-
-
-
-
-  
+  "resetpassword": {
+    "title": "Reset Password",
+    "email_placeholder": "Email",
+    "password_placeholder": "New Password",
+    "send_link": "Reset Password",
+    "back_to_login": "Back to Login",
+    "validation": {
+      "email_required": "Email is required",
+      "email_invalid": "Invalid email address",
+      "password_required": "Password is required",
+      "password_length": "Password must be at least 8 characters",
+      "password_invalid": "Invalid password format"
+    },
+    "messages": {
+      "success": "Your password has been reset successfully",
+      "failed": "Failed to reset password"
+    }
+  }
 
 
 

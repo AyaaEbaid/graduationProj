@@ -28,8 +28,9 @@ import WorkerPortfolio from './components/WorkerPortfolio/WorkerPortfolio';
 
 import Booking from './components/Booking/Booking';
 import BookingUser from './components/bookingUser/bookingUser';
-import BookingCraftsman from './components/BookingCraftsman/BookingCraftsman';
+
 import CraftsmanProfile from './components/CrafrsmanProfile/CraftsmanProfile';
+import BookingCraftsman from './components/BookingCraftsman/BookingCraftsman';
 
 
 function App() {
@@ -66,7 +67,8 @@ function App() {
     {path:"serviceworker4",element:<PortectedRoutes><Serviceworker4/></PortectedRoutes>},
     {path:"serviceworker5",element:<PortectedRoutes><Serviceworker5/></PortectedRoutes>},
     {path:"book",element:<PortectedRoutes><bookingUser/></PortectedRoutes>},
-    {path:"bookCraft",element:<BookingCraftsman/>},
+    {path:"bookcraft",element:<BookingCraftsman/>},
+    
    
 
     {path:"worker",element:<PortectedRoutes><Serviceworker/></PortectedRoutes>},
@@ -84,7 +86,7 @@ function App() {
 
   </RouterProvider>
   <div className=''>
-  <ToastContainer position='top-center' className="pt-20" />
+  <ToastContainer position='top-center' className="pt-16  text-center " />
   </div>
  
 
