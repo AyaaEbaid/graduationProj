@@ -1,256 +1,310 @@
+// AccountSettings.jsx
+import React, { useContext, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { FaEdit, FaCamera, FaUser, FaEnvelope, FaPhone, FaMapMarker } from "react-icons/fa";
+import { TokenContext } from "../../Context/TokenContext";
+import { LocationContext } from "../../Context/LocationContext";
 import axios from "axios";
-import profile from "../../assets/profile.png";
+import { toast } from "react-toastify";
+import Modal from "react-modal";
+import profileImage from "../../assets/profile.png"; 
+
+// إعداد react-modal لتحسين الوصولية
+Modal.setAppElement('#root'); // استبدل '#root' بمعرف العنصر الجذر في تطبيقك
+
+// عنوان الخادم الأساسي للصور
+const BASE_URL = "https://hanshatabhalak.runasp.net";
 
 export default function AccountSettings() {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [governorate, setGovernorate] = useState(""); // هنسيبه فاضي عشان يظهر "Select Government"
-  const [district, setDistrict] = useState(""); // هنسيبه فاضي عشان يظهر "Select Centers"
-  const [governorates, setGovernorates] = useState([]);
-  const [governorateDetails, setGovernorateDetails] = useState(null); // هنسيبه لكن مش هنعرضه
-  const [centers, setCenters] = useState([]);
-  const [centerDetails, setCenterDetails] = useState(null); // هنسيبه لكن مش هنعرضه
-  const language = "en"; // اللغة محددة إنجليزي
+  const { t, i18n } = useTranslation();
+  const { token } = useContext(TokenContext);
+  const { governorates, centers, fetchCenters } = useContext(LocationContext);
 
-  // جلب المحافظات لما الصفحة تفتح
+  const [userData, setUserData] = useState(null);
+  const [editData, setEditData] = useState({});
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  // جلب بيانات العميل
+  const fetchCustomerData = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/api/Customer/GetCustomer?language=${i18n.language}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data?.data) {
+        setUserData(response.data.data);
+        if (response.data.data.governorateId) {
+          fetchCenters(response.data.data.governorateId);
+        } else {
+          toast.warn(t("Governorate ID not found, centers not fetched"));
+        }
+      } else {
+        throw new Error("Invalid response structure");
+      }
+    } catch (error) {
+      console.error("Fetch failed:", error.response || error.message);
+      toast.error(t("Failed to fetch profile"));
+    }
+  };
+
   useEffect(() => {
-    const fetchGovernorates = async () => {
-      try {
-        const response = await axios.get(
-            `https://hanshatabhalak.runasp.net/api/Governorate?language=${language}`
-        );
-        console.log("Governorate API Response:", response.data);
-        const governorateData = response.data.data?.$values || [];
-        setGovernorates(governorateData);
-        // مش هنختار أي محافظة تلقائيًا، هنسيب الـ dropdown فاضي
-      } catch (error) {
-        console.error("Error fetching governorates:", error);
-        if (error.response) {
-          console.log("Error Response:", error.response.data);
-        }
-      }
-    };
-    fetchGovernorates();
-  }, [language]);
+    fetchCustomerData();
+  }, [i18n.language, token, fetchCustomerData]);
 
-  // دالة جلب تفاصيل المحافظة (هنسيبها لو عايزة تستخدميها بعدين)
-  const fetchGovernorateDetails = async (govId) => {
-    if (govId) {
-      try {
-        const response = await axios.get(
-          `https://hanshatabhalak.runasp.net/api/Governorate/${govId}?language=${language}`
-        );
-        console.log("Governorate Details Response:", response.data);
-        setGovernorateDetails(response.data.data);
-      } catch (error) {
-        console.error("Error fetching governorate details:", error);
-        setGovernorateDetails(null);
-      }
-    } else {
-      setGovernorateDetails(null);
-    }
-  };
-
-  // دالة جلب المراكز بناءً على المحافظة
-  const fetchCenters = async (govId) => {
-    if (govId) {
-      try {
-        const response = await axios.get(
-          `https://hanshatabhalak.runasp.net/api/Center?govGovernoratId=${govId}&language=${language}`
-        );
-        console.log("Centers API Response:", response.data);
-        const centerData = response?.data?.data?.$values || [];
-        console.log("Parsed Centers Data:", centerData);
-        setCenters(centerData);
-        // مش هنختار أي مركز تلقائيًا، هنسيب الـ dropdown فاضي
-        setDistrict(""); // نضمن إن الـ district فاضي في البداية
-      } catch (error) {
-        console.error("Error fetching centers:", error);
-        if (error.response) {
-          console.log("Error Response:", error.response.data);
-        }
-        setCenters([]);
-        setDistrict("");
-      }
-    } else {
-      setCenters([]);
-      setDistrict("");
-    }
-  };
-
-  // دالة جلب تفاصيل المركز (هنسيبها لو عايزة تستخدميها بعدين)
-  const fetchCenterDetails = async (centerId) => {
-    if (centerId) {
-      try {
-        const response = await axios.get(
-          `https://hanshatabhalak.runasp.net/api/Center/${centerId}?language=${language}`
-        );
-        console.log("Center Details Response:", response.data);
-        setCenterDetails(response.data.data);
-      } catch (error) {
-        console.error("Error fetching center details:", error);
-        setCenterDetails(null);
-      }
-    } else {
-      setCenterDetails(null);
-    }
-  };
-
-  // التعامل مع تغيير المحافظة
-  const handleGovernorateChange = (e) => {
-    if (!e || !e.target) {
-      console.error("Event or event.target is undefined in handleGovernorateChange");
+  // التعامل مع التعديل
+  const handleEdit = () => {
+    if (!userData) {
+      toast.error(t("User data not loaded"));
       return;
     }
-    const govId = e.target.value;
-    console.log("handleGovernorateChange called with ID:", govId);
-    setGovernorate(govId);
-    fetchGovernorateDetails(govId); // هنسيب الدالة لكن مش هنعرض الـ details
-    fetchCenters(govId);
-    setDistrict(""); // نضمن إن الـ district يترست لما المحافظة تتغير
-  };
-
-  // التعامل مع تغيير المركز
-  const handleDistrictChange = (e) => {
-    if (!e || !e.target) {
-      console.error("Event or event.target is undefined in handleDistrictChange");
-      return;
-    }
-    const centerId = e.target.value;
-    console.log("handleDistrictChange called with ID:", centerId);
-    setDistrict(centerId);
-    fetchCenterDetails(centerId); // هنسيب الدالة لكن مش هنعرض الـ details
-  };
-
-  const handleSave = () => {
-    console.log("Saving...", {
-      name,
-      phone,
-      governorate,
-      district,
+    setEditData({
+      fullName: userData.name,
+      email: userData.email,
+      phoneNumber: userData.phone,
+      governorateId: userData.governorateId,
+      centerId: userData.centerId,
     });
+    if (userData.governorateId) {
+      fetchCenters(userData.governorateId);
+    }
+    setIsEditModalOpen(true);
   };
 
-  // لوج للتأكد من تحديث المراكز
-  useEffect(() => {
-    console.log("Centers State Updated:", centers);
-  }, [centers]);
+  // تحديث البيانات
+  const handleUpdate = async () => {
+    try {
+      await axios.put(
+        `${BASE_URL}/api/Auth/update-profile?language=${i18n.language}`,
+        editData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast.success(t("Updated successfully"));
+      setIsEditModalOpen(false);
+      fetchCustomerData();
+    } catch (error) {
+      console.error("Update failed:", error.response || error.message);
+      toast.error(t("Update failed"));
+    }
+  };
+
+  // التعامل مع رفع الصورة
+const handleImageChange = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  if (!userData?.id) {
+    toast.error(t("User ID not found"));
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", file); 
+
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/api/Customer/${userData.id}/uploadImage?language=${i18n.language}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      }
+    );
+    toast.success(t("Profile image updated successfully"));
+    fetchCustomerData();
+  } catch (error) {
+    console.error("Upload failed:", error.response || error.message);
+    toast.error(
+      error?.response?.data?.message || t("Failed to upload image")
+    );
+  }
+};
+
+  if (!userData) return <div className="text-center mt-10">{t("Loading")}...</div>;
 
   return (
     <motion.div
-      className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-10"
+      className="min-h-screen bg-gray-50 flex items-center justify-center p-4"
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      transition={{ duration: 0.4 }}
     >
-      <div className="w-full max-w-4xl bg-white shadow-lg rounded-xl p-8">
-        <h2 className="text-2xl font-bold text-teal-600 mb-8 text-center">
-          Account Settings
-        </h2>
-
-        <div className="flex flex-col md:flex-row items-start gap-8">
-          {/* صورة الملف الشخصي */}
-          <div className="flex flex-col items-center min-w-[180px]">
+      <div className="w-full max-w-2xl bg-white shadow-lg rounded-xl p-8">
+        {/* قسم الصورة الشخصية والاسم */}
+        <div className="flex items-center mb-6">
+          <div className="relative mr-6">
             <img
-              src={profile}
+              src={userData.image ? `${BASE_URL}${userData.image}` : profileImage}
               alt="Profile"
-              className="w-32 h-32 rounded-full object-cover shadow-md"
+              className="w-32 h-32 rounded-full object-cover shadow-md border-4 border-white"
             />
-            <button className="mt-4 text-sm font-medium text-teal-600 border border-teal-600 px-6 py-1.5 rounded hover:bg-teal-600 hover:text-white transition">
-              Change
-            </button>
+            <label
+              htmlFor="upload-photo"
+              className="absolute bottom-2 right-2 bg-white border-2 border-teal-500 rounded-full p-2 text-teal-600 shadow-md cursor-pointer"
+            >
+              <FaCamera />
+            </label>
+            <input
+              type="file"
+              id="upload-photo"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageChange}
+            />
           </div>
-
-          {/* النموذج */}
-          <div className="flex-1 space-y-6">
-            {/* حقل الاسم */}
-            <InputField label="Name" value={name} onChange={setName} />
-
-            {/* حقل الهاتف */}
-            <InputField label="Phone" value={phone} onChange={setPhone} />
-
-            {/* dropdown للمحافظات */}
-            <Dropdown
-              label="Governorate"
-              value={governorate || ""}
-              setValue={handleGovernorateChange}
-              options={governorates.map((gov) => ({
-                id: gov.id.toString(),
-                name: gov.name,
-              }))}
-              disabled={governorates.length === 0}
-            />
-
-            {/* dropdown للمراكز */}
-            <Dropdown
-              label="District"
-              value={district || ""}
-              setValue={handleDistrictChange}
-              options={centers.map((center) => ({
-                id: center.id.toString(),
-                name: center.name,
-              }))}
-              disabled={governorate === "" || centers.length === 0} // معطل لحد ما تختاري محافظة
-            />
-
-            {/* زر الحفظ */}
-            <div className="text-right pt-4">
-              <motion.button
-                whileTap={{ scale: 0.97 }}
-                onClick={handleSave}
-                className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-2 rounded-md transition font-medium text-sm"
-              >
-                Save Changes
-              </motion.button>
-            </div>
+          <div>
+            <h2 className="text-xl font-bold text-teal-600">{userData.name}</h2>
+            <p className="text-gray-500">User</p>
           </div>
         </div>
+
+        {/* قسم بيانات المستخدم */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold text-teal-600 mb-4">{t("Personal Information")}</h2>
+          <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+            <FaUser className="text-teal-600 mr-3" />
+            <span className="font-medium">{t("Full Name")}</span>
+            <span className="ml-auto text-gray-600">{userData.name}</span>
+          </div>
+          <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+            <FaEnvelope className="text-teal-600 mr-3" />
+            <span className="font-medium">{t("Email")}</span>
+            <span className="ml-auto text-gray-600">{userData.email}</span>
+          </div>
+          <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+            <FaPhone className="text-teal-600 mr-3" />
+            <span className="font-medium">{t("Phone Number")}</span>
+            <span className="ml-auto text-gray-600">{userData.phone}</span>
+          </div>
+          <div className="flex items-center p-3 bg-gray-50 rounded-lg">
+            <FaMapMarker className="text-teal-600 mr-3" />
+            <span className="font-medium">{t("Location")}</span>
+            <span className="ml-auto text-gray-600">{userData.governorate}</span>
+          </div>
+          <button
+            onClick={handleEdit}
+            className="mt-6 w-full bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded flex items-center justify-center gap-2"
+          >
+            <FaEdit />
+            {t("Edit My Profile")}
+          </button>
+        </div>
       </div>
-    </motion.div>
-  );
-}
 
-function InputField({ label, value, onChange, type = "text" }) {
-  return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-      <label className="min-w-[100px] text-gray-700 font-medium text-sm shrink-0">
-        {label}
-      </label>
-      <input
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="flex-1 bg-gray-50 border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
-      />
-    </div>
-  );
-}
-
-function Dropdown({ label, value, setValue, options, disabled = false }) {
-  return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-      <label className="min-w-[100px] text-gray-700 font-medium text-sm shrink-0">
-        {label}
-      </label>
-      <select
-        value={value}
-        onChange={(e) => {
-          console.log(`Dropdown ${label} onChange triggered with value:`, e.target.value);
-          setValue(e);
-        }}
-        disabled={disabled}
-        className="flex-1 bg-gray-50 border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 transition disabled:bg-gray-200 disabled:cursor-not-allowed"
+      {/* نافذة التعديل */}
+      <Modal
+        isOpen={isEditModalOpen}
+        onRequestClose={() => setIsEditModalOpen(false)}
+        className="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto mt-20"
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
       >
-        {/* نغير النص عشان يظهر "Select Government" أو "Select Centers" حسب الـ label */}
-        <option value="">{`Select ${label === "Governorate" ? "Government" : "Centers"}`}</option>
-        {options.map((opt) => (
-          <option key={opt.id} value={opt.id}>
-            {opt.name}
-          </option>
-        ))}
-      </select>
-    </div>
+        
+
+        <div className="space-y-4">
+          <div className="flex items-center border border-gray-300 rounded px-4 py-2 focus-within:ring-2 focus-within:ring-teal-500">
+            <FaUser className="text-teal-600 mr-3" />
+            <input
+              type="text"
+              placeholder={t("Full Name")}
+              value={editData.fullName || ""}
+              onChange={(e) => setEditData({ ...editData, fullName: e.target.value })}
+              className="w-full border-none focus:outline-none"
+              aria-label={t("Full Name")}
+            />
+          </div>
+          
+          <div className="flex items-center border border-gray-300 rounded px-4 py-2 focus-within:ring-2 focus-within:ring-teal-500">
+            <FaEnvelope className="text-teal-600 mr-3" />
+            <input
+              type="email"
+              placeholder={t("Email")}
+              value={editData.email || ""}
+              onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+              className="w-full border-none focus:outline-none"
+              aria-label={t("Email")}
+            />
+          </div>
+          <div className="flex items-center border border-gray-300 rounded px-4 py-2 focus-within:ring-2 focus-within:ring-teal-500">
+            <FaPhone className="text-teal-600 mr-3" />
+            <input
+              type="text"
+              placeholder={t("Phone")}
+              value={editData.phoneNumber || ""}
+              onChange={(e) => setEditData({ ...editData, phoneNumber: e.target.value })}
+              className="w-full border-none focus:outline-none"
+              aria-label={t("Phone")}
+            />
+          </div>
+          <div className="flex items-center border border-gray-300 rounded px-4 py-2 focus-within:ring-2 focus-within:ring-teal-500">
+            <FaMapMarker className="text-teal-600 mr-3" />
+            <select
+              value={editData.governorateId || ""}
+              onChange={(e) => {
+                const id = parseInt(e.target.value);
+                setEditData({ ...editData, governorateId: id, centerId: 0 });
+                fetchCenters(id);
+              }}
+              className="w-full border-none focus:outline-none"
+              aria-label={t("Select Governorate")}
+            >
+              <option value="">{t("Select Governorate")}</option>
+              {governorates.map((gov) => (
+                <option key={gov.id} value={gov.id}>
+                  {gov.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex items-center border border-gray-300 rounded px-4 py-2 focus-within:ring-2 focus-within:ring-teal-500">
+            <FaMapMarker className="text-teal-600 mr-3" />
+            <select
+              value={editData.centerId || ""}
+              onChange={(e) =>
+                setEditData({ ...editData, centerId: parseInt(e.target.value) })
+              }
+              className="w-full border-none focus:outline-none"
+              aria-label={t("Select Center")}
+            >
+              <option value="">{t("Select Center")}</option>
+              {centers.map((center) => (
+                <option key={center.id} value={center.id}>
+                  {center.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex justify-end gap-4 mt-4">
+            <button
+              onClick={() => setIsEditModalOpen(false)}
+              className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded"
+            >
+              {t("Cancel")}
+            </button>
+            <button
+              onClick={handleUpdate}
+              className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded"
+            >
+              {t("Save")}
+            </button>
+          
+          </div>
+         </div>
+       
+      </Modal>
+      
+      
+
+      
+    </motion.div>
   );
 }

@@ -31,6 +31,7 @@ import BookingUser from './components/bookingUser/bookingUser';
 
 import CraftsmanProfile from './components/CrafrsmanProfile/CraftsmanProfile';
 import BookingCraftsman from './components/BookingCraftsman/BookingCraftsman';
+import BookingSupervisor from './components/BookingSupervisor/BookingSupervisor';
 
 
 function App() {
@@ -68,6 +69,7 @@ function App() {
     {path:"serviceworker5",element:<PortectedRoutes><Serviceworker5/></PortectedRoutes>},
     {path:"book",element:<PortectedRoutes><bookingUser/></PortectedRoutes>},
     {path:"bookcraft",element:<BookingCraftsman/>},
+    {path:"booksuper",element:<BookingSupervisor/>},
     
    
 

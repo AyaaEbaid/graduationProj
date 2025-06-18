@@ -309,34 +309,52 @@
   "of": "من",
   "workers": "عمال"
 },
+
   "booking": {
-  "title": "حجوزاتي",
-    "booking": " الحجز",
-    "craftsManName": "اسم الحرفي",
-    "noCraftsman": "لا يوجد حرفي",
-    "bookDate": "تاريخ الحجز",
+    "title": "حجوزاتي",
+    "booking": "الحجز",
+    "craftsManName": "الصانع",
+    "noCraftsman": "لا يوجد صانع",
+    "bookDate": "التاريخ",
     "noDate": "لا يوجد تاريخ",
     "services": "الخدمات",
+    "servicesCount": "خدمات",
     "noServices": "لا توجد خدمات",
-    "totalPrice": "الإجمالي",
+    "totalPrice": "السعر الإجمالي",
     "noBookings": "لا توجد حجوزات",
-    "noBookingsYet": "لا يوجد أي حجوزات حتى الآن"
+    "noBookingsYet": "ليس لديك أي حجوزات بعد",
+    "governorate": "المحافظة",
+    "center": "المركز"
+  }
+
   
-},
+,
+
 
   "bookingcraftsman": {
     "title": "حجوزاتي",
-    "bookingNumber": " الحجز",
-    "customerName": "العميل",
-    "noCustomer": "لا يوجد اسم للعميل",
+    "bookingNumber": "حجز",
+    "customerName": "اسم العميل",
+    "noCustomer": "غير محدد",
     "bookDate": "تاريخ الحجز",
-    "noDate": "لا يوجد تاريخ محدد",
-    "services": "الخدمات",
-    "noServices": "لم يتم إضافة خدمات",
+    "noDate": "غير محدد",
+    "governorate": "المحافظة",
+    "center": "المركز",
+    "services": "الخدمات:",
+    "servicesCount": "خدمة",
+    "servicesCount_plural": "خدمات",
+    "noServices": "لا توجد خدمات",
     "totalPrice": "السعر الإجمالي",
+    "commission": "العمولة",
+    "totalCommission": "الأجرة الإجمالية",
+    "currency": "جنيه",
+    "error": "خطأ",
+    "errorFetchingBookings": "حدث خطأ أثناء جلب الحجوزات",
+    "loginRequired": "يرجى تسجيل الدخول",
     "noBookings": "لا توجد حجوزات",
-    "noBookingsYet": "لم تقم بأي حجوزات بعد"
-  },
+    "noBookingsYet": "لم تقم بإضافة أي حجوزات حتى الآن"
+  }
+,
   
 
   "header": {
@@ -370,6 +388,7 @@
       "noCatalog": "لا يوجد معرض"
     },
     
+    
   "resetpassword": {
     "title": "إعادة تعيين كلمة المرور",
     "email_placeholder": "البريد الإلكتروني",
@@ -389,7 +408,45 @@
     }
  
   }
+  },
+  
+  "bookingSupervisor": {
+    "title": "إدارة الحجوزات",
+    "loginRequired": "يجب تسجيل الدخول لعرض الحجوزات",
+    "errorFetchingBookings": "حدث خطأ أثناء جلب الحجوزات",
+    "error": "خطأ",
+    "noBookings": "لا توجد حجوزات متاحة",
+    "totalCommission": "إجمالي العمولة",
+    "currency": "جنيه مصري",
+    "bookingNumber": "رقم الحجز",
+    "customerName": "اسم العميل",
+    "noCustomer": "لا يوجد عميل",
+    "craftsmanName": "اسم الحرفي",
+    "noCraftsman": "لا يوجد حرفي",
+    "bookDate": "تاريخ الحجز",
+    "noDate": "لا يوجد تاريخ",
+    "governorate": "المحافظة",
+    "center": "المركز",
+    "services": "الخدمات:",
+    "servicesCount": "خدمة",
+    "noServices": "لا توجد خدمات",
+    "commission": "العمولة",
+    "totalPrice": "السعر الإجمالي",
+    "edit": "تعديل",
+    "editBooking": "تعديل الحجز",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "saveSuccess": "تم حفظ التغييرات بنجاح",
+    "saveError": "حدث خطأ أثناء حفظ التغييرات",
+    "unauthorized": "غير مصرح، يرجى تسجيل الدخول مرة أخرى",
+    "invalidData": "البيانات غير صالحة",
+    "pending": "قيد الانتظار",
+    "inProgress": "قيد التنفيذ",
+    "confirmed": "مؤكد",
+    "completed": "مكتمل",
+    "canceled": "ملغى"
   }
+
 }
 
 

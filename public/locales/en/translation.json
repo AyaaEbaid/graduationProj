@@ -293,33 +293,51 @@
     "workers": "workers"
   },
   
+  
   "booking": {
     "title": "My Bookings",
-    "booking": "Booking ",
-    "craftsManName": "Craftsman Name",
-    "noCraftsman": "No craftsman assigned",
-    "bookDate": "Booking Date",
-    "noDate": "No date",
+    "booking": "Booking",
+    "craftsManName": "Craftsman",
+    "noCraftsman": "No Craftsman",
+    "bookDate": "Date",
+    "noDate": "No Date",
     "services": "Services",
-    "noServices": "No services found",
+    "servicesCount": "services",
+    "noServices": "No Services",
     "totalPrice": "Total Price",
-    "noBookings": "No bookings available",
-    "noBookingsYet": "You have no bookings yet"
-  },
+    "noBookings": "No Bookings",
+    "noBookingsYet": "You don't have any bookings yet",
+    "governorate": "Governorate",
+    "center": "Center"
+  }
+,
 
+  
   "bookingcraftsman": {
-    "title": "My Bookings",
+    "title": "My Booking",
     "bookingNumber": "Booking",
-    "customerName": "Customer",
-    "noCustomer": "No customer name available",
+    "customerName": "Customer Name",
+    "noCustomer": "Not specified",
     "bookDate": "Booking Date",
-    "noDate": "No date provided",
-    "services": "Services",
-    "noServices": "No services added",
+    "noDate": "Not specified",
+    "governorate": "Governorate",
+    "center": "Center",
+    "services": "Services:",
+    "servicesCount": "service",
+    "servicesCount_plural": "services:",
+    "noServices": "No services",
     "totalPrice": "Total Price",
-    "noBookings": "No Bookings Available",
-    "noBookingsYet": "You have no bookings yet"
-  },
+    "commission": "Commission",
+    "totalCommission": "Total Commission",
+    "currency": "EGP",
+    "error": "Error",
+    "errorFetchingBookings": "Error fetching bookings",
+    "loginRequired": "Login required",
+    "noBookings": "No bookings",
+    "noBookingsYet": "You haven't added any bookings yet"
+  }
+
+,
 
   "header": {
     "craftsmanProfile": {
@@ -373,7 +391,45 @@
       "success": "Your password has been reset successfully",
       "failed": "Failed to reset password"
     }
+  },
+  
+  "bookingSupervisor": {
+    "title": "Booking Management",
+    "loginRequired": "You must be logged in to view bookings",
+    "errorFetchingBookings": "An error occurred while fetching bookings",
+    "error": "Error",
+    "noBookings": "No bookings available",
+    "totalCommission": "Total Commission",
+    "currency": "EGP",
+    "bookingNumber": "Booking Number",
+    "customerName": "Customer Name",
+    "noCustomer": "No Customer",
+    "craftsmanName": "Craftsman Name",
+    "noCraftsman": "No Craftsman",
+    "bookDate": "Booking Date",
+    "noDate": "No Date",
+    "governorate": "Governorate",
+    "center": "Center",
+    "services": "Services:",
+    "servicesCount": "Service(s)",
+    "noServices": "No Services",
+    "commission": "Commission",
+    "totalPrice": "Total Price",
+    "edit": "Edit",
+    "editBooking": "Edit Booking",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saveSuccess": "Changes saved successfully",
+    "saveError": "An error occurred while saving changes",
+    "unauthorized": "Unauthorized, please log in again",
+    "invalidData": "Invalid data provided",
+    "pending": "Pending",
+    "inProgress": "In Progress",
+    "confirmed": "Confirmed",
+    "completed": "Completed",
+    "canceled": "Canceled"
   }
+
 
 
 
