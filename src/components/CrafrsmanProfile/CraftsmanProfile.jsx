@@ -9,6 +9,8 @@ import { LocationContext } from "../../Context/LocationContext";
 
 const CraftsmanProfile = () => {
   const { t, i18n } = useTranslation();
+  const [isProfileImageOpen, setIsProfileImageOpen] = useState(false);
+
   const { token } = useContext(TokenContext);
   const {
     governorates,
@@ -18,65 +20,45 @@ const CraftsmanProfile = () => {
     fetchGovernorateDetails,
     fetchCenters,
     fetchCenterDetails,
-    // loading, // شيلنا loading من هنا
     error,
   } = useContext(LocationContext);
+
   const [workerData, setWorkerData] = useState(null);
-  // const [loadingProfile, setLoadingProfile] = useState(true); // شيلنا loadingProfile
   const [errorProfile, setErrorProfile] = useState(null);
   const [activeTab, setActiveTab] = useState("about");
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editedData, setEditedData] = useState(null);
-  const [isProfileImageOpen, setIsProfileImageOpen] = useState(false);
 
   useEffect(() => {
     Modal.setAppElement("#root");
-    // document.documentElement.dir = i18n.language === "ar" ? "rtl" : "ltr";
   }, [i18n.language]);
 
   useEffect(() => {
     const fetchCraftsman = async () => {
       if (!token) {
         setErrorProfile("unauthorized");
-        // setLoadingProfile(false); // شيلنا setLoadingProfile
         return;
       }
-
       try {
         const response = await axios.get(
           `https://hanshatabhalak.runasp.net/api/Craftsman/GetCraftsman?language=${i18n.language}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         const data = response.data.data;
-
-        console.log("API Response:", response.data);
-
         if (!data || Object.keys(data).length === 0) {
           setErrorProfile("noData");
-          setWorkerData(null);
           return;
         }
-
         await fetchGovernorateDetails(data.governorateId);
         await fetchCenters(data.governorateId);
         await fetchCenterDetails(data.centerId);
-
         const governorateName = selectedGovernorate?.name || (i18n.language === "ar" ? "غير معروف" : "Unknown");
         const centerName = selectedCenter?.name || (i18n.language === "ar" ? "غير معروف" : "Unknown");
-
         setWorkerData({
-          id: data.id,
-          name: data.name || (i18n.language === "ar" ? "غير معروف" : "Unknown"),
-          email: data.email || (i18n.language === "ar" ? "غير محدد" : "Not specified"),
-          phone: data.phone || (i18n.language === "ar" ? "غير محدد" : "Not specified"),
-          specialization: data.specialization,
+          ...data,
           governorate: governorateName,
           center: centerName,
-          description: data.description || (i18n.language === "ar" ? "لا يوجد وصف" : "No description"),
-          experience: data.experience || 0,
-          completedJobs: data.completedJobs || 0,
-          availability: data.availability || false,
           image: data.image ? `https://hanshatabhalak.runasp.net${data.image}` : null,
           cataloge: Array.isArray(data.cataloge?.images?.$values)
             ? data.cataloge.images.$values.map((img, index) => ({
@@ -87,136 +69,117 @@ const CraftsmanProfile = () => {
         });
         setEditedData({
           id: data.id,
-          name: data.name || (i18n.language === "ar" ? "غير معروف" : "Unknown"),
-          phone: data.phone || (i18n.language === "ar" ? "غير محدد" : "Not specified"),
+          name: data.name || "",
+          phone: data.phone || "",
           governorateId: data.governorateId || 0,
           centerId: data.centerId || 0,
-          description: data.description || (i18n.language === "ar" ? "لا يوجد وصف" : "No description"),
+          description: data.description || "",
           experience: data.experience || 0,
           availability: data.availability || false,
         });
         setErrorProfile(null);
       } catch (error) {
-        console.error("Error fetching craftsman data:", error.message, error.response);
-        setErrorProfile(error.response?.status === 401 ? "unauthorized" : "noData");
-        setWorkerData(null);
-      } 
-      // finally { setLoadingProfile(false); } // شيلنا finally
+        console.error("Error fetching craftsman:", error);
+        setErrorProfile("noData");
+      }
     };
-
     fetchCraftsman();
-  }, [token, i18n.language, fetchGovernorateDetails, fetchCenters, fetchCenterDetails]);
-
-  const openLightbox = (index) => setSelectedImageIndex(index);
-  const closeLightbox = () => setSelectedImageIndex(null);
-
-  const prevImage = () => {
-    if (workerData && workerData.cataloge && workerData.cataloge.length > 0) {
-      setSelectedImageIndex((prev) => (prev - 1 + workerData.cataloge.length) % workerData.cataloge.length);
-    }
-  };
-
-  const nextImage = () => {
-    if (workerData && workerData.cataloge && workerData.cataloge.length > 0) {
-      setSelectedImageIndex((prev) => (prev + 1) % workerData.cataloge.length);
-    }
-  };
-
-  const handleImageUpload = async (event) => {
-    const file = event.target.files[0];
-    if (file && workerData) {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      try {
-        const response = await axios.post(
-          `https://hanshatabhalak.runasp.net/api/Craftsman/${workerData.id}/uploadImage?language=${i18n.language}`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const newImage = response.data.data;
-        setWorkerData((prev) => ({ ...prev, image: `https://hanshatabhalak.runasp.net${newImage}` }));
-        toast.success(t("header.craftsmanProfile.imageUpdated"), { position: "top-center", autoClose: 3000 });
-      } catch (error) {
-        console.error("Error updating image:", error);
-        toast.error(t("header.craftsmanProfile.imageUpdateError"), { position: "top-center", autoClose: 3000 });
-      }
-    }
-  };
-
-  const handleCatalogUpload = async (event) => {
-    const files = event.target.files;
-    if (files.length > 0 && workerData) {
-      const formData = new FormData();
-      for (let i = 0; i < files.length; i++) {
-        formData.append("files", files[i]);
-      }
-
-      try {
-        const response = await axios.post(
-          `https://hanshatabhalak.runasp.net/api/Cataloge/${workerData.id}/uploadCatalogeImages?language=${i18n.language}`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const newImages = Array.from(files).map((file, index) => ({
-          url: URL.createObjectURL(file),
-          alt: `${i18n.language === "ar" ? "صورة معرض " : "Portfolio Image "}${workerData.cataloge.length + index + 1}`,
-        }));
-        setWorkerData((prev) => ({
-          ...prev,
-          cataloge: [...(prev.cataloge || []), ...newImages],
-        }));
-        toast.success(response.data.message || t("header.craftsmanProfile.catalogUpdated"), { position: "top-center", autoClose: 3000 });
-      } catch (error) {
-        console.error("Error uploading catalog images:", error);
-        if (error.response && error.response.status === 405) {
-          toast.error(`${t("header.craftsmanProfile.catalogUpdateError")} (405: Method Not Allowed)`, { position: "top-center", autoClose: 3000 });
-        } else {
-          toast.error(t("header.craftsmanProfile.catalogUpdateError"), { position: "top-center", autoClose: 3000 });
-        }
-      }
-    }
-  };
+  }, [token, i18n.language]);
 
   const handleSaveChanges = async () => {
     if (!editedData) return;
     try {
+      const { id, ...updateData } = editedData;
       const response = await axios.put(
-        `https://hanshatabhalak.runasp.net/api/Craftsman/${editedData.id}`,
-        {
-          id: editedData.id,
-          name: editedData.name,
-          phone: editedData.phone,
-          governorateId: editedData.governorateId,
-          centerId: editedData.centerId,
-          description: editedData.description,
-          experience: editedData.experience,
-        },
+        `https://hanshatabhalak.runasp.net/api/Craftsman/${id}?language=${i18n.language}`,
+        updateData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setWorkerData((prev) => (prev ? { ...prev, ...editedData } : null));
+      setWorkerData((prev) => (prev ? { ...prev, ...updateData } : null));
       setIsEditModalOpen(false);
-      toast.success(t("header.craftsmanProfile.saveSuccess"), { position: "top-center", autoClose: 3000 });
+      toast.success(response.data?.message || t("header.craftsmanProfile.saveSuccess"), {
+        position: "top-center", autoClose: 3000,
+      });
     } catch (error) {
-      console.error("Error saving changes:", error.message);
-      toast.error(`${t("header.craftsmanProfile.saveError")} (Status: ${error.response?.status || 500})`, { position: "top-center", autoClose: 3000 });
+      console.error("Error updating profile:", error);
+      toast.error(error.response?.data?.message || t("header.craftsmanProfile.saveError"), {
+        position: "top-center", autoClose: 3000,
+      });
     }
   };
+  const handleCatalogUpload = async (files) => {
+  const formData = new FormData();
+  for (let file of files) {
+    formData.append("images", file); // حسب المطلوب من الـ backend
+  }
 
-  // شيلنا الـ loading state كله
+  try {
+    const response = await axios.put(
+      `https://hanshatabhalak.runasp.net/api/Cataloge/1059/uploadCatalogeImages?language=en`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`, // لو عندك توكن من context
+        },
+      }
+    );
+
+    console.log(" Upload success:", response.data);
+    toast.success(t("header.craftsmanProfile.uploadSuccess"), {
+  position: "top-center",
+  autoClose: 3000,
+});
+
+  } catch (error) {
+    console.error(" Upload failed:", error);
+    toast.error(t("header.craftsmanProfile.uploadFailed"), {
+  position: "top-center",
+  autoClose: 3000,
+});
+
+    
+  }
+};
+
+const handleImageUpload = async (event) => {
+  const file = event.target.files[0];
+  if (file && workerData) {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await axios.post(
+        `https://hanshatabhalak.runasp.net/api/Craftsman/${workerData.id}/uploadImage?language=${i18n.language}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const newImage = response.data.data;
+      setWorkerData((prev) => ({
+        ...prev,
+        image: `https://hanshatabhalak.runasp.net${newImage}`,
+      }));
+      toast.success(t("header.craftsmanProfile.imageUpdated"), {
+        position: "top-center",
+        autoClose: 3000,
+      });
+    } catch (error) {
+      console.error("Error updating image:", error);
+      toast.error(t("header.craftsmanProfile.imageUpdateError"), {
+        position: "top-center",
+        autoClose: 3000,
+      });
+    }
+  }
+};
+
   if (errorProfile || error) return <div className="text-center p-6">{t(`header.craftsmanProfile.${errorProfile || error}`)}</div>;
   if (!workerData) return <div className="text-center p-6">{t("header.craftsmanProfile.noData")}</div>;
-
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4">
       <div className="max-w-5xl mx-auto bg-white shadow-md rounded-lg p-10" style={{ minHeight: "100vh" }}>
@@ -357,7 +320,8 @@ const CraftsmanProfile = () => {
                   accept="image/*"
                   style={{ display: "none" }}
                   id="catalogUpload"
-                  onChange={handleCatalogUpload}
+                 onChange={(e) => handleCatalogUpload(e.target.files)}
+
                   multiple
                 />
                 <button

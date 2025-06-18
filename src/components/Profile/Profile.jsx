@@ -1,19 +1,23 @@
-// AccountSettings.jsx
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { FaEdit, FaCamera, FaUser, FaEnvelope, FaPhone, FaMapMarker } from "react-icons/fa";
+import {
+  FaEdit,
+  FaCamera,
+  FaUser,
+  FaEnvelope,
+  FaPhone,
+  FaMapMarker,
+} from "react-icons/fa";
 import { TokenContext } from "../../Context/TokenContext";
 import { LocationContext } from "../../Context/LocationContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Modal from "react-modal";
-import profileImage from "../../assets/profile.png"; 
+import profileImage from "../../assets/profile.png";
 
-// إعداد react-modal لتحسين الوصولية
-Modal.setAppElement('#root'); // استبدل '#root' بمعرف العنصر الجذر في تطبيقك
+Modal.setAppElement("#root");
 
-// عنوان الخادم الأساسي للصور
 const BASE_URL = "https://hanshatabhalak.runasp.net";
 
 export default function AccountSettings() {
@@ -25,8 +29,8 @@ export default function AccountSettings() {
   const [editData, setEditData] = useState({});
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  // جلب بيانات العميل
-  const fetchCustomerData = async () => {
+  // ✅ حلي المشكلة هنا باستخدام useCallback
+  const fetchCustomerData = useCallback(async () => {
     try {
       const response = await axios.get(
         `${BASE_URL}/api/Customer/GetCustomer?language=${i18n.language}`,
@@ -50,13 +54,12 @@ export default function AccountSettings() {
       console.error("Fetch failed:", error.response || error.message);
       toast.error(t("Failed to fetch profile"));
     }
-  };
+  }, [i18n.language, token, fetchCenters, t]);
 
   useEffect(() => {
     fetchCustomerData();
-  }, [i18n.language, token, fetchCustomerData]);
+  }, [fetchCustomerData]);
 
-  // التعامل مع التعديل
   const handleEdit = () => {
     if (!userData) {
       toast.error(t("User data not loaded"));
@@ -75,7 +78,6 @@ export default function AccountSettings() {
     setIsEditModalOpen(true);
   };
 
-  // تحديث البيانات
   const handleUpdate = async () => {
     try {
       await axios.put(
@@ -96,40 +98,40 @@ export default function AccountSettings() {
     }
   };
 
-  // التعامل مع رفع الصورة
-const handleImageChange = async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  if (!userData?.id) {
-    toast.error(t("User ID not found"));
-    return;
-  }
+    if (!userData?.id) {
+      toast.error(t("User ID not found"));
+      return;
+    }
 
-  const formData = new FormData();
-  formData.append("file", file); 
+    const formData = new FormData();
+    formData.append("file", file);
 
-  try {
-    const res = await axios.post(
-      `${BASE_URL}/api/Customer/${userData.id}/uploadImage?language=${i18n.language}`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, 
-        },
-      }
-    );
-    toast.success(t("Profile image updated successfully"));
-    fetchCustomerData();
-  } catch (error) {
-    console.error("Upload failed:", error.response || error.message);
-    toast.error(
-      error?.response?.data?.message || t("Failed to upload image")
-    );
-  }
-};
+    try {
+      await axios.post(
+        `${BASE_URL}/api/Customer/${userData.id}/uploadImage?language=${i18n.language}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast.success(t("Profile image updated successfully"));
+      fetchCustomerData();
+    } catch (error) {
+      console.error("Upload failed:", error.response || error.message);
+      toast.error(
+        error?.response?.data?.message || t("Failed to upload image")
+      );
+    }
+  };
 
-  if (!userData) return <div className="text-center mt-10">{t("Loading")}...</div>;
+  if (!userData)
+    return <div className="text-center mt-10">{t("Loading")}...</div>;
 
   return (
     <motion.div
@@ -139,11 +141,13 @@ const handleImageChange = async (e) => {
       transition={{ duration: 0.4 }}
     >
       <div className="w-full max-w-2xl bg-white shadow-lg rounded-xl p-8">
-        {/* قسم الصورة الشخصية والاسم */}
+        {/* صورة واسم */}
         <div className="flex items-center mb-6">
           <div className="relative mr-6">
             <img
-              src={userData.image ? `${BASE_URL}${userData.image}` : profileImage}
+              src={
+                userData.image ? `${BASE_URL}${userData.image}` : profileImage
+              }
               alt="Profile"
               className="w-32 h-32 rounded-full object-cover shadow-md border-4 border-white"
             />
@@ -167,9 +171,11 @@ const handleImageChange = async (e) => {
           </div>
         </div>
 
-        {/* قسم بيانات المستخدم */}
+        {/* بيانات المستخدم */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-teal-600 mb-4">{t("Personal Information")}</h2>
+          <h2 className="text-xl font-semibold text-teal-600 mb-4">
+            {t("Personal Information")}
+          </h2>
           <div className="flex items-center p-3 bg-gray-50 rounded-lg">
             <FaUser className="text-teal-600 mr-3" />
             <span className="font-medium">{t("Full Name")}</span>
@@ -200,51 +206,51 @@ const handleImageChange = async (e) => {
         </div>
       </div>
 
-      {/* نافذة التعديل */}
+      {/* المودال للتعديل */}
       <Modal
         isOpen={isEditModalOpen}
         onRequestClose={() => setIsEditModalOpen(false)}
         className="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto mt-20"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
       >
-        
-
         <div className="space-y-4">
-          <div className="flex items-center border border-gray-300 rounded px-4 py-2 focus-within:ring-2 focus-within:ring-teal-500">
+          <div className="flex items-center border border-gray-300 rounded px-4 py-2">
             <FaUser className="text-teal-600 mr-3" />
             <input
               type="text"
               placeholder={t("Full Name")}
               value={editData.fullName || ""}
-              onChange={(e) => setEditData({ ...editData, fullName: e.target.value })}
+              onChange={(e) =>
+                setEditData({ ...editData, fullName: e.target.value })
+              }
               className="w-full border-none focus:outline-none"
-              aria-label={t("Full Name")}
             />
           </div>
-          
-          <div className="flex items-center border border-gray-300 rounded px-4 py-2 focus-within:ring-2 focus-within:ring-teal-500">
+          <div className="flex items-center border border-gray-300 rounded px-4 py-2">
             <FaEnvelope className="text-teal-600 mr-3" />
             <input
               type="email"
               placeholder={t("Email")}
               value={editData.email || ""}
-              onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+              onChange={(e) =>
+                setEditData({ ...editData, email: e.target.value })
+              }
               className="w-full border-none focus:outline-none"
-              aria-label={t("Email")}
             />
           </div>
-          <div className="flex items-center border border-gray-300 rounded px-4 py-2 focus-within:ring-2 focus-within:ring-teal-500">
+          <div className="flex items-center border border-gray-300 rounded px-4 py-2">
             <FaPhone className="text-teal-600 mr-3" />
             <input
               type="text"
               placeholder={t("Phone")}
               value={editData.phoneNumber || ""}
-              onChange={(e) => setEditData({ ...editData, phoneNumber: e.target.value })}
+              onChange={(e) =>
+                setEditData({ ...editData, phoneNumber: e.target.value })
+              }
               className="w-full border-none focus:outline-none"
-              aria-label={t("Phone")}
             />
           </div>
-          <div className="flex items-center border border-gray-300 rounded px-4 py-2 focus-within:ring-2 focus-within:ring-teal-500">
+          <div className="flex items-center border border-gray-300 rounded px-4 py-2">
             <FaMapMarker className="text-teal-600 mr-3" />
             <select
               value={editData.governorateId || ""}
@@ -254,7 +260,6 @@ const handleImageChange = async (e) => {
                 fetchCenters(id);
               }}
               className="w-full border-none focus:outline-none"
-              aria-label={t("Select Governorate")}
             >
               <option value="">{t("Select Governorate")}</option>
               {governorates.map((gov) => (
@@ -264,7 +269,7 @@ const handleImageChange = async (e) => {
               ))}
             </select>
           </div>
-          <div className="flex items-center border border-gray-300 rounded px-4 py-2 focus-within:ring-2 focus-within:ring-teal-500">
+          <div className="flex items-center border border-gray-300 rounded px-4 py-2">
             <FaMapMarker className="text-teal-600 mr-3" />
             <select
               value={editData.centerId || ""}
@@ -272,7 +277,6 @@ const handleImageChange = async (e) => {
                 setEditData({ ...editData, centerId: parseInt(e.target.value) })
               }
               className="w-full border-none focus:outline-none"
-              aria-label={t("Select Center")}
             >
               <option value="">{t("Select Center")}</option>
               {centers.map((center) => (
@@ -282,7 +286,6 @@ const handleImageChange = async (e) => {
               ))}
             </select>
           </div>
-
           <div className="flex justify-end gap-4 mt-4">
             <button
               onClick={() => setIsEditModalOpen(false)}
@@ -296,15 +299,9 @@ const handleImageChange = async (e) => {
             >
               {t("Save")}
             </button>
-          
           </div>
-         </div>
-       
+        </div>
       </Modal>
-      
-      
-
-      
     </motion.div>
   );
 }
