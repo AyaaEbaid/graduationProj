@@ -10,13 +10,13 @@ import TokenContextProvider from './Context/TokenContext.jsx';
 import { ImageCraftsmanProvider } from './Context/ImageCraftsmanContext.jsx';
 import { LocationProvider } from './Context/LocationContext.jsx';
 import { SpecializationProvider } from './Context/SpecailizationContext.jsx';
-import { UserProvider } from './Context/userContext.jsx';
+
 
 
 
 
 createRoot(document.getElementById('root')).render(
-<UserProvider>
+
  <LocationProvider>
   
  <SpecializationProvider>
@@ -29,7 +29,7 @@ createRoot(document.getElementById('root')).render(
   </ImageCraftsmanProvider>
   </SpecializationProvider>
   </LocationProvider>
-  </UserProvider>
+
   
   ,
 )
