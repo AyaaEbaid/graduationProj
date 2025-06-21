@@ -40,7 +40,7 @@ import ProfileSupervisor from './components/ProfileSupervisor/ProfileSupervisor'
 function App() {
   
 useEffect(() => {
-  toast.success("✅ التوست شغالة");
+  toast.success(" التوست شغالة");
 }, []);
   
   // const {i18n}=useTranslation()
@@ -57,14 +57,13 @@ useEffect(() => {
     
     {path:"login",element:<ProtectedAuth><Login/></ProtectedAuth>},
     {path:"register",element:<ProtectedAuth><Register/></ProtectedAuth>},
-    {path:"book",element:<BookingUser/>},
+    {path:"book",element:<PortectedRoutes><BookingUser/></PortectedRoutes>},
 
     {path:"profile",element:<PortectedRoutes><Profile/></PortectedRoutes>},
     {path:"services",element:<PortectedRoutes><Servicedetails/></PortectedRoutes>},
     {path:"rate",element:<PortectedRoutes><Rate/></PortectedRoutes>},
-    // {path:"/*",element:<PortectedRoutes><AdminDashboard/></PortectedRoutes>},
-    {path:"/supervisor/*",element:<SupervisorDashboard/>},
-    {path:"/dashboardcraftsman/*",element:<DashboardCraftsman/>},
+
+
     
  {path:"forgetpassword",element:<Forgetpassword/>},
     
@@ -75,18 +74,18 @@ useEffect(() => {
     {path:"serviceworker4",element:<PortectedRoutes><Serviceworker4/></PortectedRoutes>},
     {path:"serviceworker5",element:<PortectedRoutes><Serviceworker5/></PortectedRoutes>},
     {path:"book",element:<PortectedRoutes><bookingUser/></PortectedRoutes>},
-    {path:"bookcraft",element:<BookingCraftsman/>},
-    {path:"booksuper",element:<BookingSupervisor/>},
-    {path:"superprofile",element:<ProfileSupervisor/>},
+    {path:"bookcraft",element:<PortectedRoutes><BookingCraftsman/></PortectedRoutes>},
+    {path:"booksuper",element:<PortectedRoutes><BookingSupervisor/></PortectedRoutes>},
+    {path:"superprofile",element:<PortectedRoutes><ProfileSupervisor/></PortectedRoutes>},
    
   
     
    
 
     {path:"worker",element:<PortectedRoutes><Serviceworker/></PortectedRoutes>},
-    {path:"crafProfile",element:<CraftsmanProfile/>},
-    {path:"workerportfolio/:id",element:<WorkerPortfolio/>},
-    {path:"booking/:id",element:<Booking/>},
+    {path:"crafProfile",element:<PortectedRoutes><CraftsmanProfile/></PortectedRoutes>},
+    {path:"workerportfolio/:id",element:<PortectedRoutes><WorkerPortfolio/></PortectedRoutes>},
+    {path:"booking/:id",element:<PortectedRoutes><Booking/></PortectedRoutes>},
     
     {path:"*",element:<Notfound/>}
   ]
