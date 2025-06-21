@@ -59,8 +59,21 @@
     "password_placeholder": "إعادة تعيين كلمة المرور",
     "send_link": "إرسال رابط التعيين",
     "back_to_login": "العودة لتسجيل الدخول",
-   "Email_is_Required":" الايميل مطلوب"
-  },
+   "Email_is_Required":" الايميل مطلوب",
+    "validation": {
+      "email_required": "البريد الإلكتروني مطلوب",
+      "email_invalid": "البريد الإلكتروني غير صحيح",
+      "password_required": "كلمة المرور مطلوبة",
+      "password_length": "كلمة المرور يجب أن تتكون على الأقل من 8 حروف",
+      "password_invalid": "كلمة المرور غير صالحة"
+    },
+    "messages":{
+      "success": "تم تغيير كلمة المرور بنجاح",
+      "failed": "فشل تغيير كلمة المرور"
+
+    }
+     
+},
   "rate": {
     "title": "كيف كانت تجربتك؟",
     "excellent": "ممتاز",
@@ -296,60 +309,208 @@
   "of": "من",
   "workers": "عمال"
 },
+"bookingModal": {
+  "chooseServices": "اختر الخدمات",
+  "loading": "جاري تحميل الخدمات...",
+  "noServices": "لا توجد خدمات متاحة.",
+  "total": "الإجمالي:",
+  "chooseDate": "اختر التاريخ",
+  "book": "احجز",
+  "bookingSuccess": "تم الحجز بنجاح",
+  "bookingFailed": "فشل في الحجز، يرجى المحاولة مرة أخرى.",
+  "selectServiceError": "يرجى اختيار خدمة واحدة على الأقل.",
+  "selectDateError": "يرجى اختيار تاريخ.",
+  "invalidCraftsman": "معرف الحرفي غير صالح. يرجى التحقق من بيانات العامل."
+}
+,
+
   "booking": {
-  "title": "حجوزاتي",
-    "booking": " الحجز",
-    "craftsManName": "اسم الحرفي",
-    "noCraftsman": "لا يوجد حرفي",
-    "bookDate": "تاريخ الحجز",
+    "title": "حجوزاتي",
+    "booking": "الحجز",
+    "craftsManName": "الصانع",
+    "noCraftsman": "لا يوجد صانع",
+    "bookDate": "التاريخ",
     "noDate": "لا يوجد تاريخ",
     "services": "الخدمات",
+    "servicesCount": "خدمات",
     "noServices": "لا توجد خدمات",
-    "totalPrice": "الإجمالي",
+    "totalPrice": "السعر الإجمالي",
     "noBookings": "لا توجد حجوزات",
-    "noBookingsYet": "لا يوجد أي حجوزات حتى الآن"
+    "noBookingsYet": "ليس لديك أي حجوزات بعد",
+    "governorate": "المحافظة",
+    "center": "المركز"
+  }
+
   
-},
+,
+
 
   "bookingcraftsman": {
     "title": "حجوزاتي",
-    "bookingNumber": " الحجز",
-    "customerName": "العميل",
-    "noCustomer": "لا يوجد اسم للعميل",
+    "bookingNumber": "حجز",
+    "customerName": "اسم العميل",
+    "noCustomer": "غير محدد",
     "bookDate": "تاريخ الحجز",
-    "noDate": "لا يوجد تاريخ محدد",
-    "services": "الخدمات",
-    "noServices": "لم يتم إضافة خدمات",
+    "noDate": "غير محدد",
+    "governorate": "المحافظة",
+    "center": "المركز",
+    "services": "الخدمات:",
+    "servicesCount": "خدمة",
+    "servicesCount_plural": "خدمات",
+    "noServices": "لا توجد خدمات",
     "totalPrice": "السعر الإجمالي",
+    "commission": "العمولة",
+    "totalCommission": "الأجرة الإجمالية",
+    "currency": "جنيه",
+    "error": "خطأ",
+    "errorFetchingBookings": "حدث خطأ أثناء جلب الحجوزات",
+    "loginRequired": "يرجى تسجيل الدخول",
     "noBookings": "لا توجد حجوزات",
-    "noBookingsYet": "لم تقم بأي حجوزات بعد"
-  },
+    "noBookingsYet": "لم تقم بإضافة أي حجوزات حتى الآن"
+  }
+,
   
+
   "header": {
     "craftsmanProfile": {
-      "title": "ملف الحرفي",
-      "specialty": "التخصص",
-      "rating": "التقييم",
-      "experience": "الخبرة",
-      "completedJobs": "الأعمال المكتملة",
-      "aboutTab": "نبذة",
+      "loading": "جاري التحميل...",
+      "unauthorized": "وصول غير مصرح به",
+      "noData": "لا توجد بيانات متاحة",
+      "aboutTab": "حول",
       "portfolioTab": "معرض الأعمال",
       "location": "الموقع",
-      "about": "نبذة عن",
       "availability": "التوفر",
-      "available": "متاح",
-      "notAvailable": "غير متاح",
-      "requestService": "طلب خدمة",
-      "loading": "جارٍ التحميل...",
-      "noData": "لا توجد بيانات للحرفي.",
-      "unauthorized": "يرجى تسجيل الدخول لعرض ملفك الشخصي."
+      "available": "متوفر",
+      "notAvailable": "غير متوفر",
+      "description": "الوصف",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "experience": "سنوات الخبرة",
+      "completedJobs": "الوظائف المكتملة",
+      "changeImage": "تغيير الصورة",
+      "addCatalog": "إضافة إلى المعرض",
+      "editMyProfile": "تعديل ملفي الشخصي",
+      "saveChanges": "حفظ التغييرات",
+      "close": "إغلاق",
+      "saveSuccess": "تم حفظ الملف الشخصي بنجاح",
+      "saveError": "خطأ أثناء حفظ الملف الشخصي",
+      "imageUpdated": "تم تحديث الصورة بنجاح",
+      "imageUpdateError": "خطأ أثناء تحديث الصورة",
+      "catalogUpdated": "تم تحديث المعرض بنجاح",
+      "catalogUpdateError": "خطأ أثناء تحديث المعرض",
+      "noImage": "لا توجد صورة",
+      "noCatalog": "لا يوجد معرض"
+    },
+    
+    
+  "resetpassword": {
+    "title": "إعادة تعيين كلمة المرور",
+    "email_placeholder": "البريد الإلكتروني",
+    "password_placeholder": "كلمة المرور الجديدة",
+    "send_link": "إعادة تعيين كلمة المرور",
+    "back_to_login": "الرجوع إلى تسجيل الدخول",
+    "validation": {
+      "email_required": "البريد الإلكتروني مطلوب",
+      "email_invalid": "البريد الإلكتروني غير صحيح",
+      "password_required": "كلمة المرور مطلوبة",
+      "password_length": "كلمة المرور يجب أن تتكون على الأقل من 8 حروف",
+      "password_invalid": "كلمة المرور غير صالحة"
+    },
+    "messages": {
+      "success": "تم تغيير كلمة المرور بنجاح",
+      "failed": "فشل تغيير كلمة المرور"
     }
+ 
+  }
+  },
+  "profileSupervisor": {
+    "supervisor": "المشرف",
+    "personalInfo": "المعلومات الشخصية",
+    "fullName": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "governorate": "المحافظة",
+    "center": "المركز",
+    "editProfile": "تعديل الملف الشخصي",
+    "save": "حفظ",
+    "saving": "جاري الحفظ...",
+    "cancel": "إلغاء",
+    "updateSuccess": "تم تحديث البيانات بنجاح",
+    "updateError": "حدث خطأ أثناء التحديث",
+    "fetchError": "فشل في تحميل بيانات المشرف",
+    "loading": "جارٍ التحميل",
+    "centerNotFound": "غير محدد"
+  }
+
+,
   
+  "bookingSupervisor": {
+    "title": "إدارة الحجوزات",
+    "loginRequired": "يجب تسجيل الدخول لعرض الحجوزات",
+    "errorFetchingBookings": "حدث خطأ أثناء جلب الحجوزات",
+    "error": "خطأ",
+    "noBookings": "لا توجد حجوزات متاحة",
+    "totalCommission": "إجمالي العمولة",
+    "currency": "جنيه مصري",
+    "bookingNumber": "رقم الحجز",
+    "customerName": "اسم العميل",
+    "noCustomer": "لا يوجد عميل",
+    "craftsmanName": "اسم الحرفي",
+    "noCraftsman": "لا يوجد حرفي",
+    "bookDate": "تاريخ الحجز",
+    "noDate": "لا يوجد تاريخ",
+    "governorate": "المحافظة",
+    "center": "المركز",
+    "services": "الخدمات:",
+    "servicesCount": "خدمة",
+    "noServices": "لا توجد خدمات",
+    "commission": "العمولة",
+    "totalPrice": "السعر الإجمالي",
+    "edit": "تعديل",
+    "editBooking": "تعديل الحجز",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "saveSuccess": "تم حفظ التغييرات بنجاح",
+    "saveError": "حدث خطأ أثناء حفظ التغييرات",
+    "unauthorized": "غير مصرح، يرجى تسجيل الدخول مرة أخرى",
+    "invalidData": "البيانات غير صالحة",
+    "pending": "قيد الانتظار",
+    "inProgress": "قيد التنفيذ",
+    "confirmed": "مؤكد",
+    "status":"الحاله",
+    "completed": "مكتمل",
+    "canceled": "ملغى"
+  },
+  
+  "workerPortfolio": {
+  "noImage": "لا توجد صورة",
+  "noCatalog": "لا يوجد كتالوج",
+  "loading": "جاري التحميل...",
+  "noWorkerData": "لا توجد بيانات للعامل",
+  "rating": "التقييم",
+  "experience": "الخبرة (بالسنوات)",
+  "completedJobs": "الوظائف المكتملة",
+  "location": "الموقع",
+  "about": "نبذة عن العامل",
+  "services": "الخدمات",
+  "noServices": "لا توجد خدمات متاحة",
+  "requestService": "طلب الخدمة",
+  "tabs": {
+    "about": "عن العامل",
+    "portfolio": "الكتالوج",
+    "reviews": "التقييمات"
+  },
+  "noReviews": "لا توجد تقييمات حالياً"
+}
+
+
+
 }
 
 
 
 
 
+  
 
-}
+

@@ -24,7 +24,7 @@ export default function Register() {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.language === "ar";
 
-  // جلب المحافظات
+  //  المحافظات
   useEffect(() => {
     const fetchGovernorates = async () => {
       try {
@@ -161,13 +161,19 @@ export default function Register() {
     fetchCenterDetails(centerId);
   };
 
-  const handleRoleChange = (e) => {
-    const role = e.target.value;
-    formik.setFieldValue("role", role);
-    if (role !== "craftsman") {
-      formik.setFieldValue("specialization", "");
-    }
-  };
+const handleRoleChange = (e) => {
+  const role = e.target.value;
+  formik.setFieldValue("role", role);
+  if (role !== "craftsman") {
+    formik.setFieldValue("specialization", "");
+  }
+
+  
+  setTimeout(() => {
+    formik.validateForm();
+  }, 0);
+};
+
 
   // جلب التخصصات مع معالجة كلا الحالتين (قائمة أو كائن واحد)
   useEffect(() => {
@@ -219,17 +225,18 @@ export default function Register() {
   async function registerForm(values) {
     setIsLoading(true);
     try {
-      const payload = {
-        fullName: values.fullName,
-        governorateId: parseInt(values.governorate) || 0,
-        centerId: parseInt(values.center) || 0,
-        phoneNumber: values.phoneNumber,
-        email: values.email,
-        password: values.password,
-        confirmPassword: values.confirmPassword,
-        role: values.role,
-        specializationId: values.specialization ? parseInt(values.specialization) : 0,
-      };
+     const payload = {
+  fullName: values.fullName,
+  governorateId: parseInt(values.governorate) || 0,
+  centerId: parseInt(values.center) || 0,
+  phoneNumber: values.phoneNumber,
+  email: values.email,
+  password: values.password,
+  confirmPassword: values.confirmPassword,
+  role: values.role,
+  specializationId: values.role === "craftsman" ? parseInt(values.specialization) : undefined, // ✅ هنا التعديل
+};
+
 
       const response = await axios.post(
         `https://hanshatabhalak.runasp.net/api/Auth/register?language=${i18n.language}`,
@@ -250,7 +257,6 @@ export default function Register() {
     }
   }
 
-  // بقية الكود (واجهة المستخدم) يبقى كما هو مع تعديل طفيف في خيارات التخصصات
   return (
     <div className="flex items-center justify-center">
       <motion.div
@@ -559,7 +565,7 @@ export default function Register() {
               <button
                 type="submit"
                 className="w-full p-2 mt-3 rounded transition duration-300 bg-teal-600 hover:bg-teal-700 text-white"
-                disabled={!(formik.isValid && formik.dirty)}
+                disabled={!(formik.isValid)}
               >
                 {t("register.signUp")}
               </button>

@@ -1,5 +1,7 @@
 import './App.css'
+import './axiosGlobal'
 import { ToastContainer } from "react-toastify";
+import { toast } from 'react-toastify';
 import Home from './components/Home/Home'
 import Layout from './components/Layout/Layout'
 import { BrowserRouter,RouterProvider, createBrowserRouter } from 'react-router-dom'
@@ -28,11 +30,18 @@ import WorkerPortfolio from './components/WorkerPortfolio/WorkerPortfolio';
 
 import Booking from './components/Booking/Booking';
 import BookingUser from './components/bookingUser/bookingUser';
-import BookingCraftsman from './components/BookingCraftsman/BookingCraftsman';
+
 import CraftsmanProfile from './components/CrafrsmanProfile/CraftsmanProfile';
+import BookingCraftsman from './components/BookingCraftsman/BookingCraftsman';
+import BookingSupervisor from './components/BookingSupervisor/BookingSupervisor';
+import ProfileSupervisor from './components/ProfileSupervisor/ProfileSupervisor';
 
 
 function App() {
+  
+useEffect(() => {
+  toast.success(" التوست شغالة");
+}, []);
   
   // const {i18n}=useTranslation()
   // useEffect(() => {
@@ -48,14 +57,13 @@ function App() {
     
     {path:"login",element:<ProtectedAuth><Login/></ProtectedAuth>},
     {path:"register",element:<ProtectedAuth><Register/></ProtectedAuth>},
-    {path:"book",element:<BookingUser/>},
+    {path:"book",element:<PortectedRoutes><BookingUser/></PortectedRoutes>},
 
     {path:"profile",element:<PortectedRoutes><Profile/></PortectedRoutes>},
     {path:"services",element:<PortectedRoutes><Servicedetails/></PortectedRoutes>},
     {path:"rate",element:<PortectedRoutes><Rate/></PortectedRoutes>},
-    // {path:"/*",element:<PortectedRoutes><AdminDashboard/></PortectedRoutes>},
-    {path:"/supervisor/*",element:<SupervisorDashboard/>},
-    {path:"/dashboardcraftsman/*",element:<DashboardCraftsman/>},
+
+
     
  {path:"forgetpassword",element:<Forgetpassword/>},
     
@@ -66,13 +74,18 @@ function App() {
     {path:"serviceworker4",element:<PortectedRoutes><Serviceworker4/></PortectedRoutes>},
     {path:"serviceworker5",element:<PortectedRoutes><Serviceworker5/></PortectedRoutes>},
     {path:"book",element:<PortectedRoutes><bookingUser/></PortectedRoutes>},
-    {path:"bookCraft",element:<BookingCraftsman/>},
+    {path:"bookcraft",element:<PortectedRoutes><BookingCraftsman/></PortectedRoutes>},
+    {path:"booksuper",element:<PortectedRoutes><BookingSupervisor/></PortectedRoutes>},
+    {path:"superprofile",element:<PortectedRoutes><ProfileSupervisor/></PortectedRoutes>},
+   
+  
+    
    
 
     {path:"worker",element:<PortectedRoutes><Serviceworker/></PortectedRoutes>},
-    {path:"crafProfile",element:<CraftsmanProfile/>},
-    {path:"workerportfolio/:id",element:<WorkerPortfolio/>},
-    {path:"booking/:id",element:<Booking/>},
+    {path:"crafProfile",element:<PortectedRoutes><CraftsmanProfile/></PortectedRoutes>},
+    {path:"workerportfolio/:id",element:<PortectedRoutes><WorkerPortfolio/></PortectedRoutes>},
+    {path:"booking/:id",element:<PortectedRoutes><Booking/></PortectedRoutes>},
     
     {path:"*",element:<Notfound/>}
   ]
@@ -81,11 +94,17 @@ function App() {
   return (
     <>
   <RouterProvider router={routers}>
-
+<ToastContainer
+  position="top-center"
+  autoClose={3000}
+  hideProgressBar={false}
+  newestOnTop
+  closeOnClick
+  pauseOnHover
+  draggable
+/>
   </RouterProvider>
-  <div className=''>
-  <ToastContainer position='top-center' className="pt-20" />
-  </div>
+  
  
 
     </>
