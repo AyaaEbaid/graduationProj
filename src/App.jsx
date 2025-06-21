@@ -29,7 +29,8 @@ import ProtectedAuth from './components/ProtectedAuth/ProtectedAuth';
 import WorkerPortfolio from './components/WorkerPortfolio/WorkerPortfolio';
 
 import Booking from './components/Booking/Booking';
-import BookingUser from './components/bookingUser/bookingUser';
+import BookingUser from './components/BookingUser/BookingUser';
+// import BookingUser from './components/bookingUser/bookingUser';
 
 import CraftsmanProfile from './components/CrafrsmanProfile/CraftsmanProfile';
 import BookingCraftsman from './components/BookingCraftsman/BookingCraftsman';
@@ -73,7 +74,9 @@ useEffect(() => {
     {path:"serviceworker3",element:<PortectedRoutes><Serviceworker3/></PortectedRoutes>},
     {path:"serviceworker4",element:<PortectedRoutes><Serviceworker4/></PortectedRoutes>},
     {path:"serviceworker5",element:<PortectedRoutes><Serviceworker5/></PortectedRoutes>},
-    {path:"book",element:<PortectedRoutes><bookingUser/></PortectedRoutes>},
+    {path:"book",element:<PortectedRoutes><BookingUser/></PortectedRoutes>},
+    // {path:"book",element:<PortectedRoutes><bookingUser/></PortectedRoutes>},
+
     {path:"bookcraft",element:<PortectedRoutes><BookingCraftsman/></PortectedRoutes>},
     {path:"booksuper",element:<PortectedRoutes><BookingSupervisor/></PortectedRoutes>},
     {path:"superprofile",element:<PortectedRoutes><ProfileSupervisor/></PortectedRoutes>},
