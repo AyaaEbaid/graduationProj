@@ -9,6 +9,9 @@ import profileImage from "../../assets/profile.png";
 import photo from '../../assets/photo.jpg'
 import { TokenContext } from "../../Context/TokenContext";
 
+import { AuthContext } from "../../Context/AuthContext";
+
+
 
 export default function Navbar() {
 
@@ -24,7 +27,7 @@ export default function Navbar() {
   const { token, setToken } = useContext(TokenContext);
    
    
-    const{userData}=useContext(UserContext)
+    const{userData}=useContext(AuthContext)
      console.log("userdata",userData);
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);

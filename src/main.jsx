@@ -10,6 +10,8 @@ import TokenContextProvider from './Context/TokenContext.jsx';
 import { ImageCraftsmanProvider } from './Context/ImageCraftsmanContext.jsx';
 import { LocationProvider } from './Context/LocationContext.jsx';
 import { SpecializationProvider } from './Context/SpecailizationContext.jsx';
+import { AuthProvider } from './Context/AuthContext.jsx';
+
 
 
 
@@ -18,7 +20,7 @@ import { SpecializationProvider } from './Context/SpecailizationContext.jsx';
 createRoot(document.getElementById('root')).render(
 
  <LocationProvider>
-  
+ <AuthProvider>
  <SpecializationProvider>
  <ImageCraftsmanProvider>
  <TokenContextProvider>
@@ -28,7 +30,10 @@ createRoot(document.getElementById('root')).render(
   </TokenContextProvider>
   </ImageCraftsmanProvider>
   </SpecializationProvider>
+ </AuthProvider>
   </LocationProvider>
+
+
 
   
   ,

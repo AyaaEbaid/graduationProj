@@ -10,14 +10,15 @@ import axios from "axios";
 import Navbar from "../Navbar/Navbar";
 
 import { TokenContext } from "../../Context/TokenContext";
-import { UserContext } from "../../Context/userContext";
+import { AuthContext } from "../../Context/AuthContext";
+//import { UserContext } from "../../Context/userContext";
 
 
 
 export default function Login() {
  
   const { token, setToken } = useContext(TokenContext);
-  const { setUserData } = useContext(UserContext);
+  const { setUserData } = useContext(AuthContext);
   const [userMessage, setUserMessage] = useState(null);
   const [userError, setuserError] = useState(null);
   const [isLoading, setisLoading] = useState(false);
