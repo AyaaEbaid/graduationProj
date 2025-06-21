@@ -5,9 +5,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaSearch, FaBars, FaTimes } from "react-icons/fa"; // أضفت FaBars وFaTimes
 import LanguageSwitcher from "../../LanguageSwitcher";
 import logo from "./../../assets/logo.png";
+import profileImage from "../../assets/profile.png";
+import photo from '../../assets/photo.jpg'
 import { TokenContext } from "../../Context/TokenContext";
+import { UserContext } from "../../Context/userContext";
 
 export default function Navbar() {
+
   let navigate = useNavigate();
   function signOut() {
     localStorage.removeItem("userToken");
@@ -18,6 +22,10 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { token, setToken } = useContext(TokenContext);
+   
+   
+    const{userData}=useContext(UserContext)
+     console.log("userdata",userData);
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -52,7 +60,7 @@ export default function Navbar() {
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           {token ? (
             <>
-              <div className="relative ltr:md:right-4 mx-4 flex flex-col items-start">
+              {/* <div className="relative ltr:md:right-4 mx-4 flex flex-col items-start">
                 <button
                   onClick={() => setIsOpen(!isOpen)}
                   className="text-gray-100 focus:outline-none"
@@ -77,95 +85,96 @@ export default function Navbar() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
-              <div className="relative">
-                <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                  type="button"
-                  className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                  id="user-menu-button"
-                  aria-expanded={dropdownOpen}
-                >
-                  <span className="sr-only">{t("navbar.openUserMenu")}</span>
-                  <img
-                    className="w-8 h-8 rounded-full"
-                    src="/docs/images/people/profile-picture-3.jpg"
-                    alt={t("navbar.userPhoto")}
-                  />
-                </button>
+              </div> */}
+<div className="relative">
+  <button
+    onClick={() => setDropdownOpen(!dropdownOpen)}
+    type="button"
+    className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+    id="user-menu-button"
+    aria-expanded={dropdownOpen}
+  >
+    <span className="sr-only">{t("navbar.openUserMenu")}</span>
+    <img
+  className="w-8 h-8 rounded-full"
+  src={
+    userData?.imageURL
+      ? `https://hanshatabhalak.runasp.net${userData.imageURL}`
+      : photo
+  }
+  alt={t("navbar.userPhoto")}
+  onError={(e) => {
+    if (e.target.src !== profileImage) {
+      e.target.onerror = null;
+      e.target.src = profileImage;
+    }
+  }}
+/>
 
-                {/* قائمة المستخدم */}
-                <AnimatePresence>
-                  {dropdownOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute ltr:right-0 rtl:left-0 mt-2 z-[100] my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600"
-                      id="user-dropdown"
-                    >
-                      <div className="px-4 py-3">
-                        <span className="block text-sm text-gray-900 dark:text-white">
-                          Bonnie Green
-                        </span>
-                        <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
-                          name@flowbite.com
-                        </span>
-                      </div>
-                      <div
-                        data-popover
-                        id="popover-default"
-                        role="tooltip"
-                        className="absolute z-50 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-xs opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800"
-                      >
-                        <div className="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
-                          <h3 className="font-semibold text-gray-900 dark:text-white">
-                            {t("popoverTitle")}
-                          </h3>
-                        </div>
-                        <div className="px-3 py-2">
-                          <p>{t("navbar.popoverContent")}</p>
-                        </div>
-                        <div data-popper-arrow></div>
-                      </div>
-                      <ul className="py-2" aria-labelledby="user-menu-button">
-                        <li>
-                          <NavLink
-                            to="dashboard"
-                            onClick={() => setDropdownOpen(false)}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                          >
-                            {t("navbar.dashboard")}
-                          </NavLink>
-                        </li>
-                        <li>
-                          <NavLink
-                            to="profile"
-                            onClick={() => setDropdownOpen(false)}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                          >
-                            {t("navbar.settings")}
-                          </NavLink>
-                        </li>
-                        <li>
-                          <a
-                            onClick={() => {
-                              signOut();
-                              setDropdownOpen(false);
-                            }}
-                            href="#"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                          >
-                            {t("navbar.signOut")}
-                          </a>
-                        </li>
-                      </ul>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </>
+  </button>
+
+  <AnimatePresence>
+    {dropdownOpen && (
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.2 }}
+        className="absolute ltr:right-0 rtl:left-0 mt-2 z-[100] my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600 w-80"
+        id="user-dropdown"
+      >
+        <div className="px-6 py-4">
+          <span className="block text-sm text-gray-900 dark:text-white">
+            {userData?.fullName || "Guest"}
+          </span>
+          <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
+            {userData?.role || "User"}
+          </span>
+        </div>
+
+        <ul className="py-2" aria-labelledby="user-menu-button">
+          <li>
+            <NavLink
+              to="dashboard"
+              onClick={() => setDropdownOpen(false)}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+            >
+              {t("navbar.dashboard")}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+               to={
+    userData?.role === "Craftsman"
+      ? "/crafProfile"
+      : userData?.role === "Supervisor"
+      ? "/superprofile"
+      : "/profile"
+  }
+              onClick={() => setDropdownOpen(false)}
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+            >
+              {t("navbar.settings")}
+            </NavLink>
+          </li>
+          <li>
+            <a
+              onClick={() => {
+                signOut();
+                setDropdownOpen(false);
+              }}
+              href="#"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+            >
+              {t("navbar.signOut")}
+            </a>
+          </li>
+        </ul>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</div>
+ </>
           ) : (
             <div
               className={`${
@@ -261,7 +270,12 @@ export default function Navbar() {
                
                  <li className="relative">
                   <NavLink
-                    to="book"
+                               to={
+    userData?.role === "Craftsman"
+      ? "/bookcraft"
+      : userData?.role === "Supervisor"
+      ? "/booksuper"
+      : "/book"}
                     onClick={() => setMenuOpen(false)}
                     className={({ isActive }) =>
                       `block py-2 px-3 text-white rounded-sm transition-colors duration-200 relative group ${

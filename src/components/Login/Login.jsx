@@ -8,10 +8,16 @@ import { useTranslation } from "react-i18next";
 import bg2 from "./../../assets/bg2.jpg";
 import axios from "axios";
 import Navbar from "../Navbar/Navbar";
+
 import { TokenContext } from "../../Context/TokenContext";
+import { UserContext } from "../../Context/userContext";
+
+
 
 export default function Login() {
+ 
   const { token, setToken } = useContext(TokenContext);
+  const { setUserData } = useContext(UserContext);
   const [userMessage, setUserMessage] = useState(null);
   const [userError, setuserError] = useState(null);
   const [isLoading, setisLoading] = useState(false);
@@ -68,6 +74,17 @@ export default function Login() {
       setUserMessage(data.data.message);
       localStorage.setItem("userToken", data.data.token);
       setToken(data.data.token);
+      setUserData({
+  fullName: data.data.fullName,
+  role: data.data.role,
+  imageURL: data.data.imageURL,
+});
+localStorage.setItem("userData", JSON.stringify({
+  fullName: data.data.fullName,
+  role: data.data.role,
+  imageURL: data.data.imageURL,
+}));
+
       setisLoading(false);
       navigate("/");
     } catch (err) {
@@ -87,7 +104,7 @@ export default function Login() {
   return (
     <div
       className="flex h-screen items-center justify-center"
-      style={{ backgroundImage:`url(${bg2})`, backgroundSize: "cover" }}
+      style={{ backgroundImage:`url(${bg2}`, backgroundSize: "cover" }}
     >
       <motion.div
         initial={{ opacity: 0, x: -50 }}

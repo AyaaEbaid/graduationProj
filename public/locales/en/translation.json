@@ -309,7 +309,21 @@
     "noBookingsYet": "You don't have any bookings yet",
     "governorate": "Governorate",
     "center": "Center"
-  }
+  },
+  "bookingModal": {
+  "chooseServices": "Choose Services",
+  "loading": "Loading services...",
+  "noServices": "No services available.",
+  "total": "Total:",
+  "chooseDate": "Choose Date",
+  "book": "Book",
+  "bookingSuccess": "Booking Successful",
+  "bookingFailed": "Booking Failed. Please try again.",
+  "selectServiceError": "Please select at least one service.",
+  "selectDateError": "Please select a date.",
+  "invalidCraftsman": "Invalid craftsmanId. Please check the worker data."
+}
+
 ,
 
   
@@ -411,6 +425,7 @@
     "governorate": "Governorate",
     "center": "Center",
     "services": "Services:",
+    "status":"status",
     "servicesCount": "Service(s)",
     "noServices": "No Services",
     "commission": "Commission",
@@ -428,7 +443,30 @@
     "confirmed": "Confirmed",
     "completed": "Completed",
     "canceled": "Canceled"
-  }
+  },
+  
+ "workerPortfolio": {
+  "noImage": "No Image",
+  "noCatalog": "No Catalog",
+  "loading": "Loading...",
+  "noWorkerData": "No worker data available",
+  "rating": "Rating",
+  "experience": "Experience (years)",
+  "completedJobs": "Completed Jobs",
+  "location": "Location",
+  "about": "About the worker",
+  "services": "Services",
+  "noServices": "No services available",
+  "requestService": "Request Service",
+  "tabs": {
+    "about": "About",
+    "portfolio": "Portfolio",
+    "reviews": "Reviews"
+  },
+  "noReviews": "No reviews yet"
+}
+
+
 
 
 

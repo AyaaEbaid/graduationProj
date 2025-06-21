@@ -1,5 +1,7 @@
 import './App.css'
+import './axiosGlobal'
 import { ToastContainer } from "react-toastify";
+import { toast } from 'react-toastify';
 import Home from './components/Home/Home'
 import Layout from './components/Layout/Layout'
 import { BrowserRouter,RouterProvider, createBrowserRouter } from 'react-router-dom'
@@ -32,9 +34,14 @@ import BookingUser from './components/bookingUser/bookingUser';
 import CraftsmanProfile from './components/CrafrsmanProfile/CraftsmanProfile';
 import BookingCraftsman from './components/BookingCraftsman/BookingCraftsman';
 import BookingSupervisor from './components/BookingSupervisor/BookingSupervisor';
+import ProfileSupervisor from './components/ProfileSupervisor/ProfileSupervisor';
 
 
 function App() {
+  
+useEffect(() => {
+  toast.success("✅ التوست شغالة");
+}, []);
   
   // const {i18n}=useTranslation()
   // useEffect(() => {
@@ -70,6 +77,9 @@ function App() {
     {path:"book",element:<PortectedRoutes><bookingUser/></PortectedRoutes>},
     {path:"bookcraft",element:<BookingCraftsman/>},
     {path:"booksuper",element:<BookingSupervisor/>},
+    {path:"superprofile",element:<ProfileSupervisor/>},
+   
+  
     
    
 
@@ -85,11 +95,17 @@ function App() {
   return (
     <>
   <RouterProvider router={routers}>
-
+<ToastContainer
+  position="top-center"
+  autoClose={3000}
+  hideProgressBar={false}
+  newestOnTop
+  closeOnClick
+  pauseOnHover
+  draggable
+/>
   </RouterProvider>
-  <div className=''>
-  <ToastContainer position='top-center' className="pt-16  text-center " />
-  </div>
+  
  
 
     </>

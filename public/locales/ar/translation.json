@@ -309,6 +309,20 @@
   "of": "من",
   "workers": "عمال"
 },
+"bookingModal": {
+  "chooseServices": "اختر الخدمات",
+  "loading": "جاري تحميل الخدمات...",
+  "noServices": "لا توجد خدمات متاحة.",
+  "total": "الإجمالي:",
+  "chooseDate": "اختر التاريخ",
+  "book": "احجز",
+  "bookingSuccess": "تم الحجز بنجاح",
+  "bookingFailed": "فشل في الحجز، يرجى المحاولة مرة أخرى.",
+  "selectServiceError": "يرجى اختيار خدمة واحدة على الأقل.",
+  "selectDateError": "يرجى اختيار تاريخ.",
+  "invalidCraftsman": "معرف الحرفي غير صالح. يرجى التحقق من بيانات العامل."
+}
+,
 
   "booking": {
     "title": "حجوزاتي",
@@ -409,6 +423,26 @@
  
   }
   },
+  "profileSupervisor": {
+    "supervisor": "المشرف",
+    "personalInfo": "المعلومات الشخصية",
+    "fullName": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "phone": "رقم الهاتف",
+    "governorate": "المحافظة",
+    "center": "المركز",
+    "editProfile": "تعديل الملف الشخصي",
+    "save": "حفظ",
+    "saving": "جاري الحفظ...",
+    "cancel": "إلغاء",
+    "updateSuccess": "تم تحديث البيانات بنجاح",
+    "updateError": "حدث خطأ أثناء التحديث",
+    "fetchError": "فشل في تحميل بيانات المشرف",
+    "loading": "جارٍ التحميل",
+    "centerNotFound": "غير محدد"
+  }
+
+,
   
   "bookingSupervisor": {
     "title": "إدارة الحجوزات",
@@ -443,9 +477,33 @@
     "pending": "قيد الانتظار",
     "inProgress": "قيد التنفيذ",
     "confirmed": "مؤكد",
+    "status":"الحاله",
     "completed": "مكتمل",
     "canceled": "ملغى"
-  }
+  },
+  
+  "workerPortfolio": {
+  "noImage": "لا توجد صورة",
+  "noCatalog": "لا يوجد كتالوج",
+  "loading": "جاري التحميل...",
+  "noWorkerData": "لا توجد بيانات للعامل",
+  "rating": "التقييم",
+  "experience": "الخبرة (بالسنوات)",
+  "completedJobs": "الوظائف المكتملة",
+  "location": "الموقع",
+  "about": "نبذة عن العامل",
+  "services": "الخدمات",
+  "noServices": "لا توجد خدمات متاحة",
+  "requestService": "طلب الخدمة",
+  "tabs": {
+    "about": "عن العامل",
+    "portfolio": "الكتالوج",
+    "reviews": "التقييمات"
+  },
+  "noReviews": "لا توجد تقييمات حالياً"
+}
+
+
 
 }
 
