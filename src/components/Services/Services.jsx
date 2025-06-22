@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
-import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+
 import worker1 from "./../../assets/worker1.png";
 import worker2 from "./../../assets/worker2.png";
 import worker3 from "./../../assets/worker3.png";
@@ -11,6 +12,7 @@ import worker5 from "./../../assets/worker5.png";
 
 export default function Services() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const controls = useAnimation();
   const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.2 });
 
@@ -31,7 +33,7 @@ export default function Services() {
   ];
 
   const handleNavigation = (link) => {
-    window.location.href = link;
+    navigate(link);
   };
 
   return (

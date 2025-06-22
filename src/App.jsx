@@ -40,9 +40,7 @@ import ProfileSupervisor from './components/ProfileSupervisor/ProfileSupervisor'
 
 function App() {
   
-useEffect(() => {
-  toast.success(" التوست شغالة");
-}, []);
+
   
   // const {i18n}=useTranslation()
   // useEffect(() => {
