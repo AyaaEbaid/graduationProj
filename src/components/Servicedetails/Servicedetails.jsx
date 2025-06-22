@@ -180,15 +180,14 @@ const ServiceDetails = () => {
                     <p className="text-gray-500 text-sm mb-4">
                       <span className="font-semibold">{t("serviceDetails.center_label")}</span> {worker.center}
                     </p>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        window.location.href = `/workerportfolio/${worker.id}`;
-                      }}
-                      className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors"
-                    >
-                      {t("serviceDetails.view_profile")}
-                    </button>
+                    <Link to={`/workerportfolio/${worker.id}`}>
+  <button
+    className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition-colors"
+  >
+    {t("serviceDetails.view_profile")}
+  </button>
+</Link>
+
                   </motion.div>
                 </Link>
               ))
