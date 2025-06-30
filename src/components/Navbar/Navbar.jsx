@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext,useRef,useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
@@ -25,8 +25,24 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { token, setToken } = useContext(TokenContext);
-   
-   
+ 
+const dropdownRef = useRef(null);
+
+// إغلاق الـ dropdown عند الضغط خارج العنصر
+useEffect(() => {
+  function handleClickOutside(event) {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownOpen(false);
+    }
+  }
+
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
+
+
     const{userData}=useContext(AuthContext)
      console.log("userdata",userData);
   const { t } = useTranslation();
@@ -89,13 +105,11 @@ export default function Navbar() {
                   )}
                 </AnimatePresence>
               </div> */}
-<div className="relative">
+<div className="relative" ref={dropdownRef}>
   <button
     onClick={() => setDropdownOpen(!dropdownOpen)}
     type="button"
     className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-    id="user-menu-button"
-    aria-expanded={dropdownOpen}
   >
     <span className="sr-only">{t("navbar.openUserMenu")}</span>
     <img
@@ -121,6 +135,7 @@ export default function Navbar() {
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
+          ref={dropdownRef}
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.2 }}
         className="absolute ltr:right-0 rtl:left-0 mt-2 z-[100] my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600 w-80"
@@ -139,13 +154,14 @@ export default function Navbar() {
         
           <li>
             <NavLink
-               to={
-    userData?.role === "Craftsman"
-      ? "/crafProfile"
-      : userData?.role === "Supervisor"
-      ? "/superprofile"
-      : "/profile"
-  }
+     to={
+  userData?.role?.toLowerCase() === "craftsman"
+    ? "/crafProfile"
+    : userData?.role?.toLowerCase() === "supervisor"
+    ? "/superprofile"
+    : "/profile"
+}
+
               onClick={() => setDropdownOpen(false)}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
             >
@@ -265,12 +281,14 @@ export default function Navbar() {
                
                  <li className="relative">
                   <NavLink
-                               to={
-    userData?.role === "Craftsman"
-      ? "/bookcraft"
-      : userData?.role === "Supervisor"
-      ? "/booksuper"
-      : "/book"}
+      to={
+  userData?.role?.toLowerCase() === "craftsman"
+    ? "/bookcraft"
+    : userData?.role?.toLowerCase() === "supervisor"
+    ? "/booksuper"
+    : "/book"
+}
+
                     onClick={() => setMenuOpen(false)}
                     className={({ isActive }) =>
                       `block py-2 px-3 text-white rounded-sm transition-colors duration-200 relative group ${

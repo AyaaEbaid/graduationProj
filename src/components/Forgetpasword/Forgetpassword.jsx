@@ -6,20 +6,18 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const ForgetPassword = () => {
-  const { t ,i18n} = useTranslation();
+  const { t, i18n } = useTranslation();
   const [userMessage, setUserMessage] = useState(null);
   const [userError, setuserError] = useState(null);
   const [isLoading, setisLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Yup validation
   let mySchema = Yup.object({
     email: Yup.string()
       .required(t("forgetPassword.email_required"))
       .email(t("forgetPassword.email_invalid")),
   });
 
-  // Formik
   let formik = useFormik({
     initialValues: {
       email: "",
@@ -32,30 +30,35 @@ const ForgetPassword = () => {
 
   async function ForgetForm(values) {
     setisLoading(true);
-    return await axios
-      .post(`https://hanshatabhalak.runasp.net/api/Auth/forgot-password?language=${i18n.language}`, values)
-      .then((data) => {
-        setUserMessage("Success");
-        localStorage.setItem("resetToken", data.data.resetToken);
-        setisLoading(false);
-        navigate("/reset-password");
-      })
-      .catch((err) => {
-        setuserError("failed");
-        setisLoading(false);
-      });
+    try {
+      const response = await axios.post(
+        `https://hanshatabhalak.runasp.net/api/Auth/forgot-password?language=${i18n.language}`,
+        values
+      );
+
+      setUserMessage("Success");
+      // حفظ التوكن في localStorage
+      localStorage.setItem("resetToken", response.data.resetToken);
+      // **حفظ الإيميل الذي أدخله المستخدم في localStorage لاستخدامه لاحقاً**
+      localStorage.setItem("resetEmail", values.email);
+
+      setisLoading(false);
+      navigate("/reset-password");
+    } catch (err) {
+      setuserError("failed");
+      setisLoading(false);
+    }
   }
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-100 via-white to-teal-200 overflow-hidden">
-      {/* Circles */}
+      {/* خلفيات */}
       <div className="absolute top-[-60px] left-[-60px] w-64 h-64 bg-teal-300 rounded-full opacity-30 blur-2xl animate-pulse"></div>
       <div className="absolute bottom-[-80px] right-[-80px] w-72 h-72 bg-teal-400 rounded-full opacity-20 blur-3xl animate-bounce"></div>
       <div className="absolute top-[30%] right-[-40px] w-40 h-40 bg-teal-200 rounded-full opacity-25 blur-xl animate-ping"></div>
 
-      {/* Form */}
+      {/* الفورم */}
       <div className="relative z-10 bg-white bg-opacity-70 backdrop-blur-md border border-white/40 shadow-xl rounded-xl px-8 py-10 max-w-md w-full">
-        
         <h2 className="text-2xl font-bold text-center text-teal-700 mb-4">
           {t("forgetPassword.title")}
         </h2>
@@ -65,7 +68,7 @@ const ForgetPassword = () => {
 
         {userError && (
           <div
-            className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+            className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50"
             role="alert"
           >
             {userError}
@@ -73,7 +76,7 @@ const ForgetPassword = () => {
         )}
         {userMessage && (
           <div
-            className="p-4 mt-2 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
+            className="p-4 mt-2 mb-4 text-sm text-green-800 rounded-lg bg-green-50"
             role="alert"
           >
             {userMessage}
@@ -96,7 +99,7 @@ const ForgetPassword = () => {
             />
             {formik.touched.email && formik.errors.email && (
               <div
-                className="p-4 mt-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                className="p-4 mt-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50"
                 role="alert"
               >
                 {formik.errors.email}

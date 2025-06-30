@@ -3,13 +3,13 @@ import { FaMapMarkerAlt, FaFileAlt, FaWrench, FaStar, FaImage, FaBriefcase } fro
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import BookingModal from "../Booking/Booking";
-import { useImageCraftsman } from "../../Context/ImageCraftsmanContext";
+
 import { TokenContext } from "../../Context/TokenContext";
 import { useTranslation } from "react-i18next";
 
 const WorkerPortfolio = () => {
   const { id } = useParams();
-  const { imageUrl } = useImageCraftsman();
+ 
   const [worker, setWorker] = useState(null);
   const [services, setServices] = useState([]);
   const [portfolioImages, setPortfolioImages] = useState([]);
@@ -63,6 +63,7 @@ const WorkerPortfolio = () => {
           name: workerData.name || "Unknown",
           specialty: workerData.specialization || "Unknown Specialty",
           rating: workerData.rating || 0,
+          image: workerData.image || "",
           experience: workerData.experience || 0,
           completedJobs: workerData.completedJobs || 0,
           location: `${workerData.governorate || "Unknown"}, ${workerData.center || "Unknown"}`,
@@ -191,18 +192,18 @@ setPortfolioImages(
         {/* Top Section */}
         <div className="flex flex-col items-center md:flex-row md:items-center md:justify-between gap-6">
           <div className="flex flex-col items-center md:flex-row md:items-center md:gap-6">
-          {imageUrl && !imageUrl.toLowerCase().includes("no image") ? (
+ {workerData?.image && !workerData.image.toLowerCase().includes("no image") ? (
   <img
     className="w-32 h-32 rounded-full border-4 border-teal-500 object-cover"
     src={
-      imageUrl.startsWith("http")
-        ? imageUrl
-        : `https://hanshatabhalak.runasp.net${imageUrl}`
+      workerData.image.startsWith("http")
+        ? workerData.image
+        : `https://hanshatabhalak.runasp.net${workerData.image}`
     }
     alt={workerData.name}
     onError={(e) => {
       e.target.onerror = null;
-      e.target.src = "/default-avatar.png";
+      e.target.src = "/default-avatar.png"; // ← صورة افتراضية عند الفشل
     }}
   />
 ) : (
@@ -210,6 +211,7 @@ setPortfolioImages(
     {t("workerPortfolio.noImage")}
   </div>
 )}
+
 
             <div className="text-center md:text-start mt-4 md:mt-0">
               <h2 className="text-2xl font-bold">{workerData.name}</h2>

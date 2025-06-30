@@ -36,6 +36,7 @@ import CraftsmanProfile from './components/CrafrsmanProfile/CraftsmanProfile';
 import BookingCraftsman from './components/BookingCraftsman/BookingCraftsman';
 import BookingSupervisor from './components/BookingSupervisor/BookingSupervisor';
 import ProfileSupervisor from './components/ProfileSupervisor/ProfileSupervisor';
+import VerifyOTP from './components/VerifyOTP/VerifyOTP';
 
 
 function App() {
@@ -56,6 +57,7 @@ function App() {
     
     {path:"login",element:<ProtectedAuth><Login/></ProtectedAuth>},
     {path:"register",element:<ProtectedAuth><Register/></ProtectedAuth>},
+    {path:"verfiy",element:<VerifyOTP/>},
     {path:"book",element:<PortectedRoutes><BookingUser/></PortectedRoutes>},
 
     {path:"profile",element:<PortectedRoutes><Profile/></PortectedRoutes>},
@@ -78,13 +80,14 @@ function App() {
     {path:"bookcraft",element:<PortectedRoutes><BookingCraftsman/></PortectedRoutes>},
     {path:"booksuper",element:<PortectedRoutes><BookingSupervisor/></PortectedRoutes>},
     {path:"superprofile",element:<PortectedRoutes><ProfileSupervisor/></PortectedRoutes>},
+
    
   
     
    
 
     {path:"worker",element:<PortectedRoutes><Serviceworker/></PortectedRoutes>},
-    {path:"crafProfile",element:<PortectedRoutes><CraftsmanProfile/></PortectedRoutes>},
+    {path:"crafProfile",element:<CraftsmanProfile/>},
     {path:"workerportfolio/:id",element:<PortectedRoutes><WorkerPortfolio/></PortectedRoutes>},
     {path:"booking/:id",element:<PortectedRoutes><Booking/></PortectedRoutes>},
     

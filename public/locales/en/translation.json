@@ -388,24 +388,34 @@
     }
   },
   
+  
   "resetpassword": {
-    "title": "Reset Password",
-    "email_placeholder": "Email",
-    "password_placeholder": "New Password",
-    "send_link": "Reset Password",
+    "title": "Reset Your Password",
+    "subtitle": "Enter the verification code sent to your email and choose a new password.",
+    "check_spam": "If you didn't receive the code, please check your spam or junk folder.",
+    "code_placeholder": "Enter 6-digit verification code",
+    "password_placeholder": "New Password ",
+    "confirm_password_placeholder": "Confirm New Password",
+    "submit_button": "Reset Password",
     "back_to_login": "Back to Login",
+
     "validation": {
-      "email_required": "Email is required",
-      "email_invalid": "Invalid email address",
+      "code_required": "Verification code is required",
+      "code_invalid": "Verification code must be exactly 6 digits",
       "password_required": "Password is required",
       "password_length": "Password must be at least 8 characters",
-      "password_invalid": "Invalid password format"
+      "password_invalid": "Password must start with an uppercase letter and contain valid characters",
+      "confirm_required": "Please confirm your password",
+      "password_match": "Passwords must match"
     },
+
     "messages": {
-      "success": "Your password has been reset successfully",
-      "failed": "Failed to reset password"
+      "success": "Password reset successfully. Redirecting to login...",
+      "failed": "Failed to reset password. Please try again.",
+      "token_or_email_missing": "Missing reset token or email. Please retry the password reset process."
     }
   },
+
   
   "bookingSupervisor": {
     "title": "Booking Management",
@@ -464,7 +474,40 @@
     "reviews": "Reviews"
   },
   "noReviews": "No reviews yet"
+},
+"ratingPage": {
+  "add_title": "Add Rating",
+  "view_title": "View Ratings",
+  "excellent": "Excellent",
+  "good": "Good",
+  "fair": "Fair",
+  "bad": "Bad",
+  "verybad": "Very Bad",
+  "choose_stars": "Please choose a star rating first",
+  "placeholder": "Write your feedback here...",
+  "submit": "Submit Rating",
+  "loading": "Submitting...",
+  "no_comments": "No ratings yet.",
+  "error": "Please select a rating and write your comment.",
+  "load_failed": "Failed to load ratings.",
+  "submit_failed": "Failed to submit your rating.",
+  "load_more": "Load More"
 }
+,
+"verification": {
+  "emailVerification": "Email Verification",
+  "codeSentTo": "We've sent a verification code to your email address. Please enter the 6-digit code below.",
+  "checkSpamFolder": "Please check your spam folder if you don't see the email in your inbox.",
+  "enter6Digit": "Enter 6-digit code",
+  "verifyEmail": "Verify Email",
+  "verifying": "Verifying...",
+  "invalidCode": "Invalid code. Please try again.",
+  "backTo": "Back to",
+  "login": "Login"
+}
+
+
+
 
 
 

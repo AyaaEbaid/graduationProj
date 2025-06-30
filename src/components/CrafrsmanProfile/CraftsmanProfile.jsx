@@ -515,7 +515,16 @@
 
 // export default CraftsmanProfile;
 import React, { useState, useEffect, useContext } from "react";
-import { FaMapMarkerAlt, FaWrench, FaStar, FaImage, FaBriefcase, FaEdit } from "react-icons/fa";
+import {
+  FaMapMarkerAlt,
+  FaWrench,
+  FaStar,
+  FaImage,
+    FaCamera,
+  FaBriefcase,
+  FaEdit,
+  
+} from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { TokenContext } from "../../Context/TokenContext";
@@ -559,33 +568,46 @@ const CraftsmanProfile = () => {
       }
       try {
         setIsLoading(true);
-        const response = await axios.get(
+
+        const profileRes = await axios.get(
           `https://hanshatabhalak.runasp.net/api/Craftsman/GetCraftsman?language=${i18n.language}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        const data = response.data.data;
+
+        const data = profileRes.data.data;
         if (!data || Object.keys(data).length === 0) {
           setErrorProfile("noData");
           setIsLoading(false);
           return;
         }
+
+        const craftsmanId = data.id;
+
+        const catalogRes = await axios.get(
+          `https://hanshatabhalak.runasp.net/api/Cataloge/${craftsmanId}/getCatalogeImages?language=${i18n.language}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        const catalogImages = catalogRes?.data?.data?.result?.$values || [];
+
         await fetchGovernorateDetails(data.governorateId);
         await fetchCenters(data.governorateId);
         await fetchCenterDetails(data.centerId);
+
         const governorateName = selectedGovernorate?.name || (i18n.language === "ar" ? "غير معروف" : "Unknown");
         const centerName = selectedCenter?.name || (i18n.language === "ar" ? "غير معروف" : "Unknown");
+
         setWorkerData({
           ...data,
           governorate: governorateName,
           center: centerName,
           image: data.image ? `https://hanshatabhalak.runasp.net${data.image}` : null,
-          cataloge: Array.isArray(data.cataloge?.images?.$values)
-            ? data.cataloge.images.$values.map((img, index) => ({
-                url: `https://hanshatabhalak.runasp.net${img}`,
-                alt: `${i18n.language === "ar" ? "صورة معرض " : "Portfolio Image "}${index + 1}`,
-              }))
-            : [],
+          cataloge: catalogImages.map((img, index) => ({
+            url: `https://hanshatabhalak.runasp.net${img}`,
+            alt: `${i18n.language === "ar" ? "صورة معرض " : "Portfolio Image "}${index + 1}`,
+          })),
         });
+
         setEditedData({
           fullName: data.name || "",
           email: data.email || "",
@@ -593,6 +615,7 @@ const CraftsmanProfile = () => {
           governorateId: data.governorateId || 0,
           centerId: data.centerId || 0,
         });
+
         setErrorProfile(null);
       } catch (error) {
         console.error("Error fetching craftsman:", error);
@@ -601,104 +624,136 @@ const CraftsmanProfile = () => {
         setIsLoading(false);
       }
     };
+
     fetchCraftsman();
   }, [token, i18n.language]);
-
   const handleSaveChanges = async () => {
-    if (!editedData) return;
-    try {
-      const response = await axios.put(
-        `https://hanshatabhalak.runasp.net/api/Auth/update-profile?language=${i18n.language}`,
-        editedData,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setWorkerData((prev) => ({
-        ...prev,
-        name: editedData.fullName,
-        email: editedData.email,
-        phone: editedData.phoneNumber,
-        governorate: governorates.find((gov) => gov.id === editedData.governorateId)?.name || prev.governorate,
-        center: centers.find((center) => center.id === editedData.centerId)?.name || prev.center,
-      }));
-      setIsEditModalOpen(false);
-      toast.success(response.data?.message || t("header.craftsmanProfile.saveSuccess"), {
-        position: "top-center",
-        autoClose: 3000,
-      });
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      toast.error(error.response?.data?.message || t("header.craftsmanProfile.saveError"), {
-        position: "top-center",
-        autoClose: 3000,
-      });
-    }
-  };
+  try {
+    const response = await axios.put(
+      `https://hanshatabhalak.runasp.net/api/Craftsman/EditProfile?language=${i18n.language}`,
+      editedData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success(t("header.craftsmanProfile.editSuccess"), {
+      position: "top-center",
+      autoClose: 3000,
+    });
+    setIsEditModalOpen(false);
+    // أعد تحميل البيانات المحدثة
+    window.location.reload();
+  } catch (error) {
+    console.error("Update failed:", error);
+    toast.error(t("header.craftsmanProfile.editFailed"), {
+      position: "top-center",
+      autoClose: 3000,
+    });
+  }
+};
 
-  const handleCatalogUpload = async (files) => {
-    const formData = new FormData();
-    for (let file of files) {
-      formData.append("images", file);
-    }
-    try {
-      const response = await axios.post(
-        `https://hanshatabhalak.runasp.net/api/Cataloge/${id}/uploadCatalogeImages?language=en`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: Bearer `${token}`,
-          },
-        }
-      );
-      console.log("Upload success:", response.data);
-      toast.success(t("header.craftsmanProfile.uploadSuccess"), {
-        position: "top-center",
-        autoClose: 3000,
-      });
-    } catch (error) {
-      console.error("Upload failed:", error);
-      toast.error(t("header.craftsmanProfile.uploadFailed"), {
-        position: "top-center",
-        autoClose: 3000,
-      });
-    }
-  };
-
-  const handleImageUpload = async (event) => {
+const handleImageUpload = async (event) => {
   const file = event.target.files[0];
-  if (file && workerData) {
-    const formData = new FormData();
-    formData.append("file", file);
+  if (!file || !workerData?.id) {
+    console.log("No file or worker ID missing");
+    return;
+  }
 
-    try {
-      const response = await axios.post(
-        `https://hanshatabhalak.runasp.net/api/Craftsman/${workerData.id}/uploadImage?language=${i18n.language}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const newImage = response.data.data;
-      setWorkerData((prev) => ({
-        ...prev,
-        image: `https://hanshatabhalak.runasp.net${newImage}`,
-      }));
-      toast.success(t("header.craftsmanProfile.imageUpdated"), {
-        position: "top-center",
-        autoClose: 3000,
-      });
-    } catch (error) {
-      console.error("Error updating image:", error);
-      toast.error(t("header.craftsmanProfile.imageUpdateError"), {
-        position: "top-center",
-        autoClose: 3000,
-      });
+  const formData = new FormData();
+  formData.append("file", file); // ✅ المفتاح الصحيح حسب توقع الـ API
+
+  try {
+    const response = await axios.post(
+      `https://hanshatabhalak.runasp.net/api/Craftsman/${workerData.id}/uploadImage?language=${i18n.language}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const newImage = response.data.data;
+    setWorkerData((prev) => ({
+      ...prev,
+      image: `https://hanshatabhalak.runasp.net${newImage}`,
+    }));
+
+    toast.success(t("header.craftsmanProfile.imageUpdated"), {
+      position: "top-center",
+      autoClose: 3000,
+    });
+  } catch (error) {
+    console.error("Error updating image:", error);
+    if (error.response?.data?.message) {
+      console.log("Server message:", error.response.data.message);
     }
+    toast.error(t("header.craftsmanProfile.imageUpdateError"), {
+      position: "top-center",
+      autoClose: 3000,
+    });
+  }
+};
+
+
+
+ const handleCatalogUpload = async (files) => {
+  if (!workerData) return;
+
+  const formData = new FormData();
+  for (let file of files) {
+    formData.append("files", file); // ✅ المفتاح الصحيح هو "files"
+  }
+
+  try {
+    const response = await axios.post(
+      `https://hanshatabhalak.runasp.net/api/Cataloge/${workerData.id}/uploadCatalogeImages?language=${i18n.language}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    toast.success(t("header.craftsmanProfile.uploadSuccess"), {
+      position: "top-center",
+      autoClose: 3000,
+    });
+
+    // إعادة تحميل الصور بعد الرفع
+    const catalogRes = await axios.get(
+      `https://hanshatabhalak.runasp.net/api/Cataloge/${workerData.id}/getCatalogeImages?language=${i18n.language}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    const catalogImages = catalogRes?.data?.data?.result?.$values || [];
+    setWorkerData((prev) => ({
+      ...prev,
+      cataloge: catalogImages.map((img, index) => ({
+        url: `https://hanshatabhalak.runasp.net${img}`,
+        alt: `${i18n.language === "ar" ? "صورة معرض " : "Portfolio Image "}${index + 1}`,
+      })),
+    }));
+  } catch (error) {
+    console.error("Upload failed:", error);
+    toast.error(t("header.craftsmanProfile.uploadFailed"), {
+      position: "top-center",
+      autoClose: 3000,
+    });
+
+    if (error.response?.data?.message) {
+      console.log("Server message:", error.response.data.message);
     }
-  };
+  }
+};
+
+
+
 
   const openLightbox = (index) => setSelectedImageIndex(index);
   const closeLightbox = () => setSelectedImageIndex(null);
@@ -726,37 +781,39 @@ const CraftsmanProfile = () => {
         <div className="flex flex-col items-center md:flex-row md:items-center md:justify-between">
           <div className="flex flex-col items-center md:flex-row md:items-center md:gap-6">
             <div className="relative">
-              {workerData.image ? (
-                <>
-                  <img
-                    className="w-32 h-32 rounded-full border-4 border-teal-500 object-cover cursor-pointer"
-                    src={workerData.image}
-                    alt={workerData.name}
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "/default-avatar.png";
-                    }}
-                    onClick={() => setIsProfileImageOpen(true)}
-                  />
-                  <input
-                    type="file"
-                    accept="image/*"
-                    style={{ display: "none" }}
-                    id="imageUpload"
-                    onChange={handleImageUpload}
-                  />
-                  <button
-                    onClick={() => document.getElementById("imageUpload").click()}
-                    className="mt-2 bg-teal-600 hover:bg-teal-700 text-white font-bold py-1 px-3 rounded-md"
-                  >
-                    {t("header.craftsmanProfile.changeImage")}
-                  </button>
-                </>
-              ) : (
-                <div className="w-32 h-32 rounded-full border-4 border-teal-500 flex items-center justify-center bg-gray-200 text-teal-600 text-lg font-semibold">
-                  {t("header.craftsmanProfile.noImage")}
-                </div>
-              )}
+ <div className="relative w-32 h-32 mx-auto">
+  {workerData?.image ? (
+    <img
+      src={workerData.image}
+      alt="Profile"
+      className="w-full h-full object-cover rounded-full border"
+    />
+  ) : (
+    <div className="w-full h-full bg-gray-200 rounded-full flex items-center justify-center text-gray-500 text-sm">
+      {t("header.craftsmanProfile.noImage")}
+    </div>
+  )}
+
+  {/* 🔽 زر الكاميرا + input لرفع الصورة */}
+  <label
+    htmlFor="profileImageUpload"
+    className="absolute bottom-0 right-0 bg-teal-600 text-white p-2 rounded-full hover:bg-teal-700 transition z-10 cursor-pointer"
+    title={t("header.craftsmanProfile.changeImage")}
+  >
+    <FaCamera />
+  </label>
+ <input
+  type="file"
+  id="profileImageUpload"
+  accept="image/*"
+  style={{ display: "none" }}
+  onChange={handleImageUpload}
+/>
+
+</div>
+
+
+
             </div>
             <div className="text-center md:text-left mt-4 md:mt-0">
               <h2 className="text-2xl font-bold">{workerData.name}</h2>
@@ -863,13 +920,14 @@ const CraftsmanProfile = () => {
               </div>
               <div className="mt-4 flex justify-center w-full">
                 <input
-                  type="file"
-                  accept="image/*"
-                  style={{ display: "none" }}
-                  id="catalogUpload"
-                  onChange={(e) => handleCatalogUpload(e.target.files)}
-                  multiple
-                />
+  type="file"
+  accept="image/*"
+  style={{ display: "none" }}
+  id="catalogUpload"
+  onChange={(e) => handleCatalogUpload(e.target.files)}
+  multiple
+/>
+
                 <button
                   onClick={() => document.getElementById("catalogUpload").click()}
                   className="bg-teal-600 hover:bg-teal-700 text-white font-bold py-1 px-3 rounded-md"
@@ -1049,12 +1107,13 @@ const CraftsmanProfile = () => {
             onClick={() => setIsProfileImageOpen(false)}
             style={{ overflow: "hidden" }}
           >
-            <img
-              src={workerData.image}
-              alt={workerData.name}
-              className="max-h-[80vh] max-w-[90vw] object-contain"
-              onClick={(e) => e.stopPropagation()}
-            />
+ <img
+  src={workerData.cataloge[selectedImageIndex].url}
+  alt={workerData.cataloge[selectedImageIndex].alt}
+  className="max-w-[95vw] max-h-[85vh] object-contain mx-auto"
+/>
+
+
             <button
               onClick={() => setIsProfileImageOpen(false)}
               className="absolute top-4 right-4 text-white text-4xl font-bold hover:text-gray-300"

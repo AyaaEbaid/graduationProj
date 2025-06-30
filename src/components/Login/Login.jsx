@@ -75,11 +75,12 @@ export default function Login() {
       setUserMessage(data.data.message);
       localStorage.setItem("userToken", data.data.token);
       setToken(data.data.token);
-      setUserData({
+ setUserData({
   fullName: data.data.fullName,
   role: data.data.role,
   imageURL: data.data.imageURL,
 });
+
 localStorage.setItem("userData", JSON.stringify({
   fullName: data.data.fullName,
   role: data.data.role,
@@ -241,12 +242,12 @@ localStorage.setItem("userData", JSON.stringify({
                 isArabic ? "space-x-reverse" : ""
               } space-x-4 mt-2`}
             >
-              <div className="w-8 h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded-full hover:bg-teal-500 hover:text-white cursor-pointer">
+              {/* <div className="w-8 h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded-full hover:bg-teal-500 hover:text-white cursor-pointer">
                 <FaFacebookF />
               </div>
               <div className="w-8 h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded-full hover:bg-teal-500 hover:text-white cursor-pointer">
                 <FaGoogle />
-              </div>
+              </div> */}
             </div>
           </form>
         </motion.div>

@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import * as Yup from "yup";
 import { FaFacebookF, FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 
 export default function Register() {
+
+
   const [userMessage, setUserMessage] = useState(null);
   const [userError, setUserError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -222,40 +224,45 @@ const handleRoleChange = (e) => {
     fetchSpecializationDetails(specId);
   };
 
-  async function registerForm(values) {
-    setIsLoading(true);
-    try {
-     const payload = {
-  fullName: values.fullName,
-  governorateId: parseInt(values.governorate) || 0,
-  centerId: parseInt(values.center) || 0,
-  phoneNumber: values.phoneNumber,
-  email: values.email,
-  password: values.password,
-  confirmPassword: values.confirmPassword,
-  role: values.role,
-  specializationId: values.role === "craftsman" ? parseInt(values.specialization) : undefined, // ✅ هنا التعديل
-};
+async function registerForm(values) {
+  setIsLoading(true);
+  try {
+    const payload = {
+      fullName: values.fullName,
+      governorateId: parseInt(values.governorate) || 0,
+      centerId: parseInt(values.center) || 0,
+      phoneNumber: values.phoneNumber,
+      email: values.email,
+      password: values.password,
+      confirmPassword: values.confirmPassword,
+      role: values.role,
+      specializationId: values.role === "craftsman" ? parseInt(values.specialization) : undefined,
+    };
+
+    const response = await axios.post(
+      `https://hanshatabhalak.runasp.net/api/Auth/register-request?language=${i18n.language}`,
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    setUserMessage(response.data.message); 
+    setIsLoading(false);
+    localStorage.setItem("verifyEmail", values.email);
+
+    navigate("/verfiy", { state: { email: values.email } });
 
 
-      const response = await axios.post(
-        `https://hanshatabhalak.runasp.net/api/Auth/register?language=${i18n.language}`,
-        payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      setUserMessage(response.data.message);
-      setIsLoading(false);
-      navigate("/login");
-    } catch (err) {
-      const errorMessage = err.response?.data?.message || err.message;
-      setUserError(errorMessage);
-      setIsLoading(false);
-    }
+  } catch (err) {
+    const errorMessage = err.response?.data?.message || err.message;
+    setUserError(errorMessage);
+    setIsLoading(false);
   }
+}
+
 
   return (
     <div className="flex items-center justify-center">
@@ -571,7 +578,7 @@ const handleRoleChange = (e) => {
               </button>
             )}
             {/* أزرار التسجيل عبر فيسبوك وجوجل */}
-            <div
+            {/* <div
               className={`flex justify-center items-center ${
                 isArabic ? "space-x-reverse" : ""
               } space-x-4 mt-4`}
@@ -582,7 +589,7 @@ const handleRoleChange = (e) => {
               <div className="w-8 h-8 flex items-center justify-center border border-teal-500 text-teal-500 rounded-full transition duration-300 hover:bg-teal-500 hover:text-white shadow-md cursor-pointer">
                 <FaGoogle className="text-sm" />
               </div>
-            </div>
+            </div> */}
           </form>
         </motion.div>
         {/* الجزء الجانبي لتسجيل الدخول */}
