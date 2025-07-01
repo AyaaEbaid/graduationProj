@@ -33,21 +33,29 @@ const ServiceDetails = () => {
             );
             const workers = response.data?.data?.$values || [];
             // Fetch image for each worker
-            for (const worker of workers) {
-              let imageUrl = "";
-              try {
-                const imageResponse = await axios.get(
-                  `https://hanshatabhalak.runasp.net/api/Craftsman/${worker.id}/getImage?language=${i18n.language}`
-                );
-                imageUrl = imageResponse.data.imageUrl;
-              } catch (imageErr) {
-                console.error(`Error fetching image for worker ${worker.id}: `, imageErr.message);
-                worker.imageUrl = null;
-                continue;
-              }
-              const isValidImageUrl = imageUrl && typeof imageUrl === "string" && imageUrl.startsWith("/") && !imageUrl.includes(t("serviceDetails.no_image"));
-              worker.imageUrl = isValidImageUrl ? `https://hanshatabhalak.runasp.net${imageUrl}` : null;
-            }
+           const workersWithImages = await Promise.all(
+  workers.map(async (worker) => {
+    try {
+      const imageResponse = await axios.get(
+        `https://hanshatabhalak.runasp.net/api/Craftsman/${worker.id}/getImage?language=${i18n.language}`
+      );
+      const imageUrl = imageResponse.data.imageUrl;
+      const isValidImageUrl =
+        imageUrl &&
+        typeof imageUrl === "string" &&
+        imageUrl.startsWith("/") &&
+        !imageUrl.includes(t("serviceDetails.no_image"));
+      worker.imageUrl = isValidImageUrl ? `https://hanshatabhalak.runasp.net${imageUrl}` : null;
+    } catch (error) {
+      console.error(`Error fetching image for worker ${worker.id}:`, error.message);
+      worker.imageUrl = null;
+    }
+    return worker;
+  })
+);
+
+allWorkersData.push(...workersWithImages);
+
             allWorkersData.push(...workers);
           } catch (err) {
             console.error(`Error fetching SpecializationId ${id}:`, err.message);
